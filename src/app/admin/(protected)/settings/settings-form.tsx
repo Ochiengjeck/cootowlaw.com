@@ -1,0 +1,165 @@
+"use client";
+
+import { useActionState } from "react";
+import type { SettingsFormState } from "./actions";
+import { TextField, TextAreaField, NumberField } from "@/components/admin/form-fields";
+import { SubmitButton } from "@/components/admin/submit-button";
+import { ImagePicker } from "@/components/admin/image-picker";
+
+type Office = { slug: string; name: string };
+type MediaItem = { id: string; url: string; alt: string };
+
+type Props = {
+  action: (state: SettingsFormState, formData: FormData) => Promise<SettingsFormState>;
+  offices: Office[];
+  mediaItems: MediaItem[];
+  defaultValues: {
+    firmName: string;
+    tagline: string;
+    foundedYear: number;
+    aboutHtml: string;
+    missionHtml: string;
+    coreValues: string[];
+    advocAfricaBlurb: string | null;
+    staffingStats: Record<string, { associates: number; paralegals: number }> | null;
+    socialLinks: Record<string, string>;
+    logoId: string | null;
+    homeHeroImageId: string | null;
+    aboutHeroImageId: string | null;
+    careersHtml: string | null;
+    privacyPolicyHtml: string | null;
+  };
+};
+
+export function SettingsForm({ action, offices, mediaItems, defaultValues }: Props) {
+  const [state, formAction, pending] = useActionState(action, undefined);
+  const socialLinksText = Object.entries(defaultValues.socialLinks)
+    .map(([platform, url]) => `${platform}: ${url}`)
+    .join("\n");
+
+  return (
+    <form action={formAction} className="max-w-2xl space-y-8">
+      <section className="space-y-4">
+        <h2 className="text-sm font-semibold uppercase tracking-wide text-purple-700">
+          Firm identity
+        </h2>
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+          <TextField label="Firm name" name="firmName" defaultValue={defaultValues.firmName} required />
+          <NumberField
+            label="Founded year"
+            name="foundedYear"
+            defaultValue={String(defaultValues.foundedYear)}
+            required
+          />
+        </div>
+        <TextField label="Tagline" name="tagline" defaultValue={defaultValues.tagline} required />
+        <ImagePicker
+          label="Logo (optional)"
+          name="logoId"
+          items={mediaItems}
+          defaultValue={defaultValues.logoId}
+        />
+      </section>
+
+      <section className="space-y-4">
+        <h2 className="text-sm font-semibold uppercase tracking-wide text-purple-700">
+          About page content
+        </h2>
+        <TextAreaField
+          label="About (HTML allowed)"
+          name="aboutHtml"
+          defaultValue={defaultValues.aboutHtml}
+          rows={6}
+          required
+        />
+        <TextAreaField
+          label="Mission (HTML allowed)"
+          name="missionHtml"
+          defaultValue={defaultValues.missionHtml}
+          rows={4}
+          required
+        />
+        <TextAreaField
+          label="Core values (one per line)"
+          name="coreValues"
+          defaultValue={defaultValues.coreValues.join("\n")}
+          rows={4}
+        />
+        <TextAreaField
+          label="Advoc Africa network blurb (optional)"
+          name="advocAfricaBlurb"
+          defaultValue={defaultValues.advocAfricaBlurb ?? ""}
+          rows={3}
+        />
+        <ImagePicker
+          label="Home page hero image (optional)"
+          name="homeHeroImageId"
+          items={mediaItems}
+          defaultValue={defaultValues.homeHeroImageId}
+        />
+        <ImagePicker
+          label="About page hero image (optional)"
+          name="aboutHeroImageId"
+          items={mediaItems}
+          defaultValue={defaultValues.aboutHeroImageId}
+        />
+      </section>
+
+      {offices.length > 0 && (
+        <section className="space-y-4">
+          <h2 className="text-sm font-semibold uppercase tracking-wide text-purple-700">
+            Staffing per office
+          </h2>
+          {offices.map((office) => (
+            <div key={office.slug} className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+              <NumberField
+                label={`${office.name} — Associates`}
+                name={`staffing_${office.slug}_associates`}
+                defaultValue={String(defaultValues.staffingStats?.[office.slug]?.associates ?? 0)}
+              />
+              <NumberField
+                label={`${office.name} — Paralegals`}
+                name={`staffing_${office.slug}_paralegals`}
+                defaultValue={String(defaultValues.staffingStats?.[office.slug]?.paralegals ?? 0)}
+              />
+            </div>
+          ))}
+        </section>
+      )}
+
+      <section className="space-y-4">
+        <h2 className="text-sm font-semibold uppercase tracking-wide text-purple-700">
+          Other pages
+        </h2>
+        <TextAreaField
+          label="Careers page content (HTML allowed, optional — leave blank to show the 'no open vacancies' message)"
+          name="careersHtml"
+          defaultValue={defaultValues.careersHtml ?? ""}
+          rows={4}
+        />
+        <TextAreaField
+          label="Privacy policy (HTML allowed, optional)"
+          name="privacyPolicyHtml"
+          defaultValue={defaultValues.privacyPolicyHtml ?? ""}
+          rows={6}
+        />
+      </section>
+
+      <section className="space-y-4">
+        <h2 className="text-sm font-semibold uppercase tracking-wide text-purple-700">
+          Social links
+        </h2>
+        <TextAreaField
+          label="One per line, as: platform: url"
+          name="socialLinks"
+          defaultValue={socialLinksText}
+          rows={3}
+          help="Example: linkedin: https://linkedin.com/company/cootow-associates"
+        />
+      </section>
+
+      {state?.error && <p className="text-sm text-destructive">{state.error}</p>}
+      <SubmitButton pending={pending} label="Save changes" />
+    </form>
+  );
+}

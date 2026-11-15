@@ -1,26 +1,135 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --charcoal: #1a181e;
+  --slate: #5a5663;
+  --alabaster: #faf9f6;
+  --surface: #f1efea;
+  --purple-50: #f1e9f7;
+  --purple-600: #582583;
+  --purple-700: #431d63;
+  --gold-50: #fbf3e2;
+  --gold-400: #d4b06a;
+  --gold-500: #c59b43;
+  --gold-600: #a8822f;
+
+  --background: var(--alabaster);
+  --foreground: var(--charcoal);
+  --card: #ffffff;
+  --card-foreground: var(--charcoal);
+  --primary: var(--purple-600);
+  --primary-foreground: #ffffff;
+  --secondary: var(--charcoal);
+  --secondary-foreground: #ffffff;
+  --accent: var(--gold-500);
+  --accent-foreground: var(--charcoal);
+  --muted: var(--surface);
+  --muted-foreground: var(--slate);
+  --border: #e5e1d8;
+  --destructive: #dc2626;
+  --ring: var(--gold-500);
 }
 
 @theme inline {
+  --color-charcoal: var(--charcoal);
+  --color-slate: var(--slate);
+  --color-alabaster: var(--alabaster);
+  --color-surface: var(--surface);
+  --color-purple-50: var(--purple-50);
+  --color-purple-600: var(--purple-600);
+  --color-purple-700: var(--purple-700);
+  --color-gold-50: var(--gold-50);
+  --color-gold-400: var(--gold-400);
+  --color-gold-500: var(--gold-500);
+  --color-gold-600: var(--gold-600);
+
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-ring: var(--ring);
+  --font-serif: var(--font-fraunces), Georgia, serif;
+  --font-sans: var(--font-jakarta), system-ui, sans-serif;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans);
+}
+
+* {
+  border-color: var(--border);
+}
+
+:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+@keyframes hero-in {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.animate-hero-in {
+  animation: hero-in 0.7s ease-out both;
+}
+
+.rich-text {
+  color: var(--foreground);
+  line-height: 1.75;
+}
+.rich-text > :first-child {
+  margin-top: 0;
+}
+.rich-text p {
+  margin: 1em 0;
+}
+.rich-text ul,
+.rich-text ol {
+  margin: 1em 0;
+  padding-left: 1.5em;
+}
+.rich-text ul {
+  list-style: disc;
+}
+.rich-text ol {
+  list-style: decimal;
+}
+.rich-text a {
+  color: var(--purple-600);
+  text-decoration: underline;
+}
+.rich-text.on-dark {
+  color: #d9d7d2;
+}
+.rich-text.on-dark a {
+  color: var(--gold-400);
 }

@@ -5,6 +5,11 @@ const nextConfig: NextConfig = {
   cacheComponents: true,
   partialPrefetching: true,
   reactCompiler: true,
+  images: {
+    remotePatterns: [
+      { protocol: "https", hostname: "**.public.blob.vercel-storage.com" },
+    ],
+  },
   turbopack: {
     rules: {
       "*.css": {
@@ -12,6 +17,22 @@ const nextConfig: NextConfig = {
         as: "*.css",
       },
     },
+  },
+  async redirects() {
+    return [
+      {
+        source: "/practice-areas/litigation-2",
+        destination: "/practices/litigation",
+        permanent: true,
+      },
+      {
+        source: "/practice-areas/:slug",
+        destination: "/practices/:slug",
+        permanent: true,
+      },
+      { source: "/team/:slug", destination: "/people/:slug", permanent: true },
+      { source: "/office/:slug", destination: "/offices/:slug", permanent: true },
+    ];
   },
 };
 

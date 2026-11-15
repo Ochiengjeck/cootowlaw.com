@@ -1,4 +1,5 @@
 import "server-only";
+import { randomUUID } from "node:crypto";
 import { asc, eq } from "drizzle-orm";
 import { cacheTag } from "next/cache";
 import { db } from "@/lib/db";
@@ -40,8 +41,9 @@ export async function adminGetPracticeArea(id: string) {
 }
 
 export async function createPracticeArea(input: PracticeAreaInput) {
-  const rows = await db.insert(practiceAreas).values(input).returning({ id: practiceAreas.id });
-  return rows[0];
+  const id = randomUUID();
+  await db.insert(practiceAreas).values({ id, ...input });
+  return { id };
 }
 
 export async function updatePracticeArea(id: string, input: PracticeAreaInput) {

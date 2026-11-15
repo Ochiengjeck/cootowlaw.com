@@ -10,9 +10,8 @@ if (!process.env.DATABASE_URL) {
 export default defineConfig({
   schema: "./src/lib/db/schema.ts",
   out: "./src/lib/db/migrations",
-  dialect: "turso",
+  dialect: "mysql",
   dbCredentials: {
     url: process.env.DATABASE_URL,
-    authToken: process.env.DATABASE_AUTH_TOKEN,
   },
 });

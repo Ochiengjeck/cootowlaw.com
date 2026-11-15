@@ -2,13 +2,15 @@
 // their DB records. Run after `npm run seed`. Idempotent: clears and re-inserts the
 // `media` rows it owns (identified by url prefix "/images/") each time, then re-wires
 // the FKs — safe to re-run after copying new files.
+import { randomUUID } from "node:crypto";
 import { eq, like } from "drizzle-orm";
 import { db } from "../src/lib/db";
 import { media, attorneys, clients, siteSettings } from "../src/lib/db/schema";
 
 async function insertMedia(url: string, alt: string) {
-  const [row] = await db.insert(media).values({ url, alt }).returning({ id: media.id });
-  return row.id;
+  const id = randomUUID();
+  await db.insert(media).values({ id, url, alt });
+  return id;
 }
 
 async function main() {
@@ -77,7 +79,7 @@ async function main() {
       .update(attorneys)
       .set({ photoId, updatedAt: new Date() })
       .where(eq(attorneys.slug, slug));
-    if (result.rowsAffected > 0) count++;
+    if (result[0].affectedRows > 0) count++;
   }
   console.log(`  attorney photos wired: ${count}/${Object.keys(attorneyPhotos).length}`);
 

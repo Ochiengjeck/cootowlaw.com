@@ -1,4 +1,5 @@
 import "server-only";
+import { randomUUID } from "node:crypto";
 import { asc, eq } from "drizzle-orm";
 import { cacheTag } from "next/cache";
 import { db } from "@/lib/db";
@@ -45,8 +46,9 @@ export async function adminGetOffice(id: string) {
 }
 
 export async function createOffice(input: OfficeInput) {
-  const rows = await db.insert(offices).values(input).returning({ id: offices.id });
-  return rows[0];
+  const id = randomUUID();
+  await db.insert(offices).values({ id, ...input });
+  return { id };
 }
 
 export async function updateOffice(id: string, input: OfficeInput) {

@@ -5,6 +5,7 @@
 //
 // Run via `npm run seed`, which passes --env-file=.env.local to tsx so DATABASE_URL
 // etc. are set before any module (notably src/lib/db) is loaded.
+import { randomUUID } from "node:crypto";
 import bcrypt from "bcryptjs";
 import { eq } from "drizzle-orm";
 import { db } from "../src/lib/db";
@@ -42,47 +43,49 @@ async function main() {
 
   const officeBySlug = new Map<string, string>();
   for (const office of officesSeed) {
-    const [row] = await db.insert(offices).values(office).returning({ id: offices.id });
-    officeBySlug.set(office.slug, row.id);
+    const id = randomUUID();
+    await db.insert(offices).values({ id, ...office });
+    officeBySlug.set(office.slug, id);
   }
   console.log(`  offices: ${officesSeed.length}`);
 
   const practiceAreaBySlug = new Map<string, string>();
   for (const pa of practiceAreasSeed) {
-    const [row] = await db.insert(practiceAreas).values(pa).returning({ id: practiceAreas.id });
-    practiceAreaBySlug.set(pa.slug, row.id);
+    const id = randomUUID();
+    await db.insert(practiceAreas).values({ id, ...pa });
+    practiceAreaBySlug.set(pa.slug, id);
   }
   console.log(`  practice areas: ${practiceAreasSeed.length}`);
 
   const attorneyBySlug = new Map<string, string>();
   for (const a of attorneysSeed) {
-    const [row] = await db
-      .insert(attorneys)
-      .values({
-        slug: a.slug,
-        name: a.name,
-        title: a.title,
-        tier: a.tier,
-        bioHtml: a.bioHtml,
-        credentials: a.credentials,
-        officeId: a.officeSlug ? officeBySlug.get(a.officeSlug) ?? null : null,
-        sortOrder: a.sortOrder,
-      })
-      .returning({ id: attorneys.id });
-    attorneyBySlug.set(a.slug, row.id);
+    const id = randomUUID();
+    await db.insert(attorneys).values({
+      id,
+      slug: a.slug,
+      name: a.name,
+      title: a.title,
+      tier: a.tier,
+      bioHtml: a.bioHtml,
+      credentials: a.credentials,
+      officeId: a.officeSlug ? officeBySlug.get(a.officeSlug) ?? null : null,
+      sortOrder: a.sortOrder,
+    });
+    attorneyBySlug.set(a.slug, id);
 
     for (const paSlug of a.practiceAreaSlugs) {
       const practiceAreaId = practiceAreaBySlug.get(paSlug);
       if (!practiceAreaId) continue;
-      await db.insert(attorneyPracticeAreas).values({ attorneyId: row.id, practiceAreaId });
+      await db.insert(attorneyPracticeAreas).values({ attorneyId: id, practiceAreaId });
     }
   }
   console.log(`  attorneys: ${attorneysSeed.length}`);
 
   const clientByName = new Map<string, string>();
   for (const c of clientsSeed) {
-    const [row] = await db.insert(clients).values(c).returning({ id: clients.id });
-    clientByName.set(c.name, row.id);
+    const id = randomUUID();
+    await db.insert(clients).values({ id, ...c });
+    clientByName.set(c.name, id);
   }
   console.log(`  clients: ${clientsSeed.length}`);
 

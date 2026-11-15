@@ -1,4 +1,5 @@
 import "server-only";
+import { randomUUID } from "node:crypto";
 import { asc, eq } from "drizzle-orm";
 import { cacheTag } from "next/cache";
 import { db } from "@/lib/db";
@@ -33,8 +34,9 @@ export async function adminGetClient(id: string) {
 }
 
 export async function createClient(input: ClientInput) {
-  const rows = await db.insert(clients).values(input).returning({ id: clients.id });
-  return rows[0];
+  const id = randomUUID();
+  await db.insert(clients).values({ id, ...input });
+  return { id };
 }
 
 export async function updateClient(id: string, input: ClientInput) {

@@ -16,11 +16,10 @@
     "logo:generate": "tsx scripts/generate-logo-assets.ts"
   },
   "dependencies": {
-    "@libsql/client": "^0.18.0",
-    "@vercel/blob": "^2.8.2",
     "bcryptjs": "^3.0.3",
     "drizzle-orm": "^0.45.4",
     "iron-session": "^9.0.1",
+    "mysql2": "^3.24.6",
     "next": "16.4.5",
     "nodemailer": "^10.3.1",
     "react": "19.3.0",

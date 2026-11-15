@@ -1,4 +1,5 @@
 import "server-only";
+import { randomUUID } from "node:crypto";
 import { asc, desc, eq } from "drizzle-orm";
 import { cacheTag } from "next/cache";
 import { db } from "@/lib/db";
@@ -48,8 +49,9 @@ export async function adminGetCaseBrief(id: string) {
 }
 
 export async function createCaseBrief(input: CaseBriefInput) {
-  const rows = await db.insert(caseBriefs).values(input).returning({ id: caseBriefs.id });
-  return rows[0];
+  const id = randomUUID();
+  await db.insert(caseBriefs).values({ id, ...input });
+  return { id };
 }
 
 export async function updateCaseBrief(id: string, input: CaseBriefInput) {

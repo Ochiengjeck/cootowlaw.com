@@ -1,4 +1,5 @@
 import "server-only";
+import { randomUUID } from "node:crypto";
 import { desc, eq, isNotNull } from "drizzle-orm";
 import { cacheTag } from "next/cache";
 import { db } from "@/lib/db";
@@ -41,8 +42,9 @@ export async function adminGetNewsPost(id: string) {
 }
 
 export async function createNewsPost(input: NewsPostInput) {
-  const rows = await db.insert(newsPosts).values(input).returning({ id: newsPosts.id });
-  return rows[0];
+  const id = randomUUID();
+  await db.insert(newsPosts).values({ id, ...input });
+  return { id };
 }
 
 export async function updateNewsPost(id: string, input: NewsPostInput) {

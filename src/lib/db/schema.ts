@@ -1,75 +1,76 @@
 import { randomUUID } from "node:crypto";
 import {
-  sqliteTable,
+  mysqlTable,
+  varchar,
   text,
-  integer,
+  int,
+  boolean,
+  json,
+  datetime,
   uniqueIndex,
   primaryKey,
-} from "drizzle-orm/sqlite-core";
+} from "drizzle-orm/mysql-core";
 
 function id() {
-  return text("id")
+  return varchar("id", { length: 36 })
     .primaryKey()
     .$defaultFn(() => randomUUID());
 }
 
 function timestamps() {
   return {
-    createdAt: integer("created_at", { mode: "timestamp_ms" })
+    createdAt: datetime("created_at", { mode: "date" })
       .notNull()
       .$defaultFn(() => new Date()),
-    updatedAt: integer("updated_at", { mode: "timestamp_ms" })
+    updatedAt: datetime("updated_at", { mode: "date" })
       .notNull()
       .$defaultFn(() => new Date()),
   };
 }
 
-export const media = sqliteTable("media", {
+export const media = mysqlTable("media", {
   id: id(),
-  url: text("url").notNull(),
-  alt: text("alt").notNull().default(""),
-  width: integer("width"),
-  height: integer("height"),
+  url: varchar("url", { length: 1000 }).notNull(),
+  alt: varchar("alt", { length: 500 }).notNull().default(""),
+  width: int("width"),
+  height: int("height"),
   blurDataUrl: text("blur_data_url"),
-  uploadedAt: integer("uploaded_at", { mode: "timestamp_ms" })
+  uploadedAt: datetime("uploaded_at", { mode: "date" })
     .notNull()
     .$defaultFn(() => new Date()),
 });
 
-export const offices = sqliteTable(
+export const offices = mysqlTable(
   "offices",
   {
     id: id(),
-    slug: text("slug").notNull(),
-    name: text("name").notNull(),
-    addressLine1: text("address_line1").notNull(),
-    addressLine2: text("address_line2"),
-    city: text("city").notNull(),
-    phone: text("phone").notNull(),
-    email: text("email").notNull(),
-    officeHours: text("office_hours"),
-    mapEmbedUrl: text("map_embed_url"),
-    heroImageId: text("hero_image_id").references(() => media.id),
-    sortOrder: integer("sort_order").notNull().default(0),
+    slug: varchar("slug", { length: 255 }).notNull(),
+    name: varchar("name", { length: 255 }).notNull(),
+    addressLine1: varchar("address_line1", { length: 500 }).notNull(),
+    addressLine2: varchar("address_line2", { length: 500 }),
+    city: varchar("city", { length: 255 }).notNull(),
+    phone: varchar("phone", { length: 50 }).notNull(),
+    email: varchar("email", { length: 255 }).notNull(),
+    officeHours: varchar("office_hours", { length: 500 }),
+    mapEmbedUrl: varchar("map_embed_url", { length: 1000 }),
+    heroImageId: varchar("hero_image_id", { length: 36 }).references(() => media.id),
+    sortOrder: int("sort_order").notNull().default(0),
     ...timestamps(),
   },
   (t) => [uniqueIndex("offices_slug_idx").on(t.slug)],
 );
 
-export const practiceAreas = sqliteTable(
+export const practiceAreas = mysqlTable(
   "practice_areas",
   {
     id: id(),
-    slug: text("slug").notNull(),
-    name: text("name").notNull(),
-    summary: text("summary").notNull(),
+    slug: varchar("slug", { length: 255 }).notNull(),
+    name: varchar("name", { length: 255 }).notNull(),
+    summary: varchar("summary", { length: 1000 }).notNull(),
     descriptionHtml: text("description_html").notNull(),
-    servicesList: text("services_list", { mode: "json" })
-      .$type<string[]>()
-      .notNull()
-      .default([]),
-    heroImageId: text("hero_image_id").references(() => media.id),
-    sortOrder: integer("sort_order").notNull().default(0),
+    servicesList: json("services_list").$type<string[]>().notNull(),
+    heroImageId: varchar("hero_image_id", { length: 36 }).references(() => media.id),
+    sortOrder: int("sort_order").notNull().default(0),
     ...timestamps(),
   },
   (t) => [uniqueIndex("practice_areas_slug_idx").on(t.slug)],
@@ -78,135 +79,132 @@ export const practiceAreas = sqliteTable(
 export const attorneyTiers = ["partner", "associate", "staff"] as const;
 export type AttorneyTier = (typeof attorneyTiers)[number];
 
-export const attorneys = sqliteTable(
+export const attorneys = mysqlTable(
   "attorneys",
   {
     id: id(),
-    slug: text("slug").notNull(),
-    name: text("name").notNull(),
-    title: text("title").notNull(),
-    tier: text("tier", { enum: attorneyTiers }).notNull(),
+    slug: varchar("slug", { length: 255 }).notNull(),
+    name: varchar("name", { length: 255 }).notNull(),
+    title: varchar("title", { length: 500 }).notNull(),
+    tier: varchar("tier", { length: 20, enum: attorneyTiers }).notNull(),
     bioHtml: text("bio_html"),
     credentials: text("credentials"),
-    email: text("email"),
-    phone: text("phone"),
-    photoId: text("photo_id").references(() => media.id),
-    officeId: text("office_id").references(() => offices.id),
-    sortOrder: integer("sort_order").notNull().default(0),
-    isActive: integer("is_active", { mode: "boolean" }).notNull().default(true),
+    email: varchar("email", { length: 255 }),
+    phone: varchar("phone", { length: 50 }),
+    photoId: varchar("photo_id", { length: 36 }).references(() => media.id),
+    officeId: varchar("office_id", { length: 36 }).references(() => offices.id),
+    sortOrder: int("sort_order").notNull().default(0),
+    isActive: boolean("is_active").notNull().default(true),
     ...timestamps(),
   },
   (t) => [uniqueIndex("attorneys_slug_idx").on(t.slug)],
 );
 
-export const attorneyPracticeAreas = sqliteTable(
+export const attorneyPracticeAreas = mysqlTable(
   "attorney_practice_areas",
   {
-    attorneyId: text("attorney_id")
+    attorneyId: varchar("attorney_id", { length: 36 })
       .notNull()
       .references(() => attorneys.id, { onDelete: "cascade" }),
-    practiceAreaId: text("practice_area_id")
+    practiceAreaId: varchar("practice_area_id", { length: 36 })
       .notNull()
       .references(() => practiceAreas.id, { onDelete: "cascade" }),
   },
   (t) => [primaryKey({ columns: [t.attorneyId, t.practiceAreaId] })],
 );
 
-export const clients = sqliteTable("clients", {
+export const clients = mysqlTable("clients", {
   id: id(),
-  name: text("name").notNull(),
-  industry: text("industry").notNull(),
-  logoId: text("logo_id").references(() => media.id),
-  website: text("website"),
-  sortOrder: integer("sort_order").notNull().default(0),
+  name: varchar("name", { length: 255 }).notNull(),
+  industry: varchar("industry", { length: 255 }).notNull(),
+  logoId: varchar("logo_id", { length: 36 }).references(() => media.id),
+  website: varchar("website", { length: 1000 }),
+  sortOrder: int("sort_order").notNull().default(0),
   ...timestamps(),
 });
 
-export const caseBriefs = sqliteTable(
+export const caseBriefs = mysqlTable(
   "case_briefs",
   {
     id: id(),
-    slug: text("slug").notNull(),
-    title: text("title").notNull(),
-    courtReference: text("court_reference").notNull(),
+    slug: varchar("slug", { length: 255 }).notNull(),
+    title: varchar("title", { length: 500 }).notNull(),
+    courtReference: varchar("court_reference", { length: 500 }).notNull(),
     summaryHtml: text("summary_html").notNull(),
     outcomeHtml: text("outcome_html").notNull(),
-    practiceAreaId: text("practice_area_id").references(() => practiceAreas.id),
-    clientId: text("client_id").references(() => clients.id),
-    year: integer("year"),
-    sortOrder: integer("sort_order").notNull().default(0),
+    practiceAreaId: varchar("practice_area_id", { length: 36 }).references(() => practiceAreas.id),
+    clientId: varchar("client_id", { length: 36 }).references(() => clients.id),
+    year: int("year"),
+    sortOrder: int("sort_order").notNull().default(0),
     ...timestamps(),
   },
   (t) => [uniqueIndex("case_briefs_slug_idx").on(t.slug)],
 );
 
-export const newsPosts = sqliteTable(
+export const newsPosts = mysqlTable(
   "news_posts",
   {
     id: id(),
-    slug: text("slug").notNull(),
-    title: text("title").notNull(),
-    excerpt: text("excerpt").notNull(),
+    slug: varchar("slug", { length: 255 }).notNull(),
+    title: varchar("title", { length: 500 }).notNull(),
+    excerpt: varchar("excerpt", { length: 1000 }).notNull(),
     bodyHtml: text("body_html").notNull(),
-    coverImageId: text("cover_image_id").references(() => media.id),
-    authorId: text("author_id").references(() => attorneys.id),
-    publishedAt: integer("published_at", { mode: "timestamp_ms" }),
+    coverImageId: varchar("cover_image_id", { length: 36 }).references(() => media.id),
+    authorId: varchar("author_id", { length: 36 }).references(() => attorneys.id),
+    publishedAt: datetime("published_at", { mode: "date" }),
     ...timestamps(),
   },
   (t) => [uniqueIndex("news_posts_slug_idx").on(t.slug)],
 );
 
-export const siteSettings = sqliteTable("site_settings", {
+export const siteSettings = mysqlTable("site_settings", {
   id: id(),
-  firmName: text("firm_name").notNull(),
-  tagline: text("tagline").notNull(),
-  foundedYear: integer("founded_year").notNull(),
+  firmName: varchar("firm_name", { length: 255 }).notNull(),
+  tagline: varchar("tagline", { length: 500 }).notNull(),
+  foundedYear: int("founded_year").notNull(),
   aboutHtml: text("about_html").notNull(),
   missionHtml: text("mission_html").notNull(),
-  coreValues: text("core_values", { mode: "json" }).$type<string[]>().notNull().default([]),
+  coreValues: json("core_values").$type<string[]>().notNull(),
   advocAfricaBlurb: text("advoc_africa_blurb"),
-  staffingStats: text("staffing_stats", { mode: "json" }).$type<
+  staffingStats: json("staffing_stats").$type<
     Record<string, { associates: number; paralegals: number }>
   >(),
-  socialLinks: text("social_links", { mode: "json" })
-    .$type<Record<string, string>>()
-    .notNull()
-    .default({}),
-  logoId: text("logo_id").references(() => media.id),
-  homeHeroImageId: text("home_hero_image_id").references(() => media.id),
-  aboutHeroImageId: text("about_hero_image_id").references(() => media.id),
+  socialLinks: json("social_links").$type<Record<string, string>>().notNull(),
+  logoId: varchar("logo_id", { length: 36 }).references(() => media.id),
+  homeHeroImageId: varchar("home_hero_image_id", { length: 36 }).references(() => media.id),
+  aboutHeroImageId: varchar("about_hero_image_id", { length: 36 }).references(() => media.id),
   privacyPolicyHtml: text("privacy_policy_html"),
   careersHtml: text("careers_html"),
   ...timestamps(),
 });
 
-export const contactSubmissions = sqliteTable("contact_submissions", {
+export const contactSubmissions = mysqlTable("contact_submissions", {
   id: id(),
-  officeId: text("office_id")
+  officeId: varchar("office_id", { length: 36 })
     .notNull()
     .references(() => offices.id),
-  practiceAreaId: text("practice_area_id").references(() => practiceAreas.id),
-  name: text("name").notNull(),
-  email: text("email").notNull(),
-  phone: text("phone"),
+  practiceAreaId: varchar("practice_area_id", { length: 36 }).references(() => practiceAreas.id),
+  name: varchar("name", { length: 255 }).notNull(),
+  email: varchar("email", { length: 255 }).notNull(),
+  phone: varchar("phone", { length: 50 }),
   message: text("message").notNull(),
-  createdAt: integer("created_at", { mode: "timestamp_ms" })
+  createdAt: datetime("created_at", { mode: "date" })
     .notNull()
     .$defaultFn(() => new Date()),
-  handledAt: integer("handled_at", { mode: "timestamp_ms" }),
+  handledAt: datetime("handled_at", { mode: "date" }),
 });
 
 export const adminRoles = ["owner", "editor"] as const;
 export type AdminRole = (typeof adminRoles)[number];
 
-export const adminUsers = sqliteTable(
+export const adminUsers = mysqlTable(
   "admin_users",
   {
     id: id(),
-    email: text("email").notNull(),
-    passwordHash: text("password_hash").notNull(),
-    name: text("name").notNull(),
-    role: text("role", { enum: adminRoles }).notNull().default("editor"),
+    email: varchar("email", { length: 255 }).notNull(),
+    passwordHash: varchar("password_hash", { length: 255 }).notNull(),
+    name: varchar("name", { length: 255 }).notNull(),
+    role: varchar("role", { length: 20, enum: adminRoles }).notNull().default("editor"),
     ...timestamps(),
   },
   (t) => [uniqueIndex("admin_users_email_idx").on(t.email)],

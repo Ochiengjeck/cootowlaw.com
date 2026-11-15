@@ -1,4 +1,5 @@
 import "server-only";
+import { randomUUID } from "node:crypto";
 import { asc, eq } from "drizzle-orm";
 import { cacheTag } from "next/cache";
 import { db } from "@/lib/db";
@@ -90,14 +91,14 @@ export async function adminGetAttorney(id: string) {
 
 export async function createAttorney(input: AttorneyInput) {
   const { practiceAreaIds, ...rest } = input;
-  const rows = await db.insert(attorneys).values(rest).returning({ id: attorneys.id });
-  const id = rows[0].id;
+  const id = randomUUID();
+  await db.insert(attorneys).values({ id, ...rest });
   if (practiceAreaIds.length > 0) {
     await db
       .insert(attorneyPracticeAreas)
       .values(practiceAreaIds.map((practiceAreaId) => ({ attorneyId: id, practiceAreaId })));
   }
-  return rows[0];
+  return { id };
 }
 
 export async function updateAttorney(id: string, input: AttorneyInput) {

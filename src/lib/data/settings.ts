@@ -1,6 +1,6 @@
 import "server-only";
 import { eq } from "drizzle-orm";
-import { alias } from "drizzle-orm/sqlite-core";
+import { alias } from "drizzle-orm/mysql-core";
 import { cacheTag } from "next/cache";
 import { db } from "@/lib/db";
 import { siteSettings, media } from "@/lib/db/schema";

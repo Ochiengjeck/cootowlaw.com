@@ -1,4 +1,5 @@
 import "server-only";
+import { randomUUID } from "node:crypto";
 import { desc, eq } from "drizzle-orm";
 import { db } from "@/lib/db";
 import { media } from "@/lib/db/schema";
@@ -20,8 +21,9 @@ export async function adminGetMedia(id: string) {
 }
 
 export async function createMedia(input: MediaInput) {
-  const rows = await db.insert(media).values(input).returning({ id: media.id });
-  return rows[0];
+  const id = randomUUID();
+  await db.insert(media).values({ id, ...input });
+  return { id };
 }
 
 export async function deleteMedia(id: string) {

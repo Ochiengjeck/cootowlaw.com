@@ -20,6 +20,9 @@
 # production
 /build
 
+# cPanel Node.js App / Passenger restart trigger (recreated by .cpanel.yml on every deploy)
+/tmp/
+
 # misc
 .DS_Store
 *.pem

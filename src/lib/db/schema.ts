@@ -49,7 +49,7 @@ export const offices = mysqlTable(
     addressLine1: varchar("address_line1", { length: 500 }).notNull(),
     addressLine2: varchar("address_line2", { length: 500 }),
     city: varchar("city", { length: 255 }).notNull(),
-    phone: varchar("phone", { length: 50 }).notNull(),
+    phone: varchar("phone", { length: 255 }).notNull(),
     email: varchar("email", { length: 255 }).notNull(),
     officeHours: varchar("office_hours", { length: 500 }),
     mapEmbedUrl: varchar("map_embed_url", { length: 1000 }),
@@ -90,7 +90,7 @@ export const attorneys = mysqlTable(
     bioHtml: text("bio_html"),
     credentials: text("credentials"),
     email: varchar("email", { length: 255 }),
-    phone: varchar("phone", { length: 50 }),
+    phone: varchar("phone", { length: 255 }),
     photoId: varchar("photo_id", { length: 36 }).references(() => media.id),
     officeId: varchar("office_id", { length: 36 }).references(() => offices.id),
     sortOrder: int("sort_order").notNull().default(0),
@@ -186,7 +186,7 @@ export const contactSubmissions = mysqlTable("contact_submissions", {
   practiceAreaId: varchar("practice_area_id", { length: 36 }).references(() => practiceAreas.id),
   name: varchar("name", { length: 255 }).notNull(),
   email: varchar("email", { length: 255 }).notNull(),
-  phone: varchar("phone", { length: 50 }),
+  phone: varchar("phone", { length: 255 }),
   message: text("message").notNull(),
   createdAt: datetime("created_at", { mode: "date" })
     .notNull()

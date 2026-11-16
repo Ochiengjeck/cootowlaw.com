@@ -1,3 +1,4 @@
+import { connection } from "next/server";
 import { createNewsPostAction } from "../actions";
 import { NewsForm } from "../news-form";
 import { AdminPageHeader } from "@/components/admin/page-header";
@@ -5,6 +6,7 @@ import { adminListAttorneys } from "@/lib/data/attorneys";
 import { adminListMedia } from "@/lib/data/media";
 
 export default async function NewNewsPostPage() {
+  await connection();
   const [authors, mediaItems] = await Promise.all([adminListAttorneys(), adminListMedia()]);
 
   return (

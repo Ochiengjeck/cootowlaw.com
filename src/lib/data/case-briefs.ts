@@ -2,6 +2,7 @@ import "server-only";
 import { randomUUID } from "node:crypto";
 import { asc, desc, eq } from "drizzle-orm";
 import { cacheTag } from "next/cache";
+import { connection } from "next/server";
 import { db } from "@/lib/db";
 import { caseBriefs, practiceAreas } from "@/lib/db/schema";
 
@@ -40,10 +41,12 @@ export async function getCaseBriefBySlug(slug: string) {
 }
 
 export async function adminListCaseBriefs() {
+  await connection();
   return db.select().from(caseBriefs).orderBy(asc(caseBriefs.sortOrder));
 }
 
 export async function adminGetCaseBrief(id: string) {
+  await connection();
   const rows = await db.select().from(caseBriefs).where(eq(caseBriefs.id, id)).limit(1);
   return rows[0] ?? null;
 }

@@ -1,4 +1,5 @@
 import { Suspense, type ReactNode } from "react";
+import { connection } from "next/server";
 import { getCurrentAdmin } from "@/lib/auth";
 import { Sidebar, SidebarFallback } from "./sidebar";
 import { Topbar } from "./topbar";
@@ -19,6 +20,11 @@ export default function ProtectedAdminLayout({ children }: { children: ReactNode
 }
 
 async function AuthedShell({ children }: { children: ReactNode }) {
+  // Every admin page is session-gated and never needs a static shell — force
+  // dynamic rendering here so time-sensitive values deep in the tree (e.g.
+  // iron-session's cookie TTL check) don't trip Cache Components' prerender
+  // analysis on individual admin routes.
+  await connection();
   const admin = await getCurrentAdmin();
   return (
     <>

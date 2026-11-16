@@ -2,13 +2,12 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   /* config options here */
-  // Self-hosted (cPanel) deployment: bundles the app into .next/standalone/server.js
-  // plus a minimal node_modules, so cPanel's "Setup Node.js App" only needs to run
-  // one startup file — no separate `next start` process management required.
-  output: "standalone",
   cacheComponents: true,
   partialPrefetching: true,
   reactCompiler: true,
+  images: {
+    remotePatterns: [{ protocol: "https", hostname: "*.public.blob.vercel-storage.com" }],
+  },
   turbopack: {
     rules: {
       "*.css": {

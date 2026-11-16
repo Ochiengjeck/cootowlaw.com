@@ -2,6 +2,7 @@ import "server-only";
 import { randomUUID } from "node:crypto";
 import { asc, eq } from "drizzle-orm";
 import { cacheTag } from "next/cache";
+import { connection } from "next/server";
 import { db } from "@/lib/db";
 import { practiceAreas } from "@/lib/db/schema";
 
@@ -32,10 +33,12 @@ export async function getPracticeAreaBySlug(slug: string) {
 // --- Admin, uncached reads/writes (authorization enforced by the caller) ---
 
 export async function adminListPracticeAreas() {
+  await connection();
   return db.select().from(practiceAreas).orderBy(asc(practiceAreas.sortOrder));
 }
 
 export async function adminGetPracticeArea(id: string) {
+  await connection();
   const rows = await db.select().from(practiceAreas).where(eq(practiceAreas.id, id)).limit(1);
   return rows[0] ?? null;
 }

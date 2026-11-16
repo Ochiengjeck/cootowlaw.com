@@ -2,6 +2,7 @@ import "server-only";
 import { eq } from "drizzle-orm";
 import { alias } from "drizzle-orm/mysql-core";
 import { cacheTag } from "next/cache";
+import { connection } from "next/server";
 import { db } from "@/lib/db";
 import { siteSettings, media } from "@/lib/db/schema";
 
@@ -45,6 +46,7 @@ export async function getSiteSettings() {
 }
 
 export async function adminGetSiteSettings() {
+  await connection();
   const rows = await db.select().from(siteSettings).limit(1);
   return rows[0] ?? null;
 }

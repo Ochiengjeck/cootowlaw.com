@@ -2,6 +2,7 @@ import "server-only";
 import { randomUUID } from "node:crypto";
 import { asc, eq } from "drizzle-orm";
 import { cacheTag } from "next/cache";
+import { connection } from "next/server";
 import { db } from "@/lib/db";
 import { attorneys, attorneyPracticeAreas, practiceAreas, offices, media } from "@/lib/db/schema";
 import type { AttorneyTier } from "@/lib/db/schema";
@@ -73,10 +74,12 @@ export async function getAttorneyBySlug(slug: string) {
 // --- Admin, uncached ---
 
 export async function adminListAttorneys() {
+  await connection();
   return db.select().from(attorneys).orderBy(asc(attorneys.tier), asc(attorneys.sortOrder));
 }
 
 export async function adminGetAttorney(id: string) {
+  await connection();
   const rows = await db.select().from(attorneys).where(eq(attorneys.id, id)).limit(1);
   const attorney = rows[0];
   if (!attorney) return null;

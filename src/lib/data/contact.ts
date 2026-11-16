@@ -1,5 +1,6 @@
 import "server-only";
 import { desc, eq } from "drizzle-orm";
+import { connection } from "next/server";
 import { db } from "@/lib/db";
 import { contactSubmissions, offices, practiceAreas } from "@/lib/db/schema";
 
@@ -17,6 +18,7 @@ export async function createContactSubmission(input: ContactSubmissionInput) {
 }
 
 export async function adminListContactSubmissions() {
+  await connection();
   const rows = await db
     .select({
       submission: contactSubmissions,

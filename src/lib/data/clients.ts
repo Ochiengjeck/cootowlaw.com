@@ -2,6 +2,7 @@ import "server-only";
 import { randomUUID } from "node:crypto";
 import { asc, eq } from "drizzle-orm";
 import { cacheTag } from "next/cache";
+import { connection } from "next/server";
 import { db } from "@/lib/db";
 import { clients, media } from "@/lib/db/schema";
 
@@ -25,10 +26,12 @@ export async function getClients() {
 }
 
 export async function adminListClients() {
+  await connection();
   return db.select().from(clients).orderBy(asc(clients.sortOrder));
 }
 
 export async function adminGetClient(id: string) {
+  await connection();
   const rows = await db.select().from(clients).where(eq(clients.id, id)).limit(1);
   return rows[0] ?? null;
 }

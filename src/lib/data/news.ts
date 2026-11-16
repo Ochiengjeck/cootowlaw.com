@@ -2,6 +2,7 @@ import "server-only";
 import { randomUUID } from "node:crypto";
 import { desc, eq, isNotNull } from "drizzle-orm";
 import { cacheTag } from "next/cache";
+import { connection } from "next/server";
 import { db } from "@/lib/db";
 import { newsPosts } from "@/lib/db/schema";
 
@@ -33,10 +34,12 @@ export async function getNewsPostBySlug(slug: string) {
 }
 
 export async function adminListNewsPosts() {
+  await connection();
   return db.select().from(newsPosts).orderBy(desc(newsPosts.publishedAt));
 }
 
 export async function adminGetNewsPost(id: string) {
+  await connection();
   const rows = await db.select().from(newsPosts).where(eq(newsPosts.id, id)).limit(1);
   return rows[0] ?? null;
 }

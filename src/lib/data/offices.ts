@@ -2,6 +2,7 @@ import "server-only";
 import { randomUUID } from "node:crypto";
 import { asc, eq } from "drizzle-orm";
 import { cacheTag } from "next/cache";
+import { connection } from "next/server";
 import { db } from "@/lib/db";
 import { offices } from "@/lib/db/schema";
 
@@ -37,10 +38,12 @@ export async function getOfficeBySlug(slug: string) {
 // --- Admin, uncached ---
 
 export async function adminListOffices() {
+  await connection();
   return db.select().from(offices).orderBy(asc(offices.sortOrder));
 }
 
 export async function adminGetOffice(id: string) {
+  await connection();
   const rows = await db.select().from(offices).where(eq(offices.id, id)).limit(1);
   return rows[0] ?? null;
 }

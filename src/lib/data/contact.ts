@@ -39,3 +39,11 @@ export async function adminMarkContactSubmissionHandled(id: string) {
     .set({ handledAt: new Date() })
     .where(eq(contactSubmissions.id, id));
 }
+
+export async function adminRecordContactReply(id: string, replyMessage: string) {
+  const now = new Date();
+  await db
+    .update(contactSubmissions)
+    .set({ replyMessage, repliedAt: now, handledAt: now })
+    .where(eq(contactSubmissions.id, id));
+}

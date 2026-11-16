@@ -192,6 +192,8 @@ export const contactSubmissions = mysqlTable("contact_submissions", {
     .notNull()
     .$defaultFn(() => new Date()),
   handledAt: datetime("handled_at", { mode: "date" }),
+  replyMessage: text("reply_message"),
+  repliedAt: datetime("replied_at", { mode: "date" }),
 });
 
 export const adminRoles = ["owner", "editor"] as const;

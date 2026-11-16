@@ -31,7 +31,7 @@ export async function submitContactForm(
   });
 
   await sendMail({
-    to: officeEmail,
+    to: process.env.CONTACT_NOTIFICATION_EMAIL || officeEmail,
     subject: `New website enquiry from ${name}`,
     text: `From: ${name} <${email}>\nPhone: ${phone || "—"}\n\n${message}`,
   });

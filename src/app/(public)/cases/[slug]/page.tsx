@@ -1,11 +1,13 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getCaseBriefBySlug, getCaseBriefs } from "@/lib/data/case-briefs";
+import { Reveal } from "@/components/ui/reveal";
 
 export async function generateStaticParams() {
-  const rows = await getCaseBriefs();
-  return rows.map(({ caseBrief }) => ({ slug: caseBrief.slug }));
+  const briefs = await getCaseBriefs();
+  return briefs.map((b) => ({ slug: b.slug }));
 }
 
 export async function generateMetadata({
@@ -14,59 +16,80 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const row = await getCaseBriefBySlug(slug);
-  return { title: row?.caseBrief.title ?? "Landmark Brief" };
+  const brief = await getCaseBriefBySlug(slug);
+  return { title: brief?.title ?? "Landmark Brief" };
 }
 
 export default async function CaseBriefPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const row = await getCaseBriefBySlug(slug);
-  if (!row) notFound();
-  const { caseBrief, practiceArea } = row;
+  const brief = await getCaseBriefBySlug(slug);
+  if (!brief) notFound();
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-16 sm:px-6">
-      <Link
-        href="/cases"
-        className="text-xs font-semibold uppercase tracking-wider text-charcoal hover:text-purple-600"
-      >
-        &larr; All Landmark Briefs
-      </Link>
+      <Reveal>
+        <Link
+          href="/cases"
+          className="text-xs font-semibold uppercase tracking-wider text-charcoal hover:text-purple-600"
+        >
+          &larr; All Landmark Briefs
+        </Link>
+      </Reveal>
 
-      <div className="mt-4 flex flex-wrap items-center gap-2 text-xs font-semibold uppercase tracking-wider text-purple-600">
-        <span>{caseBrief.courtReference}</span>
-        {practiceArea && (
-          <>
-            <span aria-hidden="true" className="text-slate">
-              &middot;
-            </span>
-            <Link
-              href={`/practices/${practiceArea.slug}`}
-              className="text-slate hover:text-purple-600"
-            >
-              {practiceArea.name}
-            </Link>
-          </>
-        )}
-      </div>
-      <h1 className="mt-2 font-serif text-3xl font-semibold text-charcoal sm:text-4xl">
-        {caseBrief.title}
-      </h1>
+      <Reveal delay={80}>
+        <div className="mt-6">
+          <p className="text-xs font-semibold uppercase tracking-widest text-purple-600">
+            Our track record
+          </p>
+          <h1 className="mt-2 font-serif text-3xl font-semibold leading-tight text-charcoal sm:text-4xl">
+            {brief.title}
+          </h1>
+          <p className="mt-2 text-sm text-slate">
+            {brief.courtReference}
+            {brief.practiceArea && (
+              <>
+                <span className="px-2 text-border">|</span>
+                <Link href={`/practices/${brief.practiceArea.slug}`} className="hover:text-purple-600">
+                  {brief.practiceArea.name}
+                </Link>
+              </>
+            )}
+          </p>
+        </div>
+      </Reveal>
 
-      <div
-        className="rich-text mt-8"
-        dangerouslySetInnerHTML={{ __html: caseBrief.summaryHtml }}
-      />
+      {brief.coverImage && (
+        <Reveal delay={140}>
+          <div className="relative mt-8 h-56 w-full overflow-hidden sm:h-80">
+            <Image
+              src={brief.coverImage.url}
+              alt={brief.coverImage.alt || brief.title}
+              fill
+              sizes="(min-width: 1024px) 768px, 100vw"
+              className="object-cover"
+            />
+          </div>
+        </Reveal>
+      )}
 
-      <div className="mt-8 rounded-2xl bg-charcoal p-8 text-white">
-        <span className="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-xs font-semibold uppercase tracking-widest text-gold-400">
-          Outcome
-        </span>
+      <Reveal delay={200}>
         <div
-          className="rich-text on-dark mt-4 text-sm"
-          dangerouslySetInnerHTML={{ __html: caseBrief.outcomeHtml }}
+          className="rich-text drop-cap mt-10 text-[17px]"
+          dangerouslySetInnerHTML={{ __html: brief.summaryHtml }}
         />
-      </div>
+      </Reveal>
+
+      <Reveal delay={260}>
+        <div className="mt-10 rounded-2xl bg-charcoal p-8 text-white">
+          <span className="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-xs font-semibold uppercase tracking-widest text-gold-400">
+            Outcome
+          </span>
+          <div
+            className="rich-text on-dark mt-4 text-sm"
+            dangerouslySetInnerHTML={{ __html: brief.outcomeHtml }}
+          />
+        </div>
+      </Reveal>
     </div>
   );
 }

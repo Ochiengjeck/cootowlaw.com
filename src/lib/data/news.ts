@@ -4,7 +4,7 @@ import { desc, eq, isNotNull } from "drizzle-orm";
 import { cacheTag } from "next/cache";
 import { connection } from "next/server";
 import { db } from "@/lib/db";
-import { newsPosts } from "@/lib/db/schema";
+import { newsPosts, media } from "@/lib/db/schema";
 
 export type NewsPostInput = {
   slug: string;
@@ -19,18 +19,28 @@ export type NewsPostInput = {
 export async function getNewsPosts() {
   "use cache";
   cacheTag("news-posts-list");
-  return db
-    .select()
+  const rows = await db
+    .select({ post: newsPosts, coverImage: media })
     .from(newsPosts)
+    .leftJoin(media, eq(newsPosts.coverImageId, media.id))
     .where(isNotNull(newsPosts.publishedAt))
     .orderBy(desc(newsPosts.publishedAt));
+
+  return rows.map((r) => ({ ...r.post, coverImage: r.coverImage }));
 }
 
 export async function getNewsPostBySlug(slug: string) {
   "use cache";
   cacheTag(`news-post:${slug}`);
-  const rows = await db.select().from(newsPosts).where(eq(newsPosts.slug, slug)).limit(1);
-  return rows[0] ?? null;
+  const rows = await db
+    .select({ post: newsPosts, coverImage: media })
+    .from(newsPosts)
+    .leftJoin(media, eq(newsPosts.coverImageId, media.id))
+    .where(eq(newsPosts.slug, slug))
+    .limit(1);
+
+  if (!rows[0]) return null;
+  return { ...rows[0].post, coverImage: rows[0].coverImage };
 }
 
 export async function adminListNewsPosts() {

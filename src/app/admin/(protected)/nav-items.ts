@@ -6,6 +6,8 @@ export const adminNavItems = [
   { href: "/admin/clients", label: "Clientele" },
   { href: "/admin/cases", label: "Landmark Briefs" },
   { href: "/admin/news", label: "News" },
+  { href: "/admin/jobs", label: "Job Postings" },
+  { href: "/admin/applications", label: "Applications" },
   { href: "/admin/messages", label: "Messages" },
   { href: "/admin/media", label: "Media Library" },
   { href: "/admin/settings", label: "Site Settings" },

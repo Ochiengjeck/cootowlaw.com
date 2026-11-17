@@ -1,14 +1,14 @@
 "use server";
 
 import { createContactSubmission } from "@/lib/data/contact";
+import { getOfficeById } from "@/lib/data/offices";
 import { sendMail } from "@/lib/email";
 
 export type ContactFormState = { success?: boolean; error?: string } | undefined;
 
-export async function submitContactForm(
+async function processSubmission(
   officeId: string,
   officeEmail: string,
-  _prevState: ContactFormState,
   formData: FormData,
 ): Promise<ContactFormState> {
   const name = String(formData.get("name") ?? "").trim();
@@ -37,4 +37,30 @@ export async function submitContactForm(
   });
 
   return { success: true };
+}
+
+export async function submitContactForm(
+  officeId: string,
+  officeEmail: string,
+  _prevState: ContactFormState,
+  formData: FormData,
+): Promise<ContactFormState> {
+  return processSubmission(officeId, officeEmail, formData);
+}
+
+export async function submitGeneralContactForm(
+  _prevState: ContactFormState,
+  formData: FormData,
+): Promise<ContactFormState> {
+  const officeId = String(formData.get("officeId") ?? "").trim();
+  if (!officeId) {
+    return { error: "Please select an office." };
+  }
+
+  const office = await getOfficeById(officeId);
+  if (!office) {
+    return { error: "Please select a valid office." };
+  }
+
+  return processSubmission(office.id, office.email, formData);
 }

@@ -20,6 +20,7 @@ function parseForm(formData: FormData): CaseBriefInput | { error: string } {
   const outcomeHtml = String(formData.get("outcomeHtml") ?? "").trim();
   const practiceAreaId = String(formData.get("practiceAreaId") ?? "").trim() || null;
   const clientId = String(formData.get("clientId") ?? "").trim() || null;
+  const coverImageId = String(formData.get("coverImageId") ?? "").trim() || null;
   const yearRaw = String(formData.get("year") ?? "").trim();
   const year = yearRaw ? Number(yearRaw) : null;
   const sortOrder = Number(formData.get("sortOrder") ?? 0);
@@ -39,6 +40,7 @@ function parseForm(formData: FormData): CaseBriefInput | { error: string } {
     outcomeHtml,
     practiceAreaId,
     clientId,
+    coverImageId,
     year,
     sortOrder,
   };

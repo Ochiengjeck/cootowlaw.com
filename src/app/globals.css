@@ -110,8 +110,10 @@ body {
     transform: translateX(-50%);
   }
 }
-.animate-marquee {
-  animation: marquee 32s linear infinite;
+@layer utilities {
+  .animate-marquee {
+    animation: marquee 32s linear infinite;
+  }
 }
 
 @keyframes carousel-progress {
@@ -153,4 +155,13 @@ body {
 }
 .rich-text.on-dark a {
   color: var(--gold-400);
+}
+.rich-text.drop-cap p:first-of-type::first-letter {
+  float: left;
+  font-family: var(--font-serif);
+  font-weight: 600;
+  font-size: 3.75em;
+  line-height: 0.85;
+  padding-right: 0.08em;
+  color: var(--purple-700);
 }

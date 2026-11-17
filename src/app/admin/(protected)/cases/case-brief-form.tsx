@@ -4,13 +4,16 @@ import { useActionState } from "react";
 import type { CaseBriefFormState } from "./actions";
 import { TextField, TextAreaField, SelectField, NumberField } from "@/components/admin/form-fields";
 import { SubmitButton } from "@/components/admin/submit-button";
+import { ImagePicker } from "@/components/admin/image-picker";
 
 type Option = { id: string; name: string };
+type MediaItem = { id: string; url: string; alt: string };
 
 type Props = {
   action: (state: CaseBriefFormState, formData: FormData) => Promise<CaseBriefFormState>;
   practiceAreas: Option[];
   clients: Option[];
+  mediaItems: MediaItem[];
   defaultValues?: {
     slug: string;
     title: string;
@@ -19,13 +22,21 @@ type Props = {
     outcomeHtml: string;
     practiceAreaId: string | null;
     clientId: string | null;
+    coverImageId: string | null;
     year: number | null;
     sortOrder: number;
   };
   submitLabel: string;
 };
 
-export function CaseBriefForm({ action, practiceAreas, clients, defaultValues, submitLabel }: Props) {
+export function CaseBriefForm({
+  action,
+  practiceAreas,
+  clients,
+  mediaItems,
+  defaultValues,
+  submitLabel,
+}: Props) {
   const [state, formAction, pending] = useActionState(action, undefined);
 
   return (
@@ -80,6 +91,12 @@ export function CaseBriefForm({ action, practiceAreas, clients, defaultValues, s
           ))}
         </SelectField>
       </div>
+      <ImagePicker
+        label="Cover image (optional)"
+        name="coverImageId"
+        items={mediaItems}
+        defaultValue={defaultValues?.coverImageId}
+      />
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <NumberField
           label="Year (optional)"

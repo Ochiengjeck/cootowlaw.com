@@ -134,6 +134,7 @@ export const caseBriefs = mysqlTable(
     outcomeHtml: text("outcome_html").notNull(),
     practiceAreaId: varchar("practice_area_id", { length: 36 }).references(() => practiceAreas.id),
     clientId: varchar("client_id", { length: 36 }).references(() => clients.id),
+    coverImageId: varchar("cover_image_id", { length: 36 }).references(() => media.id),
     year: int("year"),
     sortOrder: int("sort_order").notNull().default(0),
     ...timestamps(),
@@ -156,6 +157,41 @@ export const newsPosts = mysqlTable(
   },
   (t) => [uniqueIndex("news_posts_slug_idx").on(t.slug)],
 );
+
+export const jobPostings = mysqlTable(
+  "job_postings",
+  {
+    id: id(),
+    slug: varchar("slug", { length: 255 }).notNull(),
+    title: varchar("title", { length: 255 }).notNull(),
+    department: varchar("department", { length: 255 }),
+    location: varchar("location", { length: 255 }).notNull(),
+    employmentType: varchar("employment_type", { length: 100 }),
+    summary: varchar("summary", { length: 500 }).notNull(),
+    descriptionHtml: text("description_html").notNull(),
+    isOpen: boolean("is_open").notNull().default(true),
+    sortOrder: int("sort_order").notNull().default(0),
+    ...timestamps(),
+  },
+  (t) => [uniqueIndex("job_postings_slug_idx").on(t.slug)],
+);
+
+export const jobApplications = mysqlTable("job_applications", {
+  id: id(),
+  jobPostingId: varchar("job_posting_id", { length: 36 }).references(() => jobPostings.id),
+  name: varchar("name", { length: 255 }).notNull(),
+  email: varchar("email", { length: 255 }).notNull(),
+  phone: varchar("phone", { length: 255 }),
+  message: text("message"),
+  resumeUrl: varchar("resume_url", { length: 1000 }),
+  resumeFilename: varchar("resume_filename", { length: 255 }),
+  createdAt: datetime("created_at", { mode: "date" })
+    .notNull()
+    .$defaultFn(() => new Date()),
+  handledAt: datetime("handled_at", { mode: "date" }),
+  replyMessage: text("reply_message"),
+  repliedAt: datetime("replied_at", { mode: "date" }),
+});
 
 export const siteSettings = mysqlTable("site_settings", {
   id: id(),

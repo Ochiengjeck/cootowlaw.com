@@ -12,10 +12,12 @@ export function NavGroup({
   label,
   items,
   pathname,
+  scrolled,
 }: {
   label: string;
   items: NavItem[];
   pathname: string;
+  scrolled: boolean;
 }) {
   const ref = useRef<HTMLDetailsElement>(null);
   const isGroupActive = items.some((item) => isActiveHref(pathname, item.href));
@@ -37,8 +39,10 @@ export function NavGroup({
   return (
     <details ref={ref} className="group relative">
       <summary
-        className={`flex cursor-pointer list-none items-center gap-1 text-sm font-medium transition-colors [&::-webkit-details-marker]:hidden ${
-          isGroupActive ? "text-gold-500" : "text-white/90 hover:text-gold-400"
+        className={`flex cursor-pointer list-none items-center gap-1 text-sm transition-colors [&::-webkit-details-marker]:hidden ${
+          scrolled
+            ? `font-medium ${isGroupActive ? "text-gold-500" : "text-white/90 hover:text-gold-400"}`
+            : `font-bold ${isGroupActive ? "text-purple-700" : "text-purple-600 hover:text-purple-700"}`
         }`}
       >
         {label}

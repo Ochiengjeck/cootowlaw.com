@@ -64,7 +64,7 @@ export function PartnerCard({ attorney }: { attorney: PartnerCardAttorney }) {
             {credentialsLine}
           </p>
         )}
-        {bio && <p className="line-clamp-4 flex-1 text-sm leading-relaxed text-slate">{bio}</p>}
+        {bio && <p className="line-clamp-3 flex-1 text-sm leading-relaxed text-slate">{bio}</p>}
         <span className="mt-4 inline-flex items-center text-xs font-semibold uppercase tracking-wider text-charcoal group-hover:text-purple-600">
           View profile
           <span className="ml-2 transition-transform group-hover:translate-x-1">&rarr;</span>

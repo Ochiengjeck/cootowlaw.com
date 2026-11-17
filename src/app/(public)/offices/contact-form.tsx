@@ -1,20 +1,20 @@
 "use client";
 
 import { useActionState } from "react";
-import { submitContactForm } from "./actions";
+import { submitContactForm, submitGeneralContactForm } from "./actions";
 
 type PracticeAreaOption = { id: string; name: string };
+type OfficeOption = { id: string; name: string };
 
-export function ContactForm({
-  officeId,
-  officeEmail,
-  practiceAreas,
-}: {
-  officeId: string;
-  officeEmail: string;
-  practiceAreas: PracticeAreaOption[];
-}) {
-  const action = submitContactForm.bind(null, officeId, officeEmail);
+type ContactFormProps =
+  | { officeId: string; officeEmail: string; practiceAreas: PracticeAreaOption[]; offices?: undefined }
+  | { officeId?: undefined; officeEmail?: undefined; practiceAreas: PracticeAreaOption[]; offices: OfficeOption[] };
+
+export function ContactForm(props: ContactFormProps) {
+  const { practiceAreas } = props;
+  const action = props.offices
+    ? submitGeneralContactForm
+    : submitContactForm.bind(null, props.officeId, props.officeEmail);
   const [state, formAction, pending] = useActionState(action, undefined);
 
   if (state?.success) {
@@ -41,6 +41,32 @@ export function ContactForm({
 
   return (
     <form action={formAction} className="space-y-6 rounded-2xl border border-border bg-white p-8 lg:p-10">
+      {props.offices && (
+        <div>
+          <label
+            htmlFor="officeId"
+            className="mb-2 block text-xs font-semibold uppercase tracking-wider text-charcoal"
+          >
+            Office
+          </label>
+          <select
+            id="officeId"
+            name="officeId"
+            required
+            defaultValue=""
+            className="w-full rounded-xl border border-border bg-alabaster px-4 py-3 text-sm text-charcoal focus:border-gold-500 focus:outline-none"
+          >
+            <option value="" disabled>
+              Select an office
+            </option>
+            {props.offices.map((office) => (
+              <option key={office.id} value={office.id}>
+                {office.name}
+              </option>
+            ))}
+          </select>
+        </div>
+      )}
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
         <Field label="Full name" name="name" required />
         <Field label="Email" name="email" type="email" required />

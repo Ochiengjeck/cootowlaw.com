@@ -25,7 +25,6 @@ export default async function HomePage() {
     ]);
 
   const allPartners = attorneys.filter((a) => a.tier === "partner");
-  const leadPartner = allPartners[0];
   const avatarPartners = allPartners.slice(0, 4);
   const foundedYear = settings?.foundedYear ?? 2006;
   const yearsExperience = currentYear - foundedYear;
@@ -35,17 +34,17 @@ export default async function HomePage() {
     <div>
       {/* Hero */}
       <section className="relative isolate -mt-20 min-h-dvh overflow-hidden">
-        <div className="absolute inset-0 -z-10">
+        <div className="absolute inset-0 -z-10 bg-[#431d63]">
           <Image
-            src="/images/hero/justice-statue.jpg"
-            alt="Bronze statue of Lady Justice holding the scales of justice, lit by warm sunlight inside a columned hall"
+            src="/images/hero/purple-gold-legal-skyline.png"
+            alt="Scales of justice, a gavel, law books, and the Nairobi skyline framed beside the Kenyan and African Union flags, over a purple and gold backdrop"
             fill
             priority
             sizes="100vw"
-            className="object-cover object-[65%_center]"
+            className="object-cover object-[30%_center]"
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-charcoal/95 via-charcoal/75 to-charcoal/25" />
-          <div className="absolute inset-0 bg-gradient-to-t from-charcoal/70 via-transparent to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-r from-charcoal/40 via-charcoal/10 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-charcoal/25 via-transparent to-transparent" />
         </div>
 
         <div className="mx-auto flex min-h-dvh max-w-6xl flex-col justify-center px-4 py-20 sm:px-6">
@@ -100,30 +99,6 @@ export default async function HomePage() {
             )}
           </div>
         </div>
-
-        {leadPartner && (
-          <div
-            className="animate-hero-in absolute bottom-6 right-4 hidden w-72 rounded-2xl border border-border bg-white p-5 shadow-[0_20px_50px_-15px_rgba(20,22,26,0.35)] sm:right-6 sm:block"
-            style={{ animationDelay: "400ms" }}
-          >
-            <div className="flex items-center gap-3">
-              <Avatar name={leadPartner.name} photo={leadPartner.photo} size={44} />
-              <div>
-                <p className="text-sm font-semibold text-charcoal">Talk to an Advocate</p>
-                <p className="text-xs text-slate">Free initial consultation</p>
-              </div>
-            </div>
-            <Link
-              href="/offices"
-              className="group mt-3 inline-flex items-center text-xs font-semibold uppercase tracking-wider text-purple-600 hover:text-purple-700"
-            >
-              Schedule a call
-              <span className="ml-1.5 transition-transform group-hover:translate-x-1">
-                &rarr;
-              </span>
-            </Link>
-          </div>
-        )}
       </section>
 
       {/* Credibility strip */}
@@ -144,6 +119,38 @@ export default async function HomePage() {
           ))}
         </dl>
       </section>
+
+      {/* Team teaser */}
+      {allPartners.length > 0 && (
+        <section className="bg-muted py-24">
+          <div className="mx-auto max-w-6xl px-4 sm:px-6">
+            <div className="flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-end">
+              <div>
+                <span className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.2em] text-purple-600">
+                  <span className="h-1.5 w-1.5 rounded-full bg-purple-500" />
+                  Leadership
+                </span>
+                <h2 className="mt-3 font-serif text-3xl font-semibold text-charcoal sm:text-4xl">
+                  Our Partners
+                </h2>
+                <p className="mt-3 max-w-md text-sm leading-relaxed text-slate">
+                  Decades of combined experience leading some of the region&apos;s most
+                  consequential matters.
+                </p>
+              </div>
+              <Link
+                href="/people"
+                className="text-xs font-semibold uppercase tracking-wider text-charcoal hover:text-purple-600"
+              >
+                Meet everyone &rarr;
+              </Link>
+            </div>
+            <div className="mt-12">
+              <PartnersCarousel partners={allPartners} />
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* Practice areas */}
       <section className="mx-auto max-w-6xl px-4 py-24 sm:px-6">
@@ -227,38 +234,6 @@ export default async function HomePage() {
           })}
         </div>
       </section>
-
-      {/* Team teaser */}
-      {allPartners.length > 0 && (
-        <section className="bg-muted py-24">
-          <div className="mx-auto max-w-6xl px-4 sm:px-6">
-            <div className="flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-end">
-              <div>
-                <span className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.2em] text-purple-600">
-                  <span className="h-1.5 w-1.5 rounded-full bg-purple-500" />
-                  Leadership
-                </span>
-                <h2 className="mt-3 font-serif text-3xl font-semibold text-charcoal sm:text-4xl">
-                  Our Partners
-                </h2>
-                <p className="mt-3 max-w-md text-sm leading-relaxed text-slate">
-                  Decades of combined experience leading some of the region&apos;s most
-                  consequential matters.
-                </p>
-              </div>
-              <Link
-                href="/people"
-                className="text-xs font-semibold uppercase tracking-wider text-charcoal hover:text-purple-600"
-              >
-                Meet everyone &rarr;
-              </Link>
-            </div>
-            <div className="mt-12">
-              <PartnersCarousel partners={allPartners} />
-            </div>
-          </div>
-        </section>
-      )}
 
       {/* Clientele */}
       {clients.length > 0 && (

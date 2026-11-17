@@ -31,35 +31,50 @@ function HeaderShell({
     >
       <div className="relative mx-auto flex h-20 max-w-6xl items-center justify-between gap-4 px-4 sm:px-6">
         <Link href="/" className="shrink-0">
-          <Logo dark={overHero} />
+          <Logo dark={overHero} big={overHero} />
         </Link>
 
         <div className="hidden items-center gap-3 md:flex">
           <nav
-            className="flex items-center gap-5 rounded-full bg-charcoal px-5 py-2.5 shadow-[0_8px_30px_-12px_rgba(26,24,30,0.3)] backdrop-blur-md"
+            className={`flex items-center gap-5 rounded-full px-5 py-2.5 shadow-[0_8px_30px_-12px_rgba(26,24,30,0.3)] backdrop-blur-md transition-colors duration-300 ${
+              scrolled ? "bg-charcoal" : "bg-alabaster"
+            }`}
             aria-label="Primary"
           >
             {navGroups.map((group, i) => (
               <span key={group.label} className="flex items-center gap-5">
                 {i > 0 && (
-                  <span aria-hidden="true" className="text-white/30">
+                  <span
+                    aria-hidden="true"
+                    className={scrolled ? "text-white/30" : "text-purple-600/30"}
+                  >
                     &middot;
                   </span>
                 )}
-                <NavGroup label={group.label} items={group.items} pathname={pathname} />
+                <NavGroup
+                  label={group.label}
+                  items={group.items}
+                  pathname={pathname}
+                  scrolled={scrolled}
+                />
               </span>
             ))}
             {navLinks.map((item) => {
               const active = isActiveHref(pathname, item.href);
               return (
                 <span key={item.href} className="flex items-center gap-5">
-                  <span aria-hidden="true" className="text-white/30">
+                  <span
+                    aria-hidden="true"
+                    className={scrolled ? "text-white/30" : "text-purple-600/30"}
+                  >
                     &middot;
                   </span>
                   <Link
                     href={item.href}
-                    className={`text-sm font-medium transition-colors ${
-                      active ? "text-gold-500" : "text-white/90 hover:text-gold-400"
+                    className={`text-sm transition-colors ${
+                      scrolled
+                        ? `font-medium ${active ? "text-gold-500" : "text-white/90 hover:text-gold-400"}`
+                        : `font-bold ${active ? "text-purple-700" : "text-purple-600 hover:text-purple-700"}`
                     }`}
                   >
                     {item.label}

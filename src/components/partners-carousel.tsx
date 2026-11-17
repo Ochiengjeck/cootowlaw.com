@@ -93,6 +93,19 @@ export function PartnersCarousel({ partners }: { partners: Partner[] }) {
   useEffect(() => {
     const track = trackRef.current;
     if (!track) return;
+    const onWheel = (e: WheelEvent) => {
+      if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
+        e.preventDefault();
+        window.scrollBy({ top: e.deltaY });
+      }
+    };
+    track.addEventListener("wheel", onWheel, { passive: false });
+    return () => track.removeEventListener("wheel", onWheel);
+  }, []);
+
+  useEffect(() => {
+    const track = trackRef.current;
+    if (!track) return;
     let frame = 0;
     const onScroll = () => {
       cancelAnimationFrame(frame);

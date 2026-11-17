@@ -21,6 +21,7 @@ function parseForm(formData: FormData): PracticeAreaInput | { error: string } {
     .split("\n")
     .map((s) => s.trim())
     .filter(Boolean);
+  const heroImageId = String(formData.get("heroImageId") ?? "").trim() || null;
   const sortOrder = Number(formData.get("sortOrder") ?? 0);
 
   if (!slug || !name || !summary || !descriptionHtml) {
@@ -30,7 +31,7 @@ function parseForm(formData: FormData): PracticeAreaInput | { error: string } {
     return { error: "Slug may only contain lowercase letters, numbers, and hyphens." };
   }
 
-  return { slug, name, summary, descriptionHtml, servicesList, sortOrder };
+  return { slug, name, summary, descriptionHtml, servicesList, heroImageId, sortOrder };
 }
 
 export async function createPracticeAreaAction(

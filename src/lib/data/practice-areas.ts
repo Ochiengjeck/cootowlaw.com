@@ -4,7 +4,7 @@ import { asc, eq } from "drizzle-orm";
 import { cacheTag } from "next/cache";
 import { connection } from "next/server";
 import { db } from "@/lib/db";
-import { practiceAreas } from "@/lib/db/schema";
+import { practiceAreas, media } from "@/lib/db/schema";
 
 export type PracticeAreaInput = {
   slug: string;
@@ -12,6 +12,7 @@ export type PracticeAreaInput = {
   summary: string;
   descriptionHtml: string;
   servicesList: string[];
+  heroImageId: string | null;
   sortOrder: number;
 };
 
@@ -20,14 +21,27 @@ export type PracticeAreaInput = {
 export async function getPracticeAreas() {
   "use cache";
   cacheTag("practice-areas-list");
-  return db.select().from(practiceAreas).orderBy(asc(practiceAreas.sortOrder));
+  const rows = await db
+    .select({ practiceArea: practiceAreas, heroImage: media })
+    .from(practiceAreas)
+    .leftJoin(media, eq(practiceAreas.heroImageId, media.id))
+    .orderBy(asc(practiceAreas.sortOrder));
+
+  return rows.map((r) => ({ ...r.practiceArea, heroImage: r.heroImage }));
 }
 
 export async function getPracticeAreaBySlug(slug: string) {
   "use cache";
   cacheTag(`practice-area:${slug}`);
-  const rows = await db.select().from(practiceAreas).where(eq(practiceAreas.slug, slug)).limit(1);
-  return rows[0] ?? null;
+  const rows = await db
+    .select({ practiceArea: practiceAreas, heroImage: media })
+    .from(practiceAreas)
+    .leftJoin(media, eq(practiceAreas.heroImageId, media.id))
+    .where(eq(practiceAreas.slug, slug))
+    .limit(1);
+
+  if (!rows[0]) return null;
+  return { ...rows[0].practiceArea, heroImage: rows[0].heroImage };
 }
 
 // --- Admin, uncached reads/writes (authorization enforced by the caller) ---

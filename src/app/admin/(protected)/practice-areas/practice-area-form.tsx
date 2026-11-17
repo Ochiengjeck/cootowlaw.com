@@ -4,21 +4,26 @@ import { useActionState } from "react";
 import type { PracticeAreaFormState } from "./actions";
 import { TextField, TextAreaField, NumberField } from "@/components/admin/form-fields";
 import { SubmitButton } from "@/components/admin/submit-button";
+import { ImagePicker } from "@/components/admin/image-picker";
+
+type MediaItem = { id: string; url: string; alt: string };
 
 type Props = {
   action: (state: PracticeAreaFormState, formData: FormData) => Promise<PracticeAreaFormState>;
+  mediaItems: MediaItem[];
   defaultValues?: {
     slug: string;
     name: string;
     summary: string;
     descriptionHtml: string;
     servicesList: string[];
+    heroImageId: string | null;
     sortOrder: number;
   };
   submitLabel: string;
 };
 
-export function PracticeAreaForm({ action, defaultValues, submitLabel }: Props) {
+export function PracticeAreaForm({ action, mediaItems, defaultValues, submitLabel }: Props) {
   const [state, formAction, pending] = useActionState(action, undefined);
 
   return (
@@ -43,6 +48,12 @@ export function PracticeAreaForm({ action, defaultValues, submitLabel }: Props) 
         name="servicesList"
         defaultValue={defaultValues?.servicesList.join("\n")}
         rows={5}
+      />
+      <ImagePicker
+        label="Hero image (optional)"
+        name="heroImageId"
+        items={mediaItems}
+        defaultValue={defaultValues?.heroImageId}
       />
       <NumberField
         label="Sort order"

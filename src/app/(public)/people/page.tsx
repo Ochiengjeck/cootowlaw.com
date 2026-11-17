@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
-import Link from "next/link";
+import Image from "next/image";
 import { getAttorneys } from "@/lib/data/attorneys";
 import type { AttorneyTier } from "@/lib/db/schema";
-import { Avatar } from "@/components/avatar";
 import { PartnerCard } from "@/components/partner-card";
+import { TeamMemberCard } from "@/components/team-member-card";
 import { SectionHeading } from "@/components/ui/section-heading";
+import { Reveal } from "@/components/ui/reveal";
 
 export const metadata: Metadata = { title: "People" };
 
@@ -19,22 +20,38 @@ export default async function PeoplePage() {
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
-      <SectionHeading eyebrow="Our team" title="People" />
+      <Reveal>
+        <SectionHeading eyebrow="Our team" title="People" />
+      </Reveal>
 
-      <nav
-        aria-label="Jump to section"
-        className="mt-8 flex flex-wrap gap-2 border-b border-border pb-6"
-      >
-        {TIER_SECTIONS.map((section) => (
-          <a
-            key={section.id}
-            href={`#${section.id}`}
-            className="rounded-full border border-border px-4 py-2 text-sm font-medium text-charcoal transition-colors hover:border-purple-500 hover:text-purple-600"
-          >
-            {section.label}
-          </a>
-        ))}
-      </nav>
+      <Reveal delay={60}>
+        <div className="relative mt-8 h-56 w-full overflow-hidden rounded-3xl sm:h-72">
+          <Image
+            src="/images/hero/about-banner.webp"
+            alt="The Cootow & Associates Advocates team"
+            fill
+            sizes="(min-width: 1024px) 1152px, 100vw"
+            className="object-cover"
+          />
+        </div>
+      </Reveal>
+
+      <Reveal delay={80}>
+        <nav
+          aria-label="Jump to section"
+          className="mt-8 flex flex-wrap gap-2 border-b border-border pb-6"
+        >
+          {TIER_SECTIONS.map((section) => (
+            <a
+              key={section.id}
+              href={`#${section.id}`}
+              className="rounded-full border border-border px-4 py-2 text-sm font-medium text-charcoal transition-colors hover:border-purple-500 hover:text-purple-600"
+            >
+              {section.label}
+            </a>
+          ))}
+        </nav>
+      </Reveal>
 
       {TIER_SECTIONS.map((section) => {
         const people = attorneys.filter((a) => a.tier === section.tier);
@@ -43,35 +60,24 @@ export default async function PeoplePage() {
 
         return (
           <section key={section.id} id={section.id} className="mt-12 scroll-mt-20">
-            <h2 className="font-serif text-2xl font-semibold text-charcoal">{section.label}</h2>
+            <Reveal>
+              <h2 className="font-serif text-2xl font-semibold text-charcoal">{section.label}</h2>
+            </Reveal>
 
             {isPartnerTier ? (
               <div className="mt-6 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
-                {people.map((person) => (
-                  <PartnerCard key={person.id} attorney={person} />
+                {people.map((person, i) => (
+                  <Reveal key={person.id} delay={Math.min(i * 60, 300)}>
+                    <PartnerCard attorney={person} />
+                  </Reveal>
                 ))}
               </div>
             ) : (
               <div className="mt-6 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
-                {people.map((person) => (
-                  <Link
-                    key={person.id}
-                    href={`/people/${person.slug}`}
-                    className="group flex items-center gap-4 rounded-2xl border border-border bg-white p-5 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_12px_32px_-12px_rgba(20,22,26,0.18)]"
-                  >
-                    <Avatar
-                      name={person.name}
-                      photo={person.photo}
-                      size={56}
-                      className="shrink-0 ring-4 ring-purple-50"
-                    />
-                    <div>
-                      <h3 className="font-serif text-base font-semibold text-charcoal group-hover:text-purple-600">
-                        {person.name}
-                      </h3>
-                      <p className="mt-0.5 text-xs text-slate">{person.title}</p>
-                    </div>
-                  </Link>
+                {people.map((person, i) => (
+                  <Reveal key={person.id} delay={Math.min(i * 60, 300)}>
+                    <TeamMemberCard person={person} />
+                  </Reveal>
                 ))}
               </div>
             )}

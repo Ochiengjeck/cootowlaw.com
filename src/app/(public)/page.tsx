@@ -7,7 +7,7 @@ import { getClients } from "@/lib/data/clients";
 import { getCaseBriefs } from "@/lib/data/case-briefs";
 import { getCurrentYear } from "@/lib/current-year";
 import { Avatar } from "@/components/avatar";
-import { PartnerCard } from "@/components/partner-card";
+import { PartnersCarousel } from "@/components/partners-carousel";
 import { ButtonLink } from "@/components/ui/button";
 import { IconBox } from "@/components/ui/icon-box";
 import { Reveal } from "@/components/ui/reveal";
@@ -24,8 +24,9 @@ export default async function HomePage() {
       getCurrentYear(),
     ]);
 
-  const partners = attorneys.filter((a) => a.tier === "partner").slice(0, 3);
-  const leadPartner = partners[0];
+  const allPartners = attorneys.filter((a) => a.tier === "partner");
+  const leadPartner = allPartners[0];
+  const avatarPartners = allPartners.slice(0, 4);
   const foundedYear = settings?.foundedYear ?? 2006;
   const yearsExperience = currentYear - foundedYear;
   const [featuredPractice, ...restPractices] = practiceAreas;
@@ -75,13 +76,13 @@ export default async function HomePage() {
               </ButtonLink>
             </div>
 
-            {partners.length > 0 && (
+            {avatarPartners.length > 0 && (
               <div
                 className="animate-hero-in mt-10 flex items-center gap-4"
                 style={{ animationDelay: "320ms" }}
               >
                 <div className="flex -space-x-3">
-                  {partners.map((p) => (
+                  {avatarPartners.map((p) => (
                     <Avatar
                       key={p.id}
                       name={p.name}
@@ -172,23 +173,31 @@ export default async function HomePage() {
                 <Reveal className="sm:col-span-2 lg:col-span-2 lg:row-span-2">
                   <Link
                     href={`/practices/${featuredPractice.slug}`}
-                    className="group flex h-full flex-col justify-between rounded-2xl bg-charcoal p-8 text-white transition-transform duration-300 hover:-translate-y-0.5 sm:p-10"
+                    className="group relative flex h-full min-h-[22rem] flex-col justify-end overflow-hidden rounded-2xl p-8 text-white transition-transform duration-300 hover:-translate-y-0.5 sm:p-10"
                   >
-                    <div>
-                      <div className="mb-6 flex h-12 w-12 items-center justify-center rounded-xl bg-white/10 text-gold-400 transition-colors group-hover:bg-gold-500 group-hover:text-charcoal">
-                        <FeaturedIcon className="h-6 w-6" />
-                      </div>
+                    <Image
+                      src="/images/hero/our-firm.webp"
+                      alt=""
+                      fill
+                      sizes="(min-width: 1024px) 66vw, 100vw"
+                      className="object-cover transition-transform duration-500 group-hover:scale-105"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black via-black/70 to-black/10" />
+                    <div className="absolute left-8 top-8 flex h-12 w-12 items-center justify-center rounded-xl bg-white/10 text-gold-400 backdrop-blur-sm transition-colors group-hover:bg-gold-500 group-hover:text-charcoal sm:left-10 sm:top-10">
+                      <FeaturedIcon className="h-6 w-6" />
+                    </div>
+                    <div className="relative">
                       <h3 className="font-serif text-2xl font-semibold">{featuredPractice.name}</h3>
                       <p className="mt-3 max-w-md text-sm leading-relaxed text-white/70">
                         {featuredPractice.summary}
                       </p>
-                    </div>
-                    <span className="mt-8 inline-flex items-center text-xs font-semibold uppercase tracking-wider text-gold-400 group-hover:text-white">
-                      Learn more
-                      <span className="ml-2 transition-transform group-hover:translate-x-1">
-                        &rarr;
+                      <span className="mt-8 inline-flex items-center text-xs font-semibold uppercase tracking-wider text-gold-400 group-hover:text-white">
+                        Learn more
+                        <span className="ml-2 transition-transform group-hover:translate-x-1">
+                          &rarr;
+                        </span>
                       </span>
-                    </span>
+                    </div>
                   </Link>
                 </Reveal>
               );
@@ -220,18 +229,22 @@ export default async function HomePage() {
       </section>
 
       {/* Team teaser */}
-      {partners.length > 0 && (
+      {allPartners.length > 0 && (
         <section className="bg-muted py-24">
           <div className="mx-auto max-w-6xl px-4 sm:px-6">
-            <div className="flex items-end justify-between gap-4">
+            <div className="flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-end">
               <div>
                 <span className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.2em] text-purple-600">
                   <span className="h-1.5 w-1.5 rounded-full bg-purple-500" />
                   Leadership
                 </span>
-                <h2 className="mt-3 font-serif text-2xl font-semibold text-charcoal sm:text-3xl">
+                <h2 className="mt-3 font-serif text-3xl font-semibold text-charcoal sm:text-4xl">
                   Our Partners
                 </h2>
+                <p className="mt-3 max-w-md text-sm leading-relaxed text-slate">
+                  Decades of combined experience leading some of the region&apos;s most
+                  consequential matters.
+                </p>
               </div>
               <Link
                 href="/people"
@@ -240,12 +253,8 @@ export default async function HomePage() {
                 Meet everyone &rarr;
               </Link>
             </div>
-            <div className="mt-10 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
-              {partners.map((p, i) => (
-                <Reveal key={p.id} delay={i * 60}>
-                  <PartnerCard attorney={p} />
-                </Reveal>
-              ))}
+            <div className="mt-12">
+              <PartnersCarousel partners={allPartners} />
             </div>
           </div>
         </section>
@@ -257,27 +266,32 @@ export default async function HomePage() {
           <h2 className="text-center font-serif text-2xl font-semibold text-charcoal sm:text-3xl">
             Trusted by leading organisations
           </h2>
-          <div className="mt-10 flex flex-wrap items-center justify-center gap-x-10 gap-y-6">
-            {clients.map((c) =>
-              c.logo ? (
-                <div key={c.id} className="relative h-10 w-28 grayscale transition hover:grayscale-0">
-                  <Image
-                    src={c.logo.url}
-                    alt={c.logo.alt}
-                    fill
-                    sizes="112px"
-                    className="object-contain"
-                  />
-                </div>
-              ) : (
-                <span
-                  key={c.id}
-                  className="text-sm font-medium text-slate transition-colors hover:text-purple-600"
-                >
-                  {c.name}
-                </span>
-              ),
-            )}
+          <div className="group/logos relative mt-12 overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_48px,black_calc(100%-48px),transparent)]">
+            <div className="animate-marquee flex w-max items-center gap-16 group-hover/logos:[animation-play-state:paused]">
+              {[...clients, ...clients].map((c, i) =>
+                c.logo ? (
+                  <div
+                    key={`${c.id}-${i}`}
+                    className="relative h-10 w-28 shrink-0 grayscale transition duration-300 hover:grayscale-0"
+                  >
+                    <Image
+                      src={c.logo.url}
+                      alt={c.logo.alt}
+                      fill
+                      sizes="112px"
+                      className="object-contain"
+                    />
+                  </div>
+                ) : (
+                  <span
+                    key={`${c.id}-${i}`}
+                    className="shrink-0 text-sm font-medium text-slate/50 transition-colors hover:text-purple-600"
+                  >
+                    {c.name}
+                  </span>
+                ),
+              )}
+            </div>
           </div>
         </section>
       )}

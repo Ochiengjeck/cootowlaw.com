@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import { getAttorneys } from "@/lib/data/attorneys";
 import type { AttorneyTier } from "@/lib/db/schema";
 import { PartnerCard } from "@/components/partner-card";
 import { TeamMemberCard } from "@/components/team-member-card";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { Reveal } from "@/components/ui/reveal";
+import { HeroBanner } from "@/components/ui/hero-banner";
 
 export const metadata: Metadata = { title: "People" };
 
@@ -24,17 +24,11 @@ export default async function PeoplePage() {
         <SectionHeading eyebrow="Our team" title="People" />
       </Reveal>
 
-      <Reveal delay={60}>
-        <div className="relative mt-8 h-56 w-full overflow-hidden rounded-3xl sm:h-72">
-          <Image
-            src="/images/hero/about-banner.webp"
-            alt="The Cootow & Associates Advocates team"
-            fill
-            sizes="(min-width: 1024px) 1152px, 100vw"
-            className="object-cover"
-          />
-        </div>
-      </Reveal>
+      <HeroBanner
+        src="/images/hero/about-banner.webp"
+        alt="The Cootow & Associates Advocates team"
+        sizes="(min-width: 1024px) 1152px, 100vw"
+      />
 
       <Reveal delay={80}>
         <nav

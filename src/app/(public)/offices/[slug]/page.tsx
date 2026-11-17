@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getOfficeBySlug, getOffices } from "@/lib/data/offices";
 import { getPracticeAreas } from "@/lib/data/practice-areas";
 import { parsePhoneLines } from "@/lib/phone";
 import { Reveal } from "@/components/ui/reveal";
+import { HeroBanner } from "@/components/ui/hero-banner";
 import { MapPinIcon, PhoneIcon } from "@/lib/icons";
 import { ContactForm } from "../contact-form";
 
@@ -41,17 +41,13 @@ export default async function OfficePage({ params }: { params: Promise<{ slug: s
       </Reveal>
 
       {office.heroImage && (
-        <Reveal delay={60}>
-          <div className="relative mt-8 h-48 w-full overflow-hidden rounded-2xl sm:h-64">
-            <Image
-              src={office.heroImage.url}
-              alt={office.heroImage.alt || office.name}
-              fill
-              sizes="(min-width: 1024px) 1024px, 100vw"
-              className="object-cover"
-            />
-          </div>
-        </Reveal>
+        <HeroBanner
+          src={office.heroImage.url}
+          alt={office.heroImage.alt || office.name}
+          sizes="(min-width: 1024px) 1024px, 100vw"
+          heightClassName="h-48 sm:h-64"
+          roundedClassName="rounded-2xl"
+        />
       )}
 
       <div className="mt-10 grid grid-cols-1 gap-12 lg:grid-cols-12">

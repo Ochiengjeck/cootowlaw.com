@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getPracticeAreaBySlug, getPracticeAreas } from "@/lib/data/practice-areas";
 import { IconBox } from "@/components/ui/icon-box";
 import { Reveal } from "@/components/ui/reveal";
+import { HeroBanner } from "@/components/ui/hero-banner";
 import { getPracticeIcon } from "@/lib/practice-icons";
 
 export async function generateStaticParams() {
@@ -58,17 +58,11 @@ export default async function PracticeAreaPage({
         })()}
 
       {practiceArea.heroImage && (
-        <Reveal delay={110}>
-          <div className="relative mt-8 h-56 w-full overflow-hidden rounded-3xl sm:h-72">
-            <Image
-              src={practiceArea.heroImage.url}
-              alt={practiceArea.heroImage.alt || practiceArea.name}
-              fill
-              sizes="(min-width: 1024px) 768px, 100vw"
-              className="object-cover"
-            />
-          </div>
-        </Reveal>
+        <HeroBanner
+          src={practiceArea.heroImage.url}
+          alt={practiceArea.heroImage.alt || practiceArea.name}
+          delay={110}
+        />
       )}
 
       <Reveal delay={140}>

@@ -40,6 +40,7 @@ export default async function SettingsPage() {
             aboutHeroImageId: settings.aboutHeroImageId,
             careersHtml: settings.careersHtml,
             privacyPolicyHtml: settings.privacyPolicyHtml,
+            termsOfServiceHtml: settings.termsOfServiceHtml,
           }}
         />
       ) : (

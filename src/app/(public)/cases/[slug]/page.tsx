@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getCaseBriefBySlug, getCaseBriefs } from "@/lib/data/case-briefs";
 import { Reveal } from "@/components/ui/reveal";
+import { HeroBanner } from "@/components/ui/hero-banner";
 
 export async function generateStaticParams() {
   const briefs = await getCaseBriefs();
@@ -59,17 +59,13 @@ export default async function CaseBriefPage({ params }: { params: Promise<{ slug
       </Reveal>
 
       {brief.coverImage && (
-        <Reveal delay={140}>
-          <div className="relative mt-8 h-56 w-full overflow-hidden sm:h-80">
-            <Image
-              src={brief.coverImage.url}
-              alt={brief.coverImage.alt || brief.title}
-              fill
-              sizes="(min-width: 1024px) 768px, 100vw"
-              className="object-cover"
-            />
-          </div>
-        </Reveal>
+        <HeroBanner
+          src={brief.coverImage.url}
+          alt={brief.coverImage.alt || brief.title}
+          delay={140}
+          heightClassName="h-48 sm:h-80"
+          roundedClassName=""
+        />
       )}
 
       <Reveal delay={200}>

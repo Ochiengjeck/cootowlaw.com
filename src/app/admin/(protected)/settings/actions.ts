@@ -21,6 +21,7 @@ function parseForm(formData: FormData, officeSlugs: string[]): SettingsInput | {
   const advocAfricaBlurb = String(formData.get("advocAfricaBlurb") ?? "").trim() || null;
   const careersHtml = String(formData.get("careersHtml") ?? "").trim() || null;
   const privacyPolicyHtml = String(formData.get("privacyPolicyHtml") ?? "").trim() || null;
+  const termsOfServiceHtml = String(formData.get("termsOfServiceHtml") ?? "").trim() || null;
   const logoId = String(formData.get("logoId") ?? "").trim() || null;
   const homeHeroImageId = String(formData.get("homeHeroImageId") ?? "").trim() || null;
   const aboutHeroImageId = String(formData.get("aboutHeroImageId") ?? "").trim() || null;
@@ -64,6 +65,7 @@ function parseForm(formData: FormData, officeSlugs: string[]): SettingsInput | {
     aboutHeroImageId,
     careersHtml,
     privacyPolicyHtml,
+    termsOfServiceHtml,
   };
 }
 

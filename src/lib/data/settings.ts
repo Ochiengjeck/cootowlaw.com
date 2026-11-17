@@ -24,6 +24,7 @@ export type SettingsInput = {
   aboutHeroImageId: string | null;
   careersHtml: string | null;
   privacyPolicyHtml: string | null;
+  termsOfServiceHtml: string | null;
 };
 
 export async function getSiteSettings() {

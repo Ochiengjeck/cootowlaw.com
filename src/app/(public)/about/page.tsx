@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import { getSiteSettings } from "@/lib/data/settings";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { Card } from "@/components/ui/card";
 import { Reveal } from "@/components/ui/reveal";
+import { HeroBanner } from "@/components/ui/hero-banner";
 
 export const metadata: Metadata = { title: "About the Firm" };
 
@@ -22,17 +22,7 @@ export default async function AboutPage() {
       </Reveal>
 
       {settings?.aboutHeroImage && (
-        <Reveal delay={60}>
-          <div className="relative mt-8 h-56 w-full overflow-hidden rounded-3xl sm:h-72">
-            <Image
-              src={settings.aboutHeroImage.url}
-              alt={settings.aboutHeroImage.alt}
-              fill
-              sizes="(min-width: 768px) 768px, 100vw"
-              className="object-cover"
-            />
-          </div>
-        </Reveal>
+        <HeroBanner src={settings.aboutHeroImage.url} alt={settings.aboutHeroImage.alt} />
       )}
 
       <Reveal delay={120}>

@@ -33,7 +33,7 @@ export default async function HomePage() {
   return (
     <div>
       {/* Hero */}
-      <section className="relative isolate -mt-20 min-h-dvh overflow-hidden">
+      <section className="relative isolate -mt-20 min-h-[88dvh] overflow-hidden sm:min-h-dvh">
         <div className="absolute inset-0 -z-10 bg-[#431d63]">
           <Image
             src="/images/hero/purple-gold-legal-skyline.png"
@@ -41,13 +41,13 @@ export default async function HomePage() {
             fill
             priority
             sizes="100vw"
-            className="object-cover object-[30%_center]"
+            className="object-cover object-[78%_center] sm:object-[30%_center]"
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-charcoal/40 via-charcoal/10 to-transparent" />
-          <div className="absolute inset-0 bg-gradient-to-t from-charcoal/25 via-transparent to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-r from-charcoal/85 via-charcoal/55 to-charcoal/25 sm:from-charcoal/40 sm:via-charcoal/10 sm:to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-charcoal/40 via-charcoal/10 to-transparent sm:from-charcoal/25 sm:via-transparent" />
         </div>
 
-        <div className="mx-auto flex min-h-dvh max-w-6xl flex-col justify-center px-4 py-20 sm:px-6">
+        <div className="mx-auto flex min-h-[88dvh] max-w-6xl flex-col justify-center px-4 py-20 sm:min-h-dvh sm:px-6">
           <div className="max-w-xl">
             <div className="animate-hero-in inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-3 py-1 text-xs font-semibold uppercase tracking-widest text-gold-400 backdrop-blur-sm">
               <span className="h-1.5 w-1.5 rounded-full bg-gold-400" />

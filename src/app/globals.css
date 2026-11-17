@@ -164,11 +164,36 @@ body {
   color: var(--purple-600);
   text-decoration: underline;
 }
+.rich-text h2 {
+  margin: 1.75em 0 0.6em;
+  font-family: var(--font-serif);
+  font-size: 1.375em;
+  font-weight: 600;
+  color: var(--charcoal);
+}
+.rich-text h3 {
+  margin: 1.5em 0 0.5em;
+  font-family: var(--font-serif);
+  font-size: 1.125em;
+  font-weight: 600;
+  color: var(--charcoal);
+}
+.rich-text blockquote {
+  margin: 1em 0;
+  padding-left: 1em;
+  border-left: 3px solid var(--border);
+  color: var(--slate);
+  font-style: italic;
+}
 .rich-text.on-dark {
   color: #d9d7d2;
 }
 .rich-text.on-dark a {
   color: var(--gold-400);
+}
+.rich-text.on-dark h2,
+.rich-text.on-dark h3 {
+  color: #fff;
 }
 .rich-text.drop-cap p:first-of-type::first-letter {
   float: left;

@@ -252,6 +252,9 @@ export async function SiteFooter() {
             <Link href="/privacy-policy" className="hover:text-gold-400">
               Privacy Policy
             </Link>
+            <Link href="/terms-of-service" className="hover:text-gold-400">
+              Terms of Service
+            </Link>
             <a href="#" className="inline-flex items-center gap-1.5 hover:text-gold-400">
               Back to top
               <span aria-hidden="true">&uarr;</span>

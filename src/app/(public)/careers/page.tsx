@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import { getSiteSettings } from "@/lib/data/settings";
 import { getJobPostings } from "@/lib/data/job-postings";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { CardLink } from "@/components/ui/card";
 import { Reveal } from "@/components/ui/reveal";
+import { HeroBanner } from "@/components/ui/hero-banner";
 import { JobApplicationForm } from "./job-application-form";
 
 export const metadata: Metadata = { title: "Careers" };
@@ -18,17 +18,10 @@ export default async function CareersPage() {
         <SectionHeading eyebrow="Join us" title="Work with us" />
       </Reveal>
 
-      <Reveal delay={60}>
-        <div className="relative mt-8 h-56 w-full overflow-hidden rounded-3xl sm:h-72">
-          <Image
-            src="/images/hero/careers.jpg"
-            alt="Colleagues standing together, silhouetted against a city skyline at sunset"
-            fill
-            sizes="(min-width: 768px) 768px, 100vw"
-            className="object-cover"
-          />
-        </div>
-      </Reveal>
+      <HeroBanner
+        src="/images/hero/careers.jpg"
+        alt="Colleagues standing together, silhouetted against a city skyline at sunset"
+      />
 
       {settings?.careersHtml && (
         <Reveal delay={100}>

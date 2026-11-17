@@ -210,6 +210,7 @@ export const siteSettings = mysqlTable("site_settings", {
   homeHeroImageId: varchar("home_hero_image_id", { length: 36 }).references(() => media.id),
   aboutHeroImageId: varchar("about_hero_image_id", { length: 36 }).references(() => media.id),
   privacyPolicyHtml: text("privacy_policy_html"),
+  termsOfServiceHtml: text("terms_of_service_html"),
   careersHtml: text("careers_html"),
   ...timestamps(),
 });

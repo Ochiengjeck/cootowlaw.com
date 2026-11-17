@@ -31,6 +31,7 @@ type Props = {
     aboutHeroImageId: string | null;
     careersHtml: string | null;
     privacyPolicyHtml: string | null;
+    termsOfServiceHtml: string | null;
   };
 };
 
@@ -145,6 +146,11 @@ export function SettingsForm({ action, offices, mediaItems, defaultValues }: Pro
           label="Privacy policy (HTML allowed, optional)"
           name="privacyPolicyHtml"
           defaultValue={defaultValues.privacyPolicyHtml ?? ""}
+        />
+        <RichTextField
+          label="Terms of Service (HTML allowed, optional)"
+          name="termsOfServiceHtml"
+          defaultValue={defaultValues.termsOfServiceHtml ?? ""}
         />
       </SettingsSection>
 

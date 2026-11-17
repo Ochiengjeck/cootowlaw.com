@@ -9,7 +9,7 @@ export function LoginForm() {
   const [state, action, pending] = useActionState(login, undefined);
 
   return (
-    <form action={action} className="mt-6 space-y-4">
+    <form action={action} className="mt-6 space-y-5">
       <TextField label="Email" name="email" type="email" required autoComplete="username" />
       <TextField
         label="Password"
@@ -19,7 +19,10 @@ export function LoginForm() {
         autoComplete="current-password"
       />
       {state?.error && (
-        <p role="alert" className="text-sm text-destructive">
+        <p
+          role="alert"
+          className="rounded-lg border border-destructive/20 bg-destructive/10 px-3 py-2 text-sm text-destructive"
+        >
           {state.error}
         </p>
       )}
@@ -27,7 +30,7 @@ export function LoginForm() {
         pending={pending}
         label="Sign in"
         pendingLabel="Signing in…"
-        className="w-full"
+        className="w-full justify-center"
       />
     </form>
   );

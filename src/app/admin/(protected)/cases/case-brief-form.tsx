@@ -2,7 +2,8 @@
 
 import { useActionState } from "react";
 import type { CaseBriefFormState } from "./actions";
-import { TextField, TextAreaField, SelectField, NumberField } from "@/components/admin/form-fields";
+import { TextField, SelectField, NumberField } from "@/components/admin/form-fields";
+import { RichTextField } from "@/components/admin/rich-text-field";
 import { SubmitButton } from "@/components/admin/submit-button";
 import { ImagePicker } from "@/components/admin/image-picker";
 
@@ -51,19 +52,15 @@ export function CaseBriefForm({
         defaultValue={defaultValues?.courtReference}
         required
       />
-      <TextAreaField
+      <RichTextField
         label="Summary (HTML allowed)"
         name="summaryHtml"
         defaultValue={defaultValues?.summaryHtml}
-        rows={5}
-        required
       />
-      <TextAreaField
+      <RichTextField
         label="Outcome (HTML allowed)"
         name="outcomeHtml"
         defaultValue={defaultValues?.outcomeHtml}
-        rows={5}
-        required
       />
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <SelectField

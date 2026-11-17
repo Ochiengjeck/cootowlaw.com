@@ -3,6 +3,7 @@
 import { useActionState } from "react";
 import type { PracticeAreaFormState } from "./actions";
 import { TextField, TextAreaField, NumberField } from "@/components/admin/form-fields";
+import { RichTextField } from "@/components/admin/rich-text-field";
 import { SubmitButton } from "@/components/admin/submit-button";
 import { ImagePicker } from "@/components/admin/image-picker";
 
@@ -36,12 +37,10 @@ export function PracticeAreaForm({ action, mediaItems, defaultValues, submitLabe
         defaultValue={defaultValues?.summary}
         required
       />
-      <TextAreaField
+      <RichTextField
         label="Description (HTML allowed)"
         name="descriptionHtml"
         defaultValue={defaultValues?.descriptionHtml}
-        rows={6}
-        required
       />
       <TextAreaField
         label="Services (one per line)"

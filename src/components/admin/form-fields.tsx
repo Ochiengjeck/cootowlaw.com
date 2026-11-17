@@ -1,9 +1,9 @@
 import type { ComponentPropsWithoutRef } from "react";
 
 const inputClass =
-  "mt-1 block w-full rounded-lg border border-border bg-white px-3 py-2 text-sm text-charcoal focus:border-gold-500 focus:outline-none focus:ring-2 focus:ring-gold-500/20";
+  "mt-1.5 block w-full rounded-lg border border-border bg-white px-3.5 py-2.5 text-sm text-charcoal shadow-sm transition-colors placeholder:text-slate/50 focus:border-gold-500 focus:outline-none focus:ring-2 focus:ring-gold-500/20";
 const labelClass = "block text-sm font-medium text-charcoal";
-const helpClass = "mt-1 text-xs text-slate";
+const helpClass = "mt-1.5 text-xs text-slate";
 
 type FieldProps = { label: string; name: string; help?: string };
 
@@ -103,7 +103,7 @@ export function CheckboxField({
           id={name}
           name={name}
           type="checkbox"
-          className={`h-4 w-4 rounded border-border text-purple-600 focus:ring-2 focus:ring-gold-500/30 ${className ?? ""}`}
+          className={`h-4 w-4 rounded border-border accent-purple-600 focus:ring-2 focus:ring-gold-500/30 ${className ?? ""}`}
           {...props}
         />
         {label}

@@ -14,9 +14,13 @@ export function MediaGrid({ items }: { items: MediaItem[] }) {
   return (
     <div className="mt-8 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
       {items.map((item) => (
-        <div key={item.id} className="overflow-hidden rounded-xl border border-border bg-white">
-          <div className="relative h-32 bg-surface">
+        <div
+          key={item.id}
+          className="group overflow-hidden rounded-xl border border-border bg-white shadow-sm transition-shadow hover:shadow-md"
+        >
+          <div className="relative h-32 overflow-hidden bg-surface">
             <Image src={item.url} alt={item.alt} fill sizes="200px" className="object-cover" />
+            <div className="absolute inset-0 bg-charcoal/0 transition-colors group-hover:bg-charcoal/20" />
           </div>
           <div className="p-3">
             <p className="truncate text-xs text-slate" title={item.alt}>

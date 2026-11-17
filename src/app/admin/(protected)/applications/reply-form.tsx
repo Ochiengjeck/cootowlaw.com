@@ -2,6 +2,7 @@
 
 import { useActionState } from "react";
 import { replyToJobApplicationAction } from "./actions";
+import { TextAreaField } from "@/components/admin/form-fields";
 import { SubmitButton } from "@/components/admin/submit-button";
 
 export function ReplyForm({
@@ -17,12 +18,12 @@ export function ReplyForm({
   const [state, formAction, pending] = useActionState(action, undefined);
 
   return (
-    <form action={formAction} className="mt-3 space-y-2">
-      <textarea
+    <form action={formAction} className="mt-3 space-y-3">
+      <TextAreaField
+        label="Reply"
         name="replyMessage"
         rows={3}
         placeholder={`Reply to ${recipientName}…`}
-        className="block w-full rounded-lg border border-border bg-white px-3 py-2 text-sm text-charcoal focus:border-gold-500 focus:outline-none focus:ring-2 focus:ring-gold-500/20"
       />
       {state?.error && <p className="text-sm text-destructive">{state.error}</p>}
       <SubmitButton pending={pending} label="Send reply" pendingLabel="Sending…" />

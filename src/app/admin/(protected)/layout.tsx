@@ -1,21 +1,25 @@
 import { Suspense, type ReactNode } from "react";
 import { connection } from "next/server";
 import { getCurrentAdmin } from "@/lib/auth";
+import { getNeedsAttentionCounts } from "@/lib/data/dashboard";
 import { Sidebar, SidebarFallback } from "./sidebar";
+import { SidebarProvider } from "./sidebar-context";
 import { Topbar } from "./topbar";
 
 export default function ProtectedAdminLayout({ children }: { children: ReactNode }) {
   return (
-    <div className="flex min-h-screen">
-      <Suspense fallback={<SidebarFallback />}>
-        <Sidebar />
-      </Suspense>
-      <div className="flex-1">
-        <Suspense fallback={<div className="p-6 text-sm text-slate">Loading…</div>}>
-          <AuthedShell>{children}</AuthedShell>
+    <SidebarProvider>
+      <div className="flex min-h-screen">
+        <Suspense fallback={<SidebarFallback />}>
+          <Sidebar />
         </Suspense>
+        <div className="min-w-0 flex-1">
+          <Suspense fallback={<div className="p-6 text-sm text-slate">Loading…</div>}>
+            <AuthedShell>{children}</AuthedShell>
+          </Suspense>
+        </div>
       </div>
-    </div>
+    </SidebarProvider>
   );
 }
 
@@ -25,10 +29,13 @@ async function AuthedShell({ children }: { children: ReactNode }) {
   // iron-session's cookie TTL check) don't trip Cache Components' prerender
   // analysis on individual admin routes.
   await connection();
-  const admin = await getCurrentAdmin();
+  const [admin, { pendingMessages, pendingApplications }] = await Promise.all([
+    getCurrentAdmin(),
+    getNeedsAttentionCounts(),
+  ]);
   return (
     <>
-      <Topbar admin={admin} />
+      <Topbar admin={admin} pendingCount={pendingMessages + pendingApplications} />
       <main className="p-6">{children}</main>
     </>
   );

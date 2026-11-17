@@ -3,8 +3,11 @@
 import { useActionState } from "react";
 import type { SettingsFormState } from "./actions";
 import { TextField, TextAreaField, NumberField } from "@/components/admin/form-fields";
+import { RichTextField } from "@/components/admin/rich-text-field";
 import { SubmitButton } from "@/components/admin/submit-button";
 import { ImagePicker } from "@/components/admin/image-picker";
+import { CogIcon, DocumentIcon, PeopleIcon, BookOpenIcon, ChatBubbleIcon } from "@/lib/icons";
+import type { ReactNode } from "react";
 
 type Office = { slug: string; name: string };
 type MediaItem = { id: string; url: string; alt: string };
@@ -31,6 +34,28 @@ type Props = {
   };
 };
 
+function SettingsSection({
+  icon,
+  title,
+  children,
+}: {
+  icon: ReactNode;
+  title: string;
+  children: ReactNode;
+}) {
+  return (
+    <section className="space-y-4 rounded-2xl border border-border bg-white p-6">
+      <h2 className="flex items-center gap-2.5 text-sm font-semibold uppercase tracking-wide text-purple-700">
+        <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-purple-50 text-purple-600">
+          {icon}
+        </span>
+        {title}
+      </h2>
+      {children}
+    </section>
+  );
+}
+
 export function SettingsForm({ action, offices, mediaItems, defaultValues }: Props) {
   const [state, formAction, pending] = useActionState(action, undefined);
   const socialLinksText = Object.entries(defaultValues.socialLinks)
@@ -38,11 +63,8 @@ export function SettingsForm({ action, offices, mediaItems, defaultValues }: Pro
     .join("\n");
 
   return (
-    <form action={formAction} className="max-w-2xl space-y-8">
-      <section className="space-y-4">
-        <h2 className="text-sm font-semibold uppercase tracking-wide text-purple-700">
-          Firm identity
-        </h2>
+    <form action={formAction} className="max-w-2xl space-y-6">
+      <SettingsSection icon={<CogIcon className="h-4 w-4" />} title="Firm identity">
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <TextField label="Firm name" name="firmName" defaultValue={defaultValues.firmName} required />
           <NumberField
@@ -59,25 +81,14 @@ export function SettingsForm({ action, offices, mediaItems, defaultValues }: Pro
           items={mediaItems}
           defaultValue={defaultValues.logoId}
         />
-      </section>
+      </SettingsSection>
 
-      <section className="space-y-4">
-        <h2 className="text-sm font-semibold uppercase tracking-wide text-purple-700">
-          About page content
-        </h2>
-        <TextAreaField
-          label="About (HTML allowed)"
-          name="aboutHtml"
-          defaultValue={defaultValues.aboutHtml}
-          rows={6}
-          required
-        />
-        <TextAreaField
+      <SettingsSection icon={<DocumentIcon className="h-4 w-4" />} title="About page content">
+        <RichTextField label="About (HTML allowed)" name="aboutHtml" defaultValue={defaultValues.aboutHtml} />
+        <RichTextField
           label="Mission (HTML allowed)"
           name="missionHtml"
           defaultValue={defaultValues.missionHtml}
-          rows={4}
-          required
         />
         <TextAreaField
           label="Core values (one per line)"
@@ -103,13 +114,10 @@ export function SettingsForm({ action, offices, mediaItems, defaultValues }: Pro
           items={mediaItems}
           defaultValue={defaultValues.aboutHeroImageId}
         />
-      </section>
+      </SettingsSection>
 
       {offices.length > 0 && (
-        <section className="space-y-4">
-          <h2 className="text-sm font-semibold uppercase tracking-wide text-purple-700">
-            Staffing per office
-          </h2>
+        <SettingsSection icon={<PeopleIcon className="h-4 w-4" />} title="Staffing per office">
           {offices.map((office) => (
             <div key={office.slug} className="grid grid-cols-1 gap-4 sm:grid-cols-2">
               <NumberField
@@ -124,31 +132,23 @@ export function SettingsForm({ action, offices, mediaItems, defaultValues }: Pro
               />
             </div>
           ))}
-        </section>
+        </SettingsSection>
       )}
 
-      <section className="space-y-4">
-        <h2 className="text-sm font-semibold uppercase tracking-wide text-purple-700">
-          Other pages
-        </h2>
-        <TextAreaField
+      <SettingsSection icon={<BookOpenIcon className="h-4 w-4" />} title="Other pages">
+        <RichTextField
           label="Careers page content (HTML allowed, optional — leave blank to show the 'no open vacancies' message)"
           name="careersHtml"
           defaultValue={defaultValues.careersHtml ?? ""}
-          rows={4}
         />
-        <TextAreaField
+        <RichTextField
           label="Privacy policy (HTML allowed, optional)"
           name="privacyPolicyHtml"
           defaultValue={defaultValues.privacyPolicyHtml ?? ""}
-          rows={6}
         />
-      </section>
+      </SettingsSection>
 
-      <section className="space-y-4">
-        <h2 className="text-sm font-semibold uppercase tracking-wide text-purple-700">
-          Social links
-        </h2>
+      <SettingsSection icon={<ChatBubbleIcon className="h-4 w-4" />} title="Social links">
         <TextAreaField
           label="One per line, as: platform: url"
           name="socialLinks"
@@ -156,10 +156,13 @@ export function SettingsForm({ action, offices, mediaItems, defaultValues }: Pro
           rows={3}
           help="Example: linkedin: https://linkedin.com/company/cootow-associates"
         />
-      </section>
+      </SettingsSection>
 
       {state?.error && <p className="text-sm text-destructive">{state.error}</p>}
-      <SubmitButton pending={pending} label="Save changes" />
+
+      <div className="sticky bottom-0 rounded-2xl border border-border bg-white/90 p-4 backdrop-blur">
+        <SubmitButton pending={pending} label="Save changes" />
+      </div>
     </form>
   );
 }

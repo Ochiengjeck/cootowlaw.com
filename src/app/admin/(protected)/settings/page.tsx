@@ -4,6 +4,7 @@ import { adminListMedia } from "@/lib/data/media";
 import { updateSettingsAction } from "./actions";
 import { SettingsForm } from "./settings-form";
 import { AdminPageHeader } from "@/components/admin/page-header";
+import { CogIcon } from "@/lib/icons";
 
 export default async function SettingsPage() {
   const [settings, offices, mediaItems] = await Promise.all([
@@ -17,6 +18,7 @@ export default async function SettingsPage() {
       <AdminPageHeader
         title="Site Settings"
         description="Firm-wide content shown on the homepage, about page, careers page, and privacy policy."
+        icon={<CogIcon className="h-5 w-5" />}
       />
       {settings ? (
         <SettingsForm

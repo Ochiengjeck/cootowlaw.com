@@ -11,7 +11,7 @@ export function UploadForm() {
   return (
     <form
       action={formAction}
-      className="flex flex-wrap items-end gap-4 rounded-xl border border-border bg-white p-4"
+      className="flex flex-wrap items-end gap-4 rounded-xl border-2 border-dashed border-border bg-white p-5 transition-colors hover:border-purple-300"
     >
       <div>
         <label htmlFor="file" className="block text-sm font-medium text-charcoal">
@@ -23,7 +23,7 @@ export function UploadForm() {
           type="file"
           accept="image/*"
           required
-          className="mt-1 block text-sm text-charcoal"
+          className="mt-1.5 block text-sm text-slate file:mr-3 file:rounded-lg file:border-0 file:bg-purple-50 file:px-3 file:py-2 file:text-sm file:font-semibold file:text-purple-700 hover:file:bg-purple-100"
         />
       </div>
       <div className="min-w-48 flex-1">

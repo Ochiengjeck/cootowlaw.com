@@ -3,6 +3,7 @@
 import { useActionState } from "react";
 import type { JobPostingFormState } from "./actions";
 import { TextField, TextAreaField, CheckboxField, NumberField } from "@/components/admin/form-fields";
+import { RichTextField } from "@/components/admin/rich-text-field";
 import { SubmitButton } from "@/components/admin/submit-button";
 
 type Props = {
@@ -51,12 +52,10 @@ export function JobPostingForm({ action, defaultValues, submitLabel }: Props) {
         rows={2}
         required
       />
-      <TextAreaField
+      <RichTextField
         label="Description (HTML allowed)"
         name="descriptionHtml"
         defaultValue={defaultValues?.descriptionHtml}
-        rows={8}
-        required
       />
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <CheckboxField

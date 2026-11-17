@@ -6,6 +6,7 @@ import { getPracticeAreas } from "@/lib/data/practice-areas";
 import { navGroups, navLinks } from "@/lib/nav-items";
 import { getCurrentYear } from "@/lib/current-year";
 import { parsePhoneLines } from "@/lib/phone";
+import { MapPinIcon, MailIcon, PhoneIcon, ClockIcon } from "@/lib/icons";
 import { Logo } from "./logo";
 
 const socialIconPaths: Record<string, string> = {
@@ -80,12 +81,19 @@ export async function SiteFooter() {
   const hasMorePracticeAreas = practiceAreas.length > visiblePracticeAreas.length;
 
   return (
-    <footer className="relative bg-charcoal text-white/60">
+    <footer className="relative overflow-hidden bg-charcoal text-white/60">
+      <Image
+        src="/images/footer/world-map-bg.jpg"
+        alt=""
+        fill
+        sizes="100vw"
+        className="object-cover object-right-top"
+      />
       <div
         aria-hidden="true"
         className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-gold-500/60 to-transparent"
       />
-      <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
+      <div className="relative mx-auto max-w-6xl px-4 py-16 sm:px-6">
         <div className="grid grid-cols-2 gap-x-8 gap-y-12 sm:grid-cols-6 lg:grid-cols-12">
           <div className="col-span-2 sm:col-span-6 lg:col-span-4">
             <Logo dark />
@@ -153,40 +161,52 @@ export async function SiteFooter() {
             <h3 className="text-xs font-semibold uppercase tracking-widest text-gold-400">
               Our Offices
             </h3>
-            <div className="mt-5 grid grid-cols-1 gap-6 sm:grid-cols-2">
-              {offices.map((office) => (
+            <div className="mt-6 grid grid-cols-1 divide-y divide-white/10 sm:grid-cols-2 sm:divide-x sm:divide-y-0">
+              {offices.map((office, i) => (
                 <div
                   key={office.id}
-                  className="rounded-2xl border border-white/10 bg-white/5 p-6 transition-colors hover:border-gold-500/40"
+                  className={`pt-6 first:pt-0 sm:pt-0 ${i === 0 ? "sm:pr-10" : "sm:pl-10"}`}
                 >
                   <p className="font-serif text-base font-semibold text-white">{office.name}</p>
-                  <address className="mt-3 space-y-1 text-sm text-white/60 not-italic">
-                    <p>{office.addressLine1}</p>
-                    {office.addressLine2 && <p>{office.addressLine2}</p>}
-                    <p>{office.city}, Kenya</p>
+                  <div className="mt-4 space-y-3 text-sm text-white/60">
+                    <div className="flex items-start gap-3">
+                      <MapPinIcon className="mt-0.5 h-4 w-4 shrink-0 text-gold-400" />
+                      <div className="space-y-0.5">
+                        <p>{office.addressLine1}</p>
+                        {office.addressLine2 && <p>{office.addressLine2}</p>}
+                        <p>{office.city}, Kenya</p>
+                      </div>
+                    </div>
                     {office.officeHours && (
-                      <p className="pt-2 text-xs text-white/40">{office.officeHours}</p>
+                      <div className="flex items-center gap-3">
+                        <ClockIcon className="h-4 w-4 shrink-0 text-gold-400" />
+                        <p>{office.officeHours}</p>
+                      </div>
                     )}
-                    <p className="pt-2">
+                    <div className="flex items-center gap-3">
+                      <MailIcon className="h-4 w-4 shrink-0 text-gold-400" />
                       <a href={`mailto:${office.email}`} className="hover:text-gold-400">
                         {office.email}
                       </a>
-                    </p>
-                    <div className="space-y-0.5 pt-1">
-                      {parsePhoneLines(office.phone).map((line, i) => (
-                        <p key={i} className="break-words">
-                          {line.map((num, j) => (
-                            <span key={num.href + j}>
-                              {j > 0 && <span className="text-white/30"> / </span>}
-                              <a href={num.href} className="hover:text-gold-400">
-                                {num.display}
-                              </a>
-                            </span>
-                          ))}
-                        </p>
-                      ))}
                     </div>
-                  </address>
+                    <div className="flex items-start gap-3">
+                      <PhoneIcon className="mt-0.5 h-4 w-4 shrink-0 text-gold-400" />
+                      <div className="space-y-0.5">
+                        {parsePhoneLines(office.phone).map((line, j) => (
+                          <p key={j} className="break-words">
+                            {line.map((num, k) => (
+                              <span key={num.href + k}>
+                                {k > 0 && <span className="text-white/30"> / </span>}
+                                <a href={num.href} className="hover:text-gold-400">
+                                  {num.display}
+                                </a>
+                              </span>
+                            ))}
+                          </p>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
                 </div>
               ))}
             </div>

@@ -3,6 +3,7 @@ import { adminListPracticeAreas } from "@/lib/data/practice-areas";
 import { AdminPageHeader } from "@/components/admin/page-header";
 import { LinkButton } from "@/components/admin/submit-button";
 import { Table, Thead, Th, Tr, Td, EmptyState } from "@/components/admin/data-table";
+import { ScaleIcon, PencilIcon, PlusIcon } from "@/lib/icons";
 import { DeleteButton } from "./delete-button";
 
 export default async function PracticeAreasListPage() {
@@ -12,7 +13,12 @@ export default async function PracticeAreasListPage() {
     <div>
       <AdminPageHeader
         title="Practice Areas"
-        action={<LinkButton href="/admin/practice-areas/new">New practice area</LinkButton>}
+        icon={<ScaleIcon className="h-5 w-5" />}
+        action={
+          <LinkButton href="/admin/practice-areas/new">
+            <PlusIcon className="h-4 w-4" /> New practice area
+          </LinkButton>
+        }
       />
 
       <Table>
@@ -30,14 +36,17 @@ export default async function PracticeAreasListPage() {
               <Td className="font-medium">{item.name}</Td>
               <Td className="text-slate">{item.slug}</Td>
               <Td className="text-slate">{item.sortOrder}</Td>
-              <Td className="space-x-3 text-right">
-                <Link
-                  href={`/admin/practice-areas/${item.id}/edit`}
-                  className="text-sm text-purple-600 hover:text-purple-700"
-                >
-                  Edit
-                </Link>
-                <DeleteButton id={item.id} slug={item.slug} />
+              <Td className="text-right">
+                <div className="flex items-center justify-end gap-2">
+                  <Link
+                    href={`/admin/practice-areas/${item.id}/edit`}
+                    aria-label={`Edit ${item.name}`}
+                    className="inline-flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-sm font-medium text-purple-600 hover:bg-purple-50"
+                  >
+                    <PencilIcon className="h-4 w-4" /> Edit
+                  </Link>
+                  <DeleteButton id={item.id} slug={item.slug} />
+                </div>
               </Td>
             </Tr>
           ))}

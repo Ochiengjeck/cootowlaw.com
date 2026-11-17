@@ -4,6 +4,7 @@ import { AdminPageHeader } from "@/components/admin/page-header";
 import { LinkButton } from "@/components/admin/submit-button";
 import { StatusBadge } from "@/components/admin/status-badge";
 import { Table, Thead, Th, Tr, Td, EmptyState } from "@/components/admin/data-table";
+import { NewspaperIcon, PencilIcon, PlusIcon } from "@/lib/icons";
 import { DeleteButton } from "./delete-button";
 
 export default async function NewsListPage() {
@@ -13,7 +14,12 @@ export default async function NewsListPage() {
     <div>
       <AdminPageHeader
         title="News"
-        action={<LinkButton href="/admin/news/new">New post</LinkButton>}
+        icon={<NewspaperIcon className="h-5 w-5" />}
+        action={
+          <LinkButton href="/admin/news/new">
+            <PlusIcon className="h-4 w-4" /> New post
+          </LinkButton>
+        }
       />
 
       <Table>
@@ -37,14 +43,17 @@ export default async function NewsListPage() {
               <Td className="text-slate">
                 {item.publishedAt ? new Date(item.publishedAt).toLocaleDateString("en-KE") : "—"}
               </Td>
-              <Td className="space-x-3 text-right">
-                <Link
-                  href={`/admin/news/${item.id}/edit`}
-                  className="text-sm text-purple-600 hover:text-purple-700"
-                >
-                  Edit
-                </Link>
-                <DeleteButton id={item.id} slug={item.slug} />
+              <Td className="text-right">
+                <div className="flex items-center justify-end gap-2">
+                  <Link
+                    href={`/admin/news/${item.id}/edit`}
+                    aria-label={`Edit ${item.title}`}
+                    className="inline-flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-sm font-medium text-purple-600 hover:bg-purple-50"
+                  >
+                    <PencilIcon className="h-4 w-4" /> Edit
+                  </Link>
+                  <DeleteButton id={item.id} slug={item.slug} />
+                </div>
               </Td>
             </Tr>
           ))}

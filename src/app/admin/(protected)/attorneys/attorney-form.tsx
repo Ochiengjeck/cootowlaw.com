@@ -9,6 +9,7 @@ import {
   NumberField,
   CheckboxField,
 } from "@/components/admin/form-fields";
+import { RichTextField } from "@/components/admin/rich-text-field";
 import { SubmitButton } from "@/components/admin/submit-button";
 import { ImagePicker } from "@/components/admin/image-picker";
 import { attorneyTiers } from "@/lib/db/schema";
@@ -74,11 +75,10 @@ export function AttorneyForm({
           ))}
         </SelectField>
       </div>
-      <TextAreaField
+      <RichTextField
         label="Bio (HTML allowed, optional)"
         name="bioHtml"
         defaultValue={defaultValues?.bioHtml ?? ""}
-        rows={6}
       />
       <TextAreaField
         label="Credentials (optional)"

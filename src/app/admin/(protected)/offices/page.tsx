@@ -3,6 +3,7 @@ import { adminListOffices } from "@/lib/data/offices";
 import { AdminPageHeader } from "@/components/admin/page-header";
 import { LinkButton } from "@/components/admin/submit-button";
 import { Table, Thead, Th, Tr, Td, EmptyState } from "@/components/admin/data-table";
+import { BuildingIcon, PencilIcon, PlusIcon } from "@/lib/icons";
 import { DeleteButton } from "./delete-button";
 
 export default async function OfficesListPage() {
@@ -12,7 +13,12 @@ export default async function OfficesListPage() {
     <div>
       <AdminPageHeader
         title="Offices"
-        action={<LinkButton href="/admin/offices/new">New office</LinkButton>}
+        icon={<BuildingIcon className="h-5 w-5" />}
+        action={
+          <LinkButton href="/admin/offices/new">
+            <PlusIcon className="h-4 w-4" /> New office
+          </LinkButton>
+        }
       />
 
       <Table>
@@ -32,14 +38,17 @@ export default async function OfficesListPage() {
               <Td className="text-slate">{item.city}</Td>
               <Td className="text-slate">{item.slug}</Td>
               <Td className="text-slate">{item.sortOrder}</Td>
-              <Td className="space-x-3 text-right">
-                <Link
-                  href={`/admin/offices/${item.id}/edit`}
-                  className="text-sm text-purple-600 hover:text-purple-700"
-                >
-                  Edit
-                </Link>
-                <DeleteButton id={item.id} slug={item.slug} />
+              <Td className="text-right">
+                <div className="flex items-center justify-end gap-2">
+                  <Link
+                    href={`/admin/offices/${item.id}/edit`}
+                    aria-label={`Edit ${item.name}`}
+                    className="inline-flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-sm font-medium text-purple-600 hover:bg-purple-50"
+                  >
+                    <PencilIcon className="h-4 w-4" /> Edit
+                  </Link>
+                  <DeleteButton id={item.id} slug={item.slug} />
+                </div>
               </Td>
             </Tr>
           ))}

@@ -3,6 +3,7 @@
 import { useActionState } from "react";
 import type { NewsPostFormState } from "./actions";
 import { TextField, TextAreaField, SelectField } from "@/components/admin/form-fields";
+import { RichTextField } from "@/components/admin/rich-text-field";
 import { SubmitButton } from "@/components/admin/submit-button";
 import { ImagePicker } from "@/components/admin/image-picker";
 
@@ -47,13 +48,7 @@ export function NewsForm({ action, authors, mediaItems, defaultValues, submitLab
         rows={2}
         required
       />
-      <TextAreaField
-        label="Body (HTML allowed)"
-        name="bodyHtml"
-        defaultValue={defaultValues?.bodyHtml}
-        rows={8}
-        required
-      />
+      <RichTextField label="Body (HTML allowed)" name="bodyHtml" defaultValue={defaultValues?.bodyHtml} />
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <SelectField label="Author (optional)" name="authorId" defaultValue={defaultValues?.authorId ?? ""}>
           <option value="">None</option>

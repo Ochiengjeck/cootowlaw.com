@@ -5,7 +5,7 @@
 import { randomUUID } from "node:crypto";
 import { eq, like } from "drizzle-orm";
 import { db } from "../src/lib/db";
-import { media, attorneys, clients, offices, practiceAreas, siteSettings } from "../src/lib/db/schema";
+import { media, attorneys, clients, offices, practiceAreas, newsPosts, siteSettings } from "../src/lib/db/schema";
 
 async function insertMedia(url: string, alt: string) {
   const id = randomUUID();
@@ -83,8 +83,7 @@ async function main() {
   }
   console.log(`  practice area photos wired: ${practiceCount}/${Object.keys(practiceAreaPhotos).length}`);
 
-  // Client logos (only confidently-identified real matches — see conversation notes;
-  // the other 6 clients have no verified logo asset and stay text-only)
+  // Client logos
   const clientLogos: Record<string, string> = {
     "KCB Bank Kenya Limited": "/images/clients/kcb.jpg",
     "UBA Limited": "/images/clients/uba.jpg",
@@ -100,6 +99,21 @@ async function main() {
     await db.update(clients).set({ logoId, updatedAt: new Date() }).where(eq(clients.name, name));
   }
   console.log(`  client logos wired: ${Object.keys(clientLogos).length}`);
+
+  // News post cover images
+  const newsCoverImages: Record<string, string> = {
+    "re-introduce-estate-duty-to-fund-the-big-four": "/images/news/estate-duty-gavel.jpg",
+  };
+  let newsCount = 0;
+  for (const [slug, url] of Object.entries(newsCoverImages)) {
+    const coverImageId = await insertMedia(url, "");
+    const result = await db
+      .update(newsPosts)
+      .set({ coverImageId, updatedAt: new Date() })
+      .where(eq(newsPosts.slug, slug));
+    if (result[0].affectedRows > 0) newsCount++;
+  }
+  console.log(`  news cover images wired: ${newsCount}/${Object.keys(newsCoverImages).length}`);
 
   // Attorney headshots (only confidently name-matched files — see conversation notes;
   // only Hellen Akoth Omollo has no verified photo and keeps the initials-avatar fallback)

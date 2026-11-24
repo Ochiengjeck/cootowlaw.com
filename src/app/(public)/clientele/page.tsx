@@ -28,16 +28,17 @@ export default async function ClientelePage() {
   }
 
   return (
-    <div className="mx-auto max-w-4xl px-4 py-16 sm:px-6">
+    <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
       <Reveal>
         <SectionHeading
           eyebrow="Who we serve"
           title="Clientele"
           description="We are proud to serve a diverse range of institutions across Kenya and beyond."
+          align="center"
         />
       </Reveal>
 
-      <div className="mt-10 space-y-12">
+      <div className="mt-14 space-y-14">
         {[...byIndustry.entries()].map(([industry, group], groupIndex) => {
           const accent = industryAccents[groupIndex % industryAccents.length];
           return (
@@ -49,31 +50,33 @@ export default async function ClientelePage() {
                   <span className={`h-1.5 w-1.5 rounded-full ${accent.dot}`} />
                   {industry}
                 </span>
-                <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2">
+                <div className="mt-5 grid grid-cols-2 gap-5 sm:grid-cols-3 lg:grid-cols-4">
                   {group.map((client, i) => (
                     <Reveal key={client.id} delay={Math.min(i * 60, 240)}>
                       <div
-                        className={`flex items-center gap-4 rounded-2xl border border-t-4 border-border bg-white p-4 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_12px_32px_-12px_rgba(26,24,30,0.18)] ${accent.border}`}
+                        className={`group flex h-full flex-col items-center rounded-2xl border border-t-4 border-border bg-white p-6 text-center transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_12px_32px_-12px_rgba(26,24,30,0.18)] ${accent.border}`}
                       >
-                        {client.logo ? (
-                          <div className="relative h-8 w-16 shrink-0">
+                        <div className="relative flex h-16 w-full items-center justify-center">
+                          {client.logo ? (
                             <Image
                               src={client.logo.url}
                               alt={client.logo.alt}
-                              fill
-                              sizes="64px"
-                              className="object-contain"
+                              width={160}
+                              height={64}
+                              className="max-h-16 w-auto object-contain transition-transform duration-300 group-hover:scale-105"
                             />
-                          </div>
-                        ) : (
-                          <span
-                            aria-hidden="true"
-                            className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-xs font-semibold ${accent.monoBg} ${accent.monoText}`}
-                          >
-                            {client.name.slice(0, 1)}
-                          </span>
-                        )}
-                        <span className="text-sm font-medium text-charcoal">{client.name}</span>
+                          ) : (
+                            <span
+                              aria-hidden="true"
+                              className={`flex h-12 w-12 items-center justify-center rounded-xl text-base font-semibold ${accent.monoBg} ${accent.monoText}`}
+                            >
+                              {client.name.slice(0, 1)}
+                            </span>
+                          )}
+                        </div>
+                        <span className="mt-4 text-xs font-medium leading-snug text-slate">
+                          {client.name}
+                        </span>
                       </div>
                     </Reveal>
                   ))}

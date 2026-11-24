@@ -87,7 +87,13 @@ async function main() {
   // the other 6 clients have no verified logo asset and stay text-only)
   const clientLogos: Record<string, string> = {
     "KCB Bank Kenya Limited": "/images/clients/kcb.jpg",
+    "UBA Limited": "/images/clients/uba.jpg",
+    "Parliamentary Service Commission": "/images/clients/parliament-of-kenya.png",
+    "Independent Electoral and Boundaries Commission (IEBC)": "/images/clients/iebc.jpg",
     "APA Insurance Ltd": "/images/clients/apa.png",
+    "Bamburi Cement Ltd": "/images/clients/bamburi.jpg",
+    "Kenfreight (E.A) Ltd": "/images/clients/Kenfreight.png",
+    "Voyager Beach Resort": "/images/clients/voyager.jpg",
   };
   for (const [name, url] of Object.entries(clientLogos)) {
     const logoId = await insertMedia(url, `${name} logo`);
@@ -96,18 +102,25 @@ async function main() {
   console.log(`  client logos wired: ${Object.keys(clientLogos).length}`);
 
   // Attorney headshots (only confidently name-matched files — see conversation notes;
-  // 8 of 26 people have no verified photo and keep the initials-avatar fallback)
+  // only Hellen Akoth Omollo has no verified photo and keeps the initials-avatar fallback)
   const attorneyPhotos: Record<string, string> = {
     "patrick-ochwa": "/images/team/patrick-ochwa.webp",
     "samuel-ouma": "/images/team/samuel-ouma.webp",
     "job-weloba": "/images/team/job-weloba.webp",
     "augustus-wafula": "/images/team/augustus-wafula.webp",
     "eva-wangui-kahiti": "/images/team/eva-wangui-kahiti.webp",
+    "faith-sulwe": "/images/team/faith-sulwe.webp",
     "lenin-awino": "/images/team/lenin-awino.webp",
     "elsie-oile": "/images/team/elsie-oile.jpeg",
+    "clara-atsanga": "/images/team/clara-atsanga.jpg",
+    "valerie-mboya": "/images/team/valerie-mboya.jpg",
     "lucky-kaingu-kangwangu": "/images/team/lucky-kaingu-kangwangu.webp",
     "john-mwanzia-mutambuki": "/images/team/john-mwanzia-mutambuki.webp",
+    "beatrice-kariuki-ruguru": "/images/team/beatrice-kariuki-ruguru.webp",
     "emily-shitoko": "/images/team/emily-shitoko.webp",
+    "alfred-soita": "/images/team/alfred-soita.webp",
+    "nicholas-baraza": "/images/team/nicholas-baraza.webp",
+    "sally-chepkemboi": "/images/team/sally-chepkemboi.webp",
     "evana-adema-ambeni-mukonjero": "/images/team/evana-adema-ambeni-mukonjero.webp",
     "irene-nakiete-kihara": "/images/team/irene-nakiete-kihara.webp",
     "maurice-ochieng-odongo": "/images/team/maurice-ochieng-odongo.webp",

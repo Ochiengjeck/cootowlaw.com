@@ -10,7 +10,9 @@ export type NavIconKey =
   | "inbox"
   | "chat"
   | "photo"
-  | "cog";
+  | "cog"
+  | "download"
+  | "mail";
 
 export const adminNavItems = [
   {
@@ -31,6 +33,8 @@ export const adminNavItems = [
     group: "Content",
     items: [
       { href: "/admin/news", label: "News", icon: "newspaper" },
+      { href: "/admin/digest", label: "Legal Digest", icon: "newspaper" },
+      { href: "/admin/downloads", label: "Downloads", icon: "download" },
       { href: "/admin/jobs", label: "Job Postings", icon: "briefcase" },
     ],
   },
@@ -39,6 +43,7 @@ export const adminNavItems = [
     items: [
       { href: "/admin/applications", label: "Applications", icon: "inbox" },
       { href: "/admin/messages", label: "Messages", icon: "chat" },
+      { href: "/admin/subscribers", label: "Digest Subscribers", icon: "mail" },
     ],
   },
   {

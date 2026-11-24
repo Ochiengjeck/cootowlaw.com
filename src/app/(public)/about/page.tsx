@@ -3,7 +3,7 @@ import { getSiteSettings } from "@/lib/data/settings";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { Card } from "@/components/ui/card";
 import { Reveal } from "@/components/ui/reveal";
-import { HeroBanner } from "@/components/ui/hero-banner";
+import { Logo } from "@/components/logo";
 
 export const metadata: Metadata = { title: "About the Firm" };
 
@@ -21,9 +21,11 @@ export default async function AboutPage() {
         />
       </Reveal>
 
-      {settings?.aboutHeroImage && (
-        <HeroBanner src={settings.aboutHeroImage.url} alt={settings.aboutHeroImage.alt} />
-      )}
+      <Reveal delay={60}>
+        <div className="mt-10 flex justify-center rounded-2xl border border-border bg-muted py-12">
+          <Logo big />
+        </div>
+      </Reveal>
 
       <Reveal delay={120}>
         <div

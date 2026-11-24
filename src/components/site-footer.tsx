@@ -8,6 +8,7 @@ import { getCurrentYear } from "@/lib/current-year";
 import { parsePhoneLines } from "@/lib/phone";
 import { MapPinIcon, MailIcon, PhoneIcon, ClockIcon } from "@/lib/icons";
 import { Logo } from "./logo";
+import { FooterSubscribeForm } from "./footer-subscribe-form";
 
 const socialIconPaths: Record<string, string> = {
   facebook: "M13 10h3V7h-3c-1.66 0-3 1.34-3 3v2H8v3h2v6h3v-6h2.5l.5-3H13v-2c0-.28.22-.5.5-.5h0c.17 0 .33 0 .5 0Z",
@@ -91,12 +92,12 @@ export async function SiteFooter() {
       />
       <div
         aria-hidden="true"
-        className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-gold-500/60 to-transparent"
+        className="absolute inset-x-0 top-0 h-px bg-[linear-gradient(to_right,transparent,color-mix(in_srgb,var(--gold-500)_60%,transparent)_35%,color-mix(in_srgb,var(--purple-500)_55%,transparent)_65%,transparent)]"
       />
       <div className="relative mx-auto max-w-6xl px-4 py-16 sm:px-6">
         <div className="grid grid-cols-2 gap-x-8 gap-y-12 sm:grid-cols-6 lg:grid-cols-12">
           <div className="col-span-2 sm:col-span-6 lg:col-span-4">
-            <Logo dark />
+            <Logo dark big />
             <p className="mt-4 max-w-xs text-sm leading-relaxed text-white/60">
               {settings?.tagline ?? "Leading Legal Service Provider for all Times"}
             </p>
@@ -156,6 +157,21 @@ export async function SiteFooter() {
           </div>
         </div>
 
+        <div className="mt-14 flex flex-col gap-6 border-t border-white/10 pt-10 lg:flex-row lg:items-center lg:justify-between lg:gap-10">
+          <div className="max-w-md">
+            <span className="text-xs font-semibold uppercase tracking-widest text-gold-400">
+              Legal Digest
+            </span>
+            <h3 className="mt-2 font-serif text-xl font-semibold text-white sm:text-2xl">
+              Stay ahead of legal developments
+            </h3>
+            <p className="mt-2 text-sm leading-relaxed text-white/60">
+              Periodic roundups of legal and regulatory updates, straight to your inbox.
+            </p>
+          </div>
+          <FooterSubscribeForm />
+        </div>
+
         {offices.length > 0 && (
           <div className="mt-14 border-t border-white/10 pt-10">
             <h3 className="text-xs font-semibold uppercase tracking-widest text-gold-400">
@@ -167,6 +183,17 @@ export async function SiteFooter() {
                   key={office.id}
                   className={`pt-6 first:pt-0 sm:pt-0 ${i === 0 ? "sm:pr-10" : "sm:pl-10"}`}
                 >
+                  {office.heroImage && (
+                    <div className="relative mb-4 h-28 w-full overflow-hidden rounded-lg">
+                      <Image
+                        src={office.heroImage.url}
+                        alt={office.heroImage.alt}
+                        fill
+                        sizes="(min-width: 640px) 360px, 100vw"
+                        className="object-cover"
+                      />
+                    </div>
+                  )}
                   <p className="font-serif text-base font-semibold text-white">{office.name}</p>
                   <div className="mt-4 space-y-3 text-sm text-white/60">
                     <div className="flex items-start gap-3">

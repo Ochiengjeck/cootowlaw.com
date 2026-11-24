@@ -76,19 +76,38 @@ export default async function PracticesPage() {
             <Reveal key={pa.id} delay={Math.min(i * 60, 300)}>
               <Link
                 href={`/practices/${pa.slug}`}
-                className="group block h-full rounded-2xl border border-border bg-white p-8 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_12px_32px_-12px_rgba(20,22,26,0.18)]"
+                className="group block h-full overflow-hidden rounded-2xl border border-border bg-white transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_12px_32px_-12px_rgba(20,22,26,0.18)]"
               >
-                <IconBox>
-                  <PracticeIcon className="h-6 w-6" />
-                </IconBox>
-                <h2 className="font-serif text-lg font-semibold text-charcoal">{pa.name}</h2>
-                <p className="mt-2 text-sm leading-relaxed text-slate">{pa.summary}</p>
-                <span className="mt-4 inline-flex items-center text-xs font-semibold uppercase tracking-wider text-charcoal group-hover:text-purple-600">
-                  Learn more
-                  <span className="ml-2 transition-transform group-hover:translate-x-1">
-                    &rarr;
+                {pa.heroImage ? (
+                  <div className="relative h-36 w-full overflow-hidden">
+                    <Image
+                      src={pa.heroImage.url}
+                      alt=""
+                      fill
+                      sizes="(min-width: 1024px) 33vw, 100vw"
+                      className="object-cover transition-transform duration-500 group-hover:scale-105"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
+                    <div className="absolute left-4 top-4 flex h-10 w-10 items-center justify-center rounded-xl bg-white/10 text-gold-400 backdrop-blur-sm transition-colors group-hover:bg-gold-500 group-hover:text-charcoal">
+                      <PracticeIcon className="h-5 w-5" />
+                    </div>
+                  </div>
+                ) : null}
+                <div className="p-8">
+                  {!pa.heroImage && (
+                    <IconBox>
+                      <PracticeIcon className="h-6 w-6" />
+                    </IconBox>
+                  )}
+                  <h2 className="font-serif text-lg font-semibold text-charcoal">{pa.name}</h2>
+                  <p className="mt-2 text-sm leading-relaxed text-slate">{pa.summary}</p>
+                  <span className="mt-4 inline-flex items-center text-xs font-semibold uppercase tracking-wider text-charcoal group-hover:text-purple-600">
+                    Learn more
+                    <span className="ml-2 transition-transform group-hover:translate-x-1">
+                      &rarr;
+                    </span>
                   </span>
-                </span>
+                </div>
               </Link>
             </Reveal>
           );

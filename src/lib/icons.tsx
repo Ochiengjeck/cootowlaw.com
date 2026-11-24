@@ -247,3 +247,8 @@ export const UndoIcon = (p: IconProps) => (
 export const RedoIcon = (p: IconProps) => (
   <Icon {...p} d="M15 7l5 5-5 5M20 12H10a6 6 0 000 12h1" />
 );
+
+/** Download arrow — Downloads section (public cards, admin nav). */
+export const DownloadIcon = (p: IconProps) => (
+  <Icon {...p} d="M12 3v12m0 0l-4-4m4 4l4-4M4 17v2a2 2 0 002 2h12a2 2 0 002-2v-2" />
+);

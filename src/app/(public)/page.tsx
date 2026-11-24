@@ -34,7 +34,7 @@ export default async function HomePage() {
     <div>
       {/* Hero */}
       <section className="relative isolate -mt-20 min-h-[88dvh] overflow-hidden sm:min-h-dvh">
-        <div className="absolute inset-0 -z-10 bg-[#431d63]">
+        <div className="absolute inset-0 -z-10 bg-purple-700">
           <Image
             src="/images/hero/purple-gold-legal-skyline.png"
             alt="Scales of justice, a gavel, law books, and the Nairobi skyline framed beside the Kenyan and African Union flags, over a purple and gold backdrop"
@@ -215,19 +215,38 @@ export default async function HomePage() {
               <Reveal key={pa.id} delay={i * 60}>
                 <Link
                   href={`/practices/${pa.slug}`}
-                  className="group block h-full rounded-2xl border border-border bg-white p-8 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_12px_32px_-12px_rgba(20,22,26,0.18)]"
+                  className="group block h-full overflow-hidden rounded-2xl border border-border bg-white transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_12px_32px_-12px_rgba(20,22,26,0.18)]"
                 >
-                  <IconBox>
-                    <PracticeIcon className="h-6 w-6" />
-                  </IconBox>
-                  <h3 className="font-serif text-lg font-semibold text-charcoal">{pa.name}</h3>
-                  <p className="mt-2 text-sm leading-relaxed text-slate">{pa.summary}</p>
-                  <span className="mt-4 inline-flex items-center text-xs font-semibold uppercase tracking-wider text-charcoal group-hover:text-purple-600">
-                    Learn more
-                    <span className="ml-2 transition-transform group-hover:translate-x-1">
-                      &rarr;
+                  {pa.heroImage ? (
+                    <div className="relative h-36 w-full overflow-hidden">
+                      <Image
+                        src={pa.heroImage.url}
+                        alt=""
+                        fill
+                        sizes="(min-width: 1024px) 33vw, 100vw"
+                        className="object-cover transition-transform duration-500 group-hover:scale-105"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
+                      <div className="absolute left-4 top-4 flex h-10 w-10 items-center justify-center rounded-xl bg-white/10 text-gold-400 backdrop-blur-sm transition-colors group-hover:bg-gold-500 group-hover:text-charcoal">
+                        <PracticeIcon className="h-5 w-5" />
+                      </div>
+                    </div>
+                  ) : null}
+                  <div className="p-8">
+                    {!pa.heroImage && (
+                      <IconBox>
+                        <PracticeIcon className="h-6 w-6" />
+                      </IconBox>
+                    )}
+                    <h3 className="font-serif text-lg font-semibold text-charcoal">{pa.name}</h3>
+                    <p className="mt-2 text-sm leading-relaxed text-slate">{pa.summary}</p>
+                    <span className="mt-4 inline-flex items-center text-xs font-semibold uppercase tracking-wider text-charcoal group-hover:text-purple-600">
+                      Learn more
+                      <span className="ml-2 transition-transform group-hover:translate-x-1">
+                        &rarr;
+                      </span>
                     </span>
-                  </span>
+                  </div>
                 </Link>
               </Reveal>
             );
@@ -274,7 +293,11 @@ export default async function HomePage() {
       {/* CTA */}
       <section className="bg-charcoal text-white">
         <div className="mx-auto max-w-6xl px-4 py-20 text-center sm:px-6">
-          <h2 className="font-serif text-2xl font-semibold sm:text-3xl">
+          <span className="mx-auto inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.2em] text-purple-300">
+            <span className="h-1.5 w-1.5 rounded-full bg-purple-500" />
+            Get in touch
+          </span>
+          <h2 className="mt-3 font-serif text-2xl font-semibold sm:text-3xl">
             Need legal counsel you can rely on?
           </h2>
           <p className="mx-auto mt-3 max-w-xl text-white/70">

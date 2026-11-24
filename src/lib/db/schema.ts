@@ -158,6 +158,46 @@ export const newsPosts = mysqlTable(
   (t) => [uniqueIndex("news_posts_slug_idx").on(t.slug)],
 );
 
+export const digestPosts = mysqlTable(
+  "digest_posts",
+  {
+    id: id(),
+    slug: varchar("slug", { length: 255 }).notNull(),
+    title: varchar("title", { length: 500 }).notNull(),
+    excerpt: varchar("excerpt", { length: 1000 }).notNull(),
+    bodyHtml: text("body_html").notNull(),
+    coverImageId: varchar("cover_image_id", { length: 36 }).references(() => media.id),
+    authorId: varchar("author_id", { length: 36 }).references(() => attorneys.id),
+    publishedAt: datetime("published_at", { mode: "date" }),
+    ...timestamps(),
+  },
+  (t) => [uniqueIndex("digest_posts_slug_idx").on(t.slug)],
+);
+
+export const digestSubscribers = mysqlTable(
+  "digest_subscribers",
+  {
+    id: id(),
+    email: varchar("email", { length: 255 }).notNull(),
+    createdAt: datetime("created_at", { mode: "date" })
+      .notNull()
+      .$defaultFn(() => new Date()),
+  },
+  (t) => [uniqueIndex("digest_subscribers_email_idx").on(t.email)],
+);
+
+export const downloads = mysqlTable("downloads", {
+  id: id(),
+  title: varchar("title", { length: 500 }).notNull(),
+  description: text("description"),
+  category: varchar("category", { length: 255 }).notNull(),
+  fileUrl: varchar("file_url", { length: 1000 }).notNull(),
+  fileFilename: varchar("file_filename", { length: 255 }).notNull(),
+  publishedAt: datetime("published_at", { mode: "date" }),
+  sortOrder: int("sort_order").notNull().default(0),
+  ...timestamps(),
+});
+
 export const jobPostings = mysqlTable(
   "job_postings",
   {

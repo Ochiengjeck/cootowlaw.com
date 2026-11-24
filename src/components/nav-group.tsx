@@ -3,10 +3,7 @@
 import { useEffect, useRef } from "react";
 import Link from "next/link";
 import type { NavItem } from "@/lib/nav-items";
-
-function isActiveHref(pathname: string, href: string) {
-  return pathname === href || pathname.startsWith(`${href}/`);
-}
+import { isActiveHref, navChipClass } from "@/lib/nav-items";
 
 export function NavGroup({
   label,
@@ -39,11 +36,8 @@ export function NavGroup({
   return (
     <details ref={ref} className="group relative">
       <summary
-        className={`flex cursor-pointer list-none items-center gap-1 text-sm transition-colors [&::-webkit-details-marker]:hidden ${
-          scrolled
-            ? `font-medium ${isGroupActive ? "text-gold-500" : "text-white/90 hover:text-gold-400"}`
-            : `font-bold ${isGroupActive ? "text-purple-700" : "text-purple-600 hover:text-purple-700"}`
-        }`}
+        aria-current={isGroupActive ? "page" : undefined}
+        className={`flex cursor-pointer list-none items-center gap-1 [&::-webkit-details-marker]:hidden ${navChipClass(isGroupActive, scrolled)}`}
       >
         {label}
         <svg
@@ -65,10 +59,12 @@ export function NavGroup({
               key={item.href}
               href={item.href}
               onClick={closeMenu}
-              className={`block rounded-xl px-3 py-2.5 text-sm font-medium transition-colors ${
+              aria-current={active ? "page" : undefined}
+              className={`flex items-center gap-2 rounded-xl px-3 py-2.5 text-sm font-medium transition-colors ${
                 active ? "bg-purple-50 text-purple-700" : "text-charcoal hover:bg-purple-50 hover:text-purple-700"
               }`}
             >
+              {active && <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-purple-600" />}
               {item.label}
             </Link>
           );

@@ -5,7 +5,7 @@
 import { randomUUID } from "node:crypto";
 import { eq, like } from "drizzle-orm";
 import { db } from "../src/lib/db";
-import { media, attorneys, clients, siteSettings } from "../src/lib/db/schema";
+import { media, attorneys, clients, offices, practiceAreas, siteSettings } from "../src/lib/db/schema";
 
 async function insertMedia(url: string, alt: string) {
   const id = randomUUID();
@@ -30,13 +30,58 @@ async function main() {
 
   // Hero images
   const homeHeroId = await insertMedia("/images/hero/home-hero.webp", "Cootow & Associates Advocates office");
-  const aboutHeroId = await insertMedia("/images/hero/about-banner.webp", "Cootow & Associates Advocates team");
+  // Note: the old "about-banner.webp" staff group photo is intentionally not wired to
+  // anything anymore — the client asked for it to be removed from both the People and
+  // About pages in favour of the firm logo / category navigation.
   await insertMedia("/images/hero/our-firm.webp", "Cootow & Associates Advocates — our firm");
 
-  await db
-    .update(siteSettings)
-    .set({ homeHeroImageId: homeHeroId, aboutHeroImageId: aboutHeroId, updatedAt: new Date() });
-  console.log("  site_settings hero images wired");
+  await db.update(siteSettings).set({ homeHeroImageId: homeHeroId, updatedAt: new Date() });
+  console.log("  site_settings hero image wired");
+
+  // Office photos
+  const officePhotos: Record<string, string> = {
+    nairobi: "/images/offices/nairobi.jpg",
+    mombasa: "/images/offices/mombasa.jpg",
+  };
+  let officeCount = 0;
+  for (const [slug, url] of Object.entries(officePhotos)) {
+    const heroImageId = await insertMedia(url, `${slug[0].toUpperCase()}${slug.slice(1)} skyline`);
+    const result = await db
+      .update(offices)
+      .set({ heroImageId, updatedAt: new Date() })
+      .where(eq(offices.slug, slug));
+    if (result[0].affectedRows > 0) officeCount++;
+  }
+  console.log(`  office photos wired: ${officeCount}/${Object.keys(officePhotos).length}`);
+
+  // Practice area photos (stock photography, one per practice area)
+  const practiceAreaPhotos: Record<string, string> = {
+    "conveyancing-real-estate": "/images/practices/conveyancing-real-estate.jpg",
+    litigation: "/images/practices/litigation.jpg",
+    "asset-tracing-recoveries": "/images/practices/asset-tracing-recoveries.jpg",
+    "banking-finance": "/images/practices/banking-finance.jpg",
+    arbitration: "/images/practices/arbitration.jpg",
+    "intellectual-property-law": "/images/practices/intellectual-property-law.jpg",
+    "corporate-commercial-law": "/images/practices/corporate-commercial-law.jpg",
+  };
+  let practiceCount = 0;
+  for (const [slug, url] of Object.entries(practiceAreaPhotos)) {
+    const heroImageId = await insertMedia(url, "");
+    const result = await db
+      .update(practiceAreas)
+      .set({ heroImageId, updatedAt: new Date() })
+      .where(eq(practiceAreas.slug, slug));
+    if (result[0].affectedRows > 0) practiceCount++;
+  }
+  const practiceNames = await db
+    .select({ id: practiceAreas.id, name: practiceAreas.name, heroImageId: practiceAreas.heroImageId })
+    .from(practiceAreas);
+  for (const pa of practiceNames) {
+    if (pa.heroImageId) {
+      await db.update(media).set({ alt: pa.name }).where(eq(media.id, pa.heroImageId));
+    }
+  }
+  console.log(`  practice area photos wired: ${practiceCount}/${Object.keys(practiceAreaPhotos).length}`);
 
   // Client logos (only confidently-identified real matches — see conversation notes;
   // the other 6 clients have no verified logo asset and stay text-only)

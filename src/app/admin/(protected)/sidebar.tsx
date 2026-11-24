@@ -17,6 +17,8 @@ import {
   ChatBubbleIcon,
   PhotoIcon,
   CogIcon,
+  DownloadIcon,
+  MailIcon,
 } from "@/lib/icons";
 import { adminNavItems, type NavIconKey } from "./nav-items";
 import { useSidebar } from "./sidebar-context";
@@ -34,6 +36,8 @@ const iconMap: Record<NavIconKey, (p: { className?: string }) => React.JSX.Eleme
   chat: ChatBubbleIcon,
   photo: PhotoIcon,
   cog: CogIcon,
+  download: DownloadIcon,
+  mail: MailIcon,
 };
 
 function isActiveHref(pathname: string, href: string) {

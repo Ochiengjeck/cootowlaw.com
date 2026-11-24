@@ -3,7 +3,7 @@ export const settingsSeed = {
   tagline: "Leading Legal Service Provider for all Times",
   foundedYear: 2006,
   aboutHtml:
-    "<p>Cootow &amp; Associates Advocates was founded in 2006 and comprises four senior Advocates, each with more than 20 years of professional experience, able to meet and provide solutions to a wide range of legal issues and challenges throughout the Eastern Africa region and beyond.</p><p>The firm operates as a one-stop shop for legal services, with two offices in Kenya — Nairobi and Mombasa — staffed by five Associates and twenty paralegals in Mombasa, and three Associates and eight paralegals in Nairobi.</p>",
+    "<p>Cootow &amp; Associates Advocates was founded in 2006 and is led by five senior Advocates with a combined partner experience of over 100 years, able to meet and provide solutions to a wide range of legal issues and challenges throughout the Eastern Africa region and beyond.</p><p>The firm operates as a one-stop shop for legal services, with two offices in Kenya — Nairobi and Mombasa — staffed by five Associates and twenty paralegals in Mombasa, and three Associates and eight paralegals in Nairobi.</p>",
   missionHtml:
     "<p>We are committed to rendering diligent, integral, dedicated, and professional legal services, while facilitating the rule of law and good governance.</p>",
   coreValues: [

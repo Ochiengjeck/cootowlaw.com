@@ -7,7 +7,7 @@ const SRC = path.join(ROOT, "public/images/logo/Logo.jpg");
 const LOGO_DIR = path.join(ROOT, "public/images/logo");
 const APP_DIR = path.join(ROOT, "src/app");
 
-const PURPLE = { r: 0x58, g: 0x25, b: 0x83 };
+const PURPLE = { r: 0x7a, g: 0x3b, b: 0xad };
 
 /** Luminance-based alpha key: the source is a flat purple mark on a flat white background. */
 function alphaFor(r: number, g: number, b: number): number {
@@ -76,7 +76,6 @@ async function main() {
         const sx = minX + x;
         const sy = minY + y;
         const si = sy * width + sx;
-        const so = si * 4;
         const oo = (y * cw + x) * 4;
         const a = alpha[si];
         if (recolorWhite) {
@@ -84,9 +83,12 @@ async function main() {
           out[oo + 1] = 255;
           out[oo + 2] = 255;
         } else {
-          out[oo] = data[so];
-          out[oo + 1] = data[so + 1];
-          out[oo + 2] = data[so + 2];
+          // Recolor to the brand purple rather than keeping the source JPEG's
+          // (lossy, slightly-off) pixel color — this is the single source of truth
+          // for the mark's purple everywhere it's used.
+          out[oo] = PURPLE.r;
+          out[oo + 1] = PURPLE.g;
+          out[oo + 2] = PURPLE.b;
         }
         out[oo + 3] = a;
       }

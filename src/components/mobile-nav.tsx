@@ -2,11 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { navGroups, navLinks } from "@/lib/nav-items";
-
-function isActiveHref(pathname: string, href: string) {
-  return pathname === href || pathname.startsWith(`${href}/`);
-}
+import { navGroups, navLinks, isActiveHref } from "@/lib/nav-items";
 
 export function MobileNav({
   transparent,
@@ -49,11 +45,15 @@ export function MobileNav({
               return (
                 <details key={group.label} className="group border-b border-border/60 py-1" open={groupActive}>
                   <summary
-                    className={`flex min-h-11 cursor-pointer list-none items-center justify-between py-3 text-base font-medium [&::-webkit-details-marker]:hidden ${
-                      groupActive ? "text-purple-600" : "text-charcoal"
+                    aria-current={groupActive ? "page" : undefined}
+                    className={`flex min-h-11 cursor-pointer list-none items-center justify-between gap-2 rounded-lg px-2 py-3 text-base font-medium [&::-webkit-details-marker]:hidden ${
+                      groupActive ? "bg-purple-50 text-purple-700" : "text-charcoal"
                     }`}
                   >
-                    {group.label}
+                    <span className="flex items-center gap-2">
+                      {groupActive && <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-purple-600" />}
+                      {group.label}
+                    </span>
                     <svg
                       viewBox="0 0 24 24"
                       className="h-4 w-4 text-slate transition-transform duration-200 group-open:rotate-180"
@@ -73,10 +73,12 @@ export function MobileNav({
                           key={item.href}
                           href={item.href}
                           onClick={() => setOpen(false)}
-                          className={`flex min-h-11 items-center text-sm font-medium ${
+                          aria-current={active ? "page" : undefined}
+                          className={`flex min-h-11 items-center gap-2 text-sm font-medium ${
                             active ? "text-purple-600" : "text-slate hover:text-purple-600"
                           }`}
                         >
+                          {active && <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-purple-600" />}
                           {item.label}
                         </Link>
                       );
@@ -92,10 +94,12 @@ export function MobileNav({
                   key={item.href}
                   href={item.href}
                   onClick={() => setOpen(false)}
-                  className={`flex min-h-11 items-center border-b border-border/60 text-base font-medium ${
-                    active ? "text-purple-600" : "text-charcoal hover:text-purple-600"
+                  aria-current={active ? "page" : undefined}
+                  className={`flex min-h-11 items-center gap-2 border-b border-border/60 px-2 text-base font-medium ${
+                    active ? "rounded-lg bg-purple-50 text-purple-600" : "text-charcoal hover:text-purple-600"
                   }`}
                 >
+                  {active && <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-purple-600" />}
                   {item.label}
                 </Link>
               );

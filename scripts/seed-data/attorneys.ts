@@ -38,12 +38,12 @@ export const attorneysSeed: AttorneySeed[] = [
   {
     slug: "samuel-ouma",
     name: "Samuel Ouma",
-    title: "Partner & Head of Family, Criminal and Succession Division",
+    title: "Managing Partner & Head of Family, Criminal and Succession Division",
     tier: "partner",
     credentials:
       "LL.B., University of Nairobi (1990); Advocate of the High Court of Kenya (admitted 1991); Commissioner for Oaths; Notary Public; Certified Public Secretary; member, Chartered Institute of Arbitrators",
     bioHtml:
-      "<p>Samuel heads the firm's Family, Criminal and Succession division, with a practice covering family and child law, criminal law, succession and probate, and litigation in security documentation, banking, and property. He also oversees the firm's financial management.</p><p>He has undertaken significant pro bono work for vulnerable children across Kenyan districts, served on the Law Society of Kenya's Disciplinary Committee (2006–2009), and holds Board of Governors roles. He is active in the Rotary Club and the Mombasa Sports Club.</p>",
+      "<p>Samuel is the firm's Managing Partner. He heads the firm's Family, Criminal and Succession division, with a practice covering family and child law, criminal law, succession and probate, and litigation in security documentation, banking, and property. He also oversees the firm's financial management.</p><p>He has undertaken significant pro bono work for vulnerable children across Kenyan districts, served on the Law Society of Kenya's Disciplinary Committee (2006–2009), and holds Board of Governors roles. He is active in the Rotary Club and the Mombasa Sports Club.</p>",
     officeSlug: null,
     sortOrder: 2,
     practiceAreaSlugs: ["litigation"],
@@ -51,12 +51,12 @@ export const attorneysSeed: AttorneySeed[] = [
   {
     slug: "job-weloba",
     name: "Job Weloba",
-    title: "Managing Partner & Head of Alternative Dispute Resolution",
+    title: "Partner & Head of Alternative Dispute Resolution",
     tier: "partner",
     credentials:
       "LL.B., University of Nairobi (1991); MBA (Business Strategic & Project Management), JKUAT; Advocate of the High Court of Kenya (admitted 1993); Certified Public Secretary; member, ICPSK; Accredited Governance Auditor (AGA); member, State Corporations Advisory Committee (SCAC); Notary Public; member, Chartered Institute of Arbitrators (London); registered patent agent",
     bioHtml:
-      "<p>Job is the firm's Managing Partner and heads its Alternative Dispute Resolution, Arbitration and Mediation practice. His work also spans corporate law, mergers &amp; acquisitions, administrative and management law, intellectual property law, and election petitions law, alongside company secretarial services.</p><p>He has chaired the Mombasa Sports Club (2002–2004) and the Rotary Club of Kilindini (2001), and served on the Law Society of Kenya council (2003, 2005).</p>",
+      "<p>Job heads the firm's Alternative Dispute Resolution, Arbitration and Mediation practice. His work also spans corporate law, mergers &amp; acquisitions, administrative and management law, intellectual property law, and election petitions law, alongside company secretarial services.</p><p>He has chaired the Mombasa Sports Club (2002–2004) and the Rotary Club of Kilindini (2001), and served on the Law Society of Kenya council (2003, 2005).</p>",
     officeSlug: null,
     sortOrder: 3,
     practiceAreaSlugs: ["arbitration", "corporate-commercial-law", "intellectual-property-law"],

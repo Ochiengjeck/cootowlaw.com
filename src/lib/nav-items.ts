@@ -23,7 +23,30 @@ export const navGroups: NavGroup[] = [
 
 export const navLinks: NavItem[] = [
   { href: "/news", label: "News" },
+  { href: "/digest", label: "Legal Digest" },
+  { href: "/downloads", label: "Downloads" },
   { href: "/offices", label: "Offices" },
 ];
 
 export const mainNavItems: NavItem[] = [...navGroups.flatMap((group) => group.items), ...navLinks];
+
+export function isActiveHref(pathname: string, href: string) {
+  return pathname === href || pathname.startsWith(`${href}/`);
+}
+
+/** Shared "active page" chip styling for the desktop pill nav (direct links and group labels alike). */
+export function navChipClass(active: boolean, scrolled: boolean) {
+  const base = "rounded-full px-3 py-1.5 text-sm transition-colors duration-200";
+  if (scrolled) {
+    return `${base} ${
+      active
+        ? "bg-white/15 font-semibold text-gold-400"
+        : "font-medium text-white/90 hover:bg-white/5 hover:text-gold-400"
+    }`;
+  }
+  return `${base} ${
+    active
+      ? "bg-purple-600/10 font-bold text-purple-700"
+      : "font-bold text-purple-600 hover:bg-purple-600/5 hover:text-purple-700"
+  }`;
+}

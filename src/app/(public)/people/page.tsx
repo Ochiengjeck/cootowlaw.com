@@ -5,7 +5,7 @@ import { PartnerCard } from "@/components/partner-card";
 import { TeamMemberCard } from "@/components/team-member-card";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { Reveal } from "@/components/ui/reveal";
-import { HeroBanner } from "@/components/ui/hero-banner";
+import { CardLink } from "@/components/ui/card";
 
 export const metadata: Metadata = { title: "People" };
 
@@ -24,26 +24,28 @@ export default async function PeoplePage() {
         <SectionHeading eyebrow="Our team" title="People" />
       </Reveal>
 
-      <HeroBanner
-        src="/images/hero/about-banner.webp"
-        alt="The Cootow & Associates Advocates team"
-        sizes="(min-width: 1024px) 1152px, 100vw"
-      />
-
       <Reveal delay={80}>
-        <nav
-          aria-label="Jump to section"
-          className="mt-8 flex flex-wrap gap-2 border-b border-border pb-6"
-        >
-          {TIER_SECTIONS.map((section) => (
-            <a
-              key={section.id}
-              href={`#${section.id}`}
-              className="rounded-full border border-border px-4 py-2 text-sm font-medium text-charcoal transition-colors hover:border-purple-500 hover:text-purple-600"
-            >
-              {section.label}
-            </a>
-          ))}
+        <nav aria-label="Jump to section" className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-3">
+          {TIER_SECTIONS.map((section) => {
+            const count = attorneys.filter((a) => a.tier === section.tier).length;
+            if (count === 0) return null;
+            return (
+              <CardLink key={section.id} href={`#${section.id}`} className="p-6">
+                <span className="text-xs font-semibold uppercase tracking-[0.2em] text-purple-600">
+                  {count} {count === 1 ? "Person" : "People"}
+                </span>
+                <h2 className="mt-2 font-serif text-xl font-semibold text-charcoal">
+                  {section.label}
+                </h2>
+                <span className="mt-4 inline-flex items-center text-xs font-semibold uppercase tracking-wider text-charcoal group-hover:text-purple-600">
+                  View
+                  <span className="ml-2 transition-transform group-hover:translate-x-1">
+                    &rarr;
+                  </span>
+                </span>
+              </CardLink>
+            );
+          })}
         </nav>
       </Reveal>
 

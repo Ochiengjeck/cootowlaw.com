@@ -1,15 +1,18 @@
 import Image from "next/image";
+import { attorneyPhotoStyle } from "@/lib/attorney-photo-position";
 
 type Photo = { url: string; alt: string } | null | undefined;
 
 export function Avatar({
   name,
   photo,
+  slug,
   size = 80,
   className,
 }: {
   name: string;
   photo: Photo;
+  slug?: string;
   size?: number;
   className?: string;
 }) {
@@ -24,6 +27,7 @@ export function Avatar({
           alt={photo.alt || `${name} portrait`}
           fill
           sizes={`${size}px`}
+          style={slug ? attorneyPhotoStyle(slug) : undefined}
           className="object-cover"
         />
       </div>

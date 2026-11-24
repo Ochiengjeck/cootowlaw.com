@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { CardLink } from "@/components/ui/card";
 import { PersonIcon } from "@/lib/icons";
+import { attorneyPhotoStyle } from "@/lib/attorney-photo-position";
 
 type Photo = { url: string; alt: string } | null | undefined;
 
@@ -23,6 +24,7 @@ export function TeamMemberCard({ person }: { person: TeamMember }) {
           alt={person.photo.alt || person.name}
           fill
           sizes="(min-width: 1024px) 360px, 100vw"
+          style={attorneyPhotoStyle(person.slug)}
           className="object-cover grayscale transition-all duration-500 group-hover:scale-105 group-hover:grayscale-0"
         />
       ) : (

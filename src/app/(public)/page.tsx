@@ -86,6 +86,7 @@ export default async function HomePage() {
                       key={p.id}
                       name={p.name}
                       photo={p.photo}
+                      slug={p.slug}
                       size={40}
                       className="ring-2 ring-ink"
                     />

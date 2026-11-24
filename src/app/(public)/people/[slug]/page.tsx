@@ -3,9 +3,9 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getAttorneyBySlug, getAttorneys } from "@/lib/data/attorneys";
-import { Card } from "@/components/ui/card";
 import { Reveal } from "@/components/ui/reveal";
-import { PersonIcon } from "@/lib/icons";
+import { PersonIcon, CheckIcon } from "@/lib/icons";
+import { attorneyPhotoStyle } from "@/lib/attorney-photo-position";
 
 const TIER_LABEL: Record<string, string> = {
   partner: "Partner",
@@ -59,6 +59,7 @@ export default async function AttorneyPage({ params }: { params: Promise<{ slug:
                 alt={attorney.photo.alt || attorney.name}
                 fill
                 sizes="208px"
+                style={attorneyPhotoStyle(attorney.slug)}
                 className="object-cover"
               />
             ) : (
@@ -114,12 +115,26 @@ export default async function AttorneyPage({ params }: { params: Promise<{ slug:
 
       {attorney.credentials && (
         <Reveal delay={180}>
-          <Card id="credentials" className="mt-8 scroll-mt-20 bg-muted p-5">
-            <h2 className="text-xs font-semibold uppercase tracking-widest text-charcoal">
-              Credentials
-            </h2>
-            <p className="mt-2 text-sm text-slate">{attorney.credentials}</p>
-          </Card>
+          <div id="credentials" className="mt-8 scroll-mt-20">
+            <h2 className="font-serif text-lg font-semibold text-charcoal">Credentials</h2>
+            <ul className="mt-4 grid grid-cols-1 gap-2 sm:grid-cols-2">
+              {attorney.credentials
+                .split(";")
+                .map((item) => item.trim())
+                .filter(Boolean)
+                .map((item, i) => (
+                  <li
+                    key={i}
+                    className="flex items-start gap-2.5 rounded-xl border border-border bg-white px-4 py-3 text-sm leading-snug text-charcoal"
+                  >
+                    <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-purple-50 text-purple-600">
+                      <CheckIcon className="h-3 w-3" />
+                    </span>
+                    {item}
+                  </li>
+                ))}
+            </ul>
+          </div>
         </Reveal>
       )}
 

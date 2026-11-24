@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { excerpt } from "@/lib/excerpt";
+import { attorneyPhotoStyle } from "@/lib/attorney-photo-position";
 
 type Photo = { url: string; alt: string } | null | undefined;
 
@@ -38,6 +39,7 @@ export function PartnerCard({ attorney }: { attorney: PartnerCardAttorney }) {
             alt={attorney.photo.alt || attorney.name}
             fill
             sizes="(min-width: 1024px) 360px, 100vw"
+            style={attorneyPhotoStyle(attorney.slug)}
             className="object-cover transition-transform duration-500 group-hover:scale-105"
           />
         ) : (

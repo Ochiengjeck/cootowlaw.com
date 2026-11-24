@@ -22,6 +22,7 @@ type Props = {
     foundedYear: number;
     aboutHtml: string;
     missionHtml: string;
+    visionHtml: string | null;
     coreValues: string[];
     advocAfricaBlurb: string | null;
     staffingStats: Record<string, { associates: number; paralegals: number }> | null;
@@ -90,6 +91,11 @@ export function SettingsForm({ action, offices, mediaItems, defaultValues }: Pro
           label="Mission (HTML allowed)"
           name="missionHtml"
           defaultValue={defaultValues.missionHtml}
+        />
+        <RichTextField
+          label="Vision (HTML allowed, optional)"
+          name="visionHtml"
+          defaultValue={defaultValues.visionHtml ?? ""}
         />
         <TextAreaField
           label="Core values (one per line)"

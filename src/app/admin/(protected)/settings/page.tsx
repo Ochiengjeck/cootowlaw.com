@@ -31,6 +31,7 @@ export default async function SettingsPage() {
             foundedYear: settings.foundedYear,
             aboutHtml: settings.aboutHtml,
             missionHtml: settings.missionHtml,
+            visionHtml: settings.visionHtml,
             coreValues: settings.coreValues,
             advocAfricaBlurb: settings.advocAfricaBlurb,
             staffingStats: settings.staffingStats,

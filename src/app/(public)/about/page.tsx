@@ -1,95 +1,212 @@
 import type { Metadata } from "next";
+import Image from "next/image";
+import Link from "next/link";
 import { getSiteSettings } from "@/lib/data/settings";
+import { getAttorneys } from "@/lib/data/attorneys";
+import { getOffices } from "@/lib/data/offices";
+import { getCurrentYear } from "@/lib/current-year";
 import { SectionHeading } from "@/components/ui/section-heading";
-import { Card } from "@/components/ui/card";
 import { Reveal } from "@/components/ui/reveal";
 import { Logo } from "@/components/logo";
+import { CheckIcon, BuildingIcon } from "@/lib/icons";
 
 export const metadata: Metadata = { title: "About the Firm" };
 
 export default async function AboutPage() {
-  const settings = await getSiteSettings();
+  const [settings, attorneys, offices, currentYear] = await Promise.all([
+    getSiteSettings(),
+    getAttorneys(),
+    getOffices(),
+    getCurrentYear(),
+  ]);
 
   const staffingStats = settings?.staffingStats ?? null;
+  const partnerCount = attorneys.filter((a) => a.tier === "partner").length;
+  const foundedYear = settings?.foundedYear ?? 2006;
+  const yearsInPractice = currentYear - foundedYear;
 
   return (
-    <div className="mx-auto max-w-4xl px-4 py-16 sm:px-6">
-      <Reveal>
-        <SectionHeading
-          eyebrow="About the Firm"
-          title={settings?.firmName ?? "Cootow & Associates Advocates"}
-        />
-      </Reveal>
+    <div>
+      {/* Hero */}
+      <section className="mx-auto max-w-6xl px-4 pt-16 sm:px-6">
+        <Reveal>
+          <SectionHeading
+            eyebrow="About the Firm"
+            title={settings?.firmName ?? "Cootow & Associates Advocates"}
+          />
+        </Reveal>
 
-      <Reveal delay={60}>
-        <div className="mt-10 flex justify-center rounded-2xl border border-border bg-muted py-12">
-          <Logo big />
+        <div className="mt-10 grid grid-cols-1 gap-10 lg:grid-cols-5 lg:items-stretch">
+          <Reveal delay={80} className="lg:col-span-3">
+            <div
+              className="rich-text text-[17px]"
+              dangerouslySetInnerHTML={{ __html: settings?.aboutHtml ?? "" }}
+            />
+          </Reveal>
+          <Reveal delay={140} className="lg:col-span-2">
+            <div className="flex h-full min-h-[16rem] items-center justify-center rounded-3xl border border-border bg-gradient-to-br from-purple-50 via-white to-gold-50">
+              <Logo big className="scale-150" />
+            </div>
+          </Reveal>
         </div>
-      </Reveal>
+      </section>
 
-      <Reveal delay={120}>
-        <div
-          className="rich-text mt-8"
-          dangerouslySetInnerHTML={{ __html: settings?.aboutHtml ?? "" }}
-        />
-      </Reveal>
-
-      <Reveal delay={160}>
-        <SectionHeading
-          className="mt-12"
-          align="left"
-          eyebrow="Our purpose"
-          title="Our Mission"
-        />
-        <div
-          className="rich-text mt-4"
-          dangerouslySetInnerHTML={{ __html: settings?.missionHtml ?? "" }}
-        />
-      </Reveal>
-
-      {settings && settings.coreValues.length > 0 && (
-        <Reveal delay={200}>
-          <SectionHeading
-            className="mt-12"
-            align="left"
-            eyebrow="What drives us"
-            title="Core Values"
-          />
-          <ul className="mt-4 flex flex-wrap gap-3">
-            {settings.coreValues.map((value) => (
-              <li
-                key={value}
-                className="rounded-full border border-purple-500/20 bg-purple-50 px-4 py-2 text-sm font-medium text-purple-700"
-              >
+      {/* Stats strip */}
+      <section className="mt-16 border-y border-border bg-muted">
+        <dl className="mx-auto grid max-w-6xl grid-cols-2 gap-8 px-4 py-10 sm:px-6 sm:grid-cols-4">
+          {[
+            [String(foundedYear), "Founded"],
+            [`${yearsInPractice}+`, "Years in practice"],
+            [String(partnerCount), "Partners"],
+            [String(offices.length), "Offices in Kenya"],
+          ].map(([value, label]) => (
+            <div key={label}>
+              <dt className="font-serif text-3xl font-semibold text-purple-600 lg:text-4xl">
                 {value}
-              </li>
-            ))}
-          </ul>
-        </Reveal>
-      )}
+              </dt>
+              <dd className="mt-1 text-xs uppercase tracking-widest text-slate">{label}</dd>
+            </div>
+          ))}
+        </dl>
+      </section>
 
-      {staffingStats && (
-        <Reveal delay={240}>
-          <SectionHeading
-            className="mt-12"
-            align="left"
-            eyebrow="Our people"
-            title="Our Offices"
-          />
-          <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2">
-            {Object.entries(staffingStats).map(([office, stats]) => (
-              <Card key={office} className="bg-muted p-5">
-                <h3 className="font-serif text-lg font-semibold capitalize text-charcoal">
-                  {office}
-                </h3>
-                <p className="mt-1 text-sm text-slate">
-                  {stats.associates} Associates &middot; {stats.paralegals} Paralegals
-                </p>
-              </Card>
-            ))}
-          </div>
-        </Reveal>
-      )}
+      <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
+        <div className="grid grid-cols-1 gap-12 lg:grid-cols-5">
+          {settings && settings.coreValues.length > 0 && (
+            <Reveal className="lg:col-span-2">
+              <SectionHeading align="left" eyebrow="What drives us" title="Core Values" />
+              <ul className="mt-4 grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-1">
+                {settings.coreValues.map((value) => (
+                  <li
+                    key={value}
+                    className="flex items-center gap-2.5 rounded-xl border border-border bg-white px-4 py-3 text-sm font-medium text-charcoal"
+                  >
+                    <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-gold-50 text-gold-600">
+                      <CheckIcon className="h-3.5 w-3.5" />
+                    </span>
+                    {value}
+                  </li>
+                ))}
+              </ul>
+            </Reveal>
+          )}
+
+          <Reveal delay={80} className="lg:col-span-3">
+            <SectionHeading align="left" eyebrow="Our purpose" title="Our Mission" />
+            <div
+              className="rich-text mt-4"
+              dangerouslySetInnerHTML={{ __html: settings?.missionHtml ?? "" }}
+            />
+
+            {settings?.visionHtml && (
+              <div className="mt-10">
+                <SectionHeading align="left" eyebrow="Where we're headed" title="Our Vision" />
+                <div
+                  className="rich-text mt-4"
+                  dangerouslySetInnerHTML={{ __html: settings.visionHtml }}
+                />
+              </div>
+            )}
+          </Reveal>
+        </div>
+
+        {offices.length > 0 && (
+          <Reveal delay={160} className="mt-16">
+            <SectionHeading align="left" eyebrow="Our people" title="Our Offices" />
+            <div className="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-2">
+              {offices.map((office) => {
+                const stats = staffingStats?.[office.slug];
+                return (
+                  <Link
+                    key={office.id}
+                    href={`/offices/${office.slug}`}
+                    className="group block overflow-hidden rounded-2xl border border-border bg-white transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_12px_32px_-12px_rgba(20,22,26,0.18)]"
+                  >
+                    {office.heroImage ? (
+                      <div className="relative h-40 w-full overflow-hidden">
+                        <Image
+                          src={office.heroImage.url}
+                          alt={office.heroImage.alt}
+                          fill
+                          sizes="(min-width: 640px) 50vw, 100vw"
+                          className="object-cover transition-transform duration-500 group-hover:scale-105"
+                        />
+                      </div>
+                    ) : null}
+                    <div className="flex items-start gap-4 p-6">
+                      <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-purple-50 text-purple-600">
+                        <BuildingIcon className="h-5 w-5" />
+                      </span>
+                      <div>
+                        <h3 className="font-serif text-lg font-semibold text-charcoal group-hover:text-purple-700">
+                          {office.name}
+                        </h3>
+                        {stats && (
+                          <p className="mt-1 text-sm text-slate">
+                            {stats.associates} Associates &middot; {stats.paralegals} Paralegals
+                          </p>
+                        )}
+                        <span className="mt-3 inline-flex items-center text-xs font-semibold uppercase tracking-wider text-charcoal group-hover:text-purple-600">
+                          View office
+                          <span className="ml-2 transition-transform group-hover:translate-x-1">
+                            &rarr;
+                          </span>
+                        </span>
+                      </div>
+                    </div>
+                  </Link>
+                );
+              })}
+            </div>
+          </Reveal>
+        )}
+
+        {settings?.advocAfricaBlurb && (
+          <Reveal delay={200}>
+            <div className="relative mt-16 overflow-hidden rounded-3xl bg-charcoal p-8 sm:p-10">
+              <div
+                aria-hidden="true"
+                className="absolute inset-0 bg-[linear-gradient(135deg,color-mix(in_srgb,var(--purple-700)_55%,transparent),transparent_60%)]"
+              />
+              <div
+                aria-hidden="true"
+                className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-gold-500/60 to-transparent"
+              />
+              <div className="relative flex flex-col items-start gap-6 sm:flex-row sm:items-center">
+                <div className="flex h-20 w-32 shrink-0 items-center justify-center rounded-2xl bg-white p-3 shadow-[0_12px_32px_-12px_rgba(0,0,0,0.4)]">
+                  <Image
+                    src="/images/partners/advoc-logo.png"
+                    alt="Advoc"
+                    width={513}
+                    height={288}
+                    className="h-full w-full object-contain"
+                  />
+                </div>
+                <div>
+                  <span className="text-xs font-semibold uppercase tracking-widest text-gold-400">
+                    Global network
+                  </span>
+                  <h3 className="mt-2 font-serif text-xl font-semibold text-white">
+                    Advoc Africa
+                  </h3>
+                  <p className="mt-2 max-w-2xl text-sm leading-relaxed text-white/70">
+                    {settings.advocAfricaBlurb}
+                  </p>
+                  <a
+                    href="https://www.advoc.com/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mt-4 inline-flex items-center gap-1.5 rounded-full bg-gold-500 px-5 py-2.5 text-xs font-semibold uppercase tracking-wider text-charcoal transition-colors hover:bg-gold-600"
+                  >
+                    Visit advoc.com
+                    <span aria-hidden="true">&rarr;</span>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </Reveal>
+        )}
+      </div>
     </div>
   );
 }

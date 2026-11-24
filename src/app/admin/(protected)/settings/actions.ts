@@ -14,6 +14,7 @@ function parseForm(formData: FormData, officeSlugs: string[]): SettingsInput | {
   const foundedYear = Number(formData.get("foundedYear") ?? 0);
   const aboutHtml = String(formData.get("aboutHtml") ?? "").trim();
   const missionHtml = String(formData.get("missionHtml") ?? "").trim();
+  const visionHtml = String(formData.get("visionHtml") ?? "").trim() || null;
   const coreValues = String(formData.get("coreValues") ?? "")
     .split("\n")
     .map((s) => s.trim())
@@ -56,6 +57,7 @@ function parseForm(formData: FormData, officeSlugs: string[]): SettingsInput | {
     foundedYear,
     aboutHtml,
     missionHtml,
+    visionHtml,
     coreValues,
     advocAfricaBlurb,
     staffingStats: Object.keys(staffingStats).length > 0 ? staffingStats : null,

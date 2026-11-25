@@ -8,7 +8,8 @@ import { getCurrentYear } from "@/lib/current-year";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { Reveal } from "@/components/ui/reveal";
 import { Logo } from "@/components/logo";
-import { CheckIcon, BuildingIcon } from "@/lib/icons";
+import { IconBox } from "@/components/ui/icon-box";
+import { CheckIcon, BuildingIcon, ScaleIcon, EyeIcon } from "@/lib/icons";
 
 export const metadata: Metadata = { title: "About the Firm" };
 
@@ -71,47 +72,69 @@ export default async function AboutPage() {
       </section>
 
       <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
-        <div className="grid grid-cols-1 gap-12 lg:grid-cols-5">
-          {settings && settings.coreValues.length > 0 && (
-            <Reveal className="lg:col-span-2">
-              <SectionHeading align="left" eyebrow="What drives us" title="Core Values" />
-              <ul className="mt-4 grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-1">
-                {settings.coreValues.map((value) => (
-                  <li
-                    key={value}
-                    className="flex items-center gap-2.5 rounded-xl border border-border bg-white px-4 py-3 text-sm font-medium text-charcoal"
-                  >
-                    <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-gold-50 text-gold-600">
-                      <CheckIcon className="h-3.5 w-3.5" />
-                    </span>
-                    {value}
-                  </li>
-                ))}
-              </ul>
-            </Reveal>
-          )}
+        <Reveal>
+          <SectionHeading align="left" eyebrow="Our purpose" title="Mission &amp; Vision" />
+        </Reveal>
 
-          <Reveal delay={80} className="lg:col-span-3">
-            <SectionHeading align="left" eyebrow="Our purpose" title="Our Mission" />
-            <div
-              className="rich-text mt-4"
-              dangerouslySetInnerHTML={{ __html: settings?.missionHtml ?? "" }}
-            />
+        <div className="mt-8 grid grid-cols-1 gap-6 lg:grid-cols-2">
+          <Reveal
+            delay={60}
+            className={settings?.visionHtml ? undefined : "lg:col-span-2 lg:max-w-3xl"}
+          >
+            <div className="flex h-full flex-col rounded-3xl border border-border bg-white p-8">
+              <IconBox>
+                <ScaleIcon className="h-6 w-6" />
+              </IconBox>
+              <h3 className="font-serif text-xl font-semibold text-charcoal">Our Mission</h3>
+              <div
+                className="rich-text mt-3"
+                dangerouslySetInnerHTML={{ __html: settings?.missionHtml ?? "" }}
+              />
+            </div>
+          </Reveal>
 
-            {settings?.visionHtml && (
-              <div className="mt-10">
-                <SectionHeading align="left" eyebrow="Where we're headed" title="Our Vision" />
+          {settings?.visionHtml && (
+            <Reveal delay={120}>
+              <div className="flex h-full flex-col rounded-3xl border border-border bg-white p-8">
+                <IconBox>
+                  <EyeIcon className="h-6 w-6" />
+                </IconBox>
+                <h3 className="font-serif text-xl font-semibold text-charcoal">Our Vision</h3>
                 <div
-                  className="rich-text mt-4"
+                  className="rich-text mt-3"
                   dangerouslySetInnerHTML={{ __html: settings.visionHtml }}
                 />
               </div>
-            )}
-          </Reveal>
+            </Reveal>
+          )}
         </div>
 
-        {offices.length > 0 && (
+        {settings && settings.coreValues.length > 0 && (
           <Reveal delay={160} className="mt-16">
+            <SectionHeading align="left" eyebrow="What drives us" title="Core Values" />
+            <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+              {settings.coreValues.map((value) => (
+                <div
+                  key={value.title}
+                  className="rounded-2xl border border-border bg-white p-5"
+                >
+                  <span className="flex h-9 w-9 items-center justify-center rounded-full bg-gold-50 text-gold-600">
+                    <CheckIcon className="h-4 w-4" />
+                  </span>
+                  <p className="mt-3 text-sm font-semibold text-charcoal">{value.title}</p>
+                  {value.description && (
+                    <p className="mt-1.5 text-sm leading-relaxed text-slate">
+                      {value.description}
+                    </p>
+                  )}
+                </div>
+              ))}
+            </div>
+          </Reveal>
+        )}
+
+        {offices.length > 0 && (
+          <Reveal delay={200} className="mt-16">
             <SectionHeading align="left" eyebrow="Our people" title="Our Offices" />
             <div className="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-2">
               {offices.map((office) => {
@@ -162,7 +185,7 @@ export default async function AboutPage() {
         )}
 
         {settings?.advocAfricaBlurb && (
-          <Reveal delay={200}>
+          <Reveal delay={240}>
             <div className="relative mt-16 overflow-hidden rounded-3xl bg-charcoal p-8 sm:p-10">
               <div
                 aria-hidden="true"

@@ -3,7 +3,7 @@
 import { redirect } from "next/navigation";
 import { updateTag } from "next/cache";
 import { getCurrentAdmin } from "@/lib/auth";
-import { updateSiteSettings, type SettingsInput } from "@/lib/data/settings";
+import { updateSiteSettings, type SettingsInput, type CoreValue } from "@/lib/data/settings";
 import { adminListOffices } from "@/lib/data/offices";
 
 export type SettingsFormState = { error?: string } | undefined;
@@ -15,10 +15,14 @@ function parseForm(formData: FormData, officeSlugs: string[]): SettingsInput | {
   const aboutHtml = String(formData.get("aboutHtml") ?? "").trim();
   const missionHtml = String(formData.get("missionHtml") ?? "").trim();
   const visionHtml = String(formData.get("visionHtml") ?? "").trim() || null;
-  const coreValues = String(formData.get("coreValues") ?? "")
-    .split("\n")
-    .map((s) => s.trim())
-    .filter(Boolean);
+  const coreValues: CoreValue[] = [];
+  for (const line of String(formData.get("coreValues") ?? "").split("\n")) {
+    const [title, ...rest] = line.split(":");
+    const description = rest.join(":").trim();
+    if (title?.trim()) {
+      coreValues.push({ title: title.trim(), description });
+    }
+  }
   const advocAfricaBlurb = String(formData.get("advocAfricaBlurb") ?? "").trim() || null;
   const careersHtml = String(formData.get("careersHtml") ?? "").trim() || null;
   const privacyPolicyHtml = String(formData.get("privacyPolicyHtml") ?? "").trim() || null;

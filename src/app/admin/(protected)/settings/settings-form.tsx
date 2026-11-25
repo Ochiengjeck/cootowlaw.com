@@ -2,6 +2,7 @@
 
 import { useActionState } from "react";
 import type { SettingsFormState } from "./actions";
+import type { CoreValue } from "@/lib/data/settings";
 import { TextField, TextAreaField, NumberField } from "@/components/admin/form-fields";
 import { RichTextField } from "@/components/admin/rich-text-field";
 import { SubmitButton } from "@/components/admin/submit-button";
@@ -23,7 +24,7 @@ type Props = {
     aboutHtml: string;
     missionHtml: string;
     visionHtml: string | null;
-    coreValues: string[];
+    coreValues: CoreValue[];
     advocAfricaBlurb: string | null;
     staffingStats: Record<string, { associates: number; paralegals: number }> | null;
     socialLinks: Record<string, string>;
@@ -98,10 +99,13 @@ export function SettingsForm({ action, offices, mediaItems, defaultValues }: Pro
           defaultValue={defaultValues.visionHtml ?? ""}
         />
         <TextAreaField
-          label="Core values (one per line)"
+          label="Core values (one per line, as: Title: Description)"
           name="coreValues"
-          defaultValue={defaultValues.coreValues.join("\n")}
-          rows={4}
+          defaultValue={defaultValues.coreValues
+            .map((v) => `${v.title}: ${v.description}`)
+            .join("\n")}
+          rows={8}
+          help="Example: Accuracy: We get the detail right the first time, so your matter isn't delayed by avoidable errors."
         />
         <TextAreaField
           label="Advoc Africa network blurb (optional)"

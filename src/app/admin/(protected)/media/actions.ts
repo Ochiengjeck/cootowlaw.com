@@ -23,7 +23,15 @@ export async function uploadMediaAction(
     return { error: "Alt text is required (for accessibility and SEO)." };
   }
 
-  const blob = await put(file.name, file, { access: "public", addRandomSuffix: true });
+  let blob;
+  try {
+    blob = await put(file.name, file, { access: "public", addRandomSuffix: true });
+  } catch {
+    return {
+      error:
+        "Upload failed: file storage isn't configured yet. Set BLOB_READ_WRITE_TOKEN (see .env.local) and try again.",
+    };
+  }
 
   await createMedia({ url: blob.url, alt });
   revalidatePath("/admin/media");

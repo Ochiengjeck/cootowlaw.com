@@ -2,6 +2,7 @@
 
 import { useActionState } from "react";
 import type { PracticeAreaFormState } from "./actions";
+import type { PracticeAreaService } from "@/lib/data/practice-areas";
 import { TextField, TextAreaField, NumberField } from "@/components/admin/form-fields";
 import { RichTextField } from "@/components/admin/rich-text-field";
 import { SubmitButton } from "@/components/admin/submit-button";
@@ -17,7 +18,7 @@ type Props = {
     name: string;
     summary: string;
     descriptionHtml: string;
-    servicesList: string[];
+    servicesList: PracticeAreaService[];
     heroImageId: string | null;
     sortOrder: number;
   };
@@ -43,10 +44,13 @@ export function PracticeAreaForm({ action, mediaItems, defaultValues, submitLabe
         defaultValue={defaultValues?.descriptionHtml}
       />
       <TextAreaField
-        label="Services (one per line)"
+        label="Services (one per line, as: Name: Description)"
         name="servicesList"
-        defaultValue={defaultValues?.servicesList.join("\n")}
-        rows={5}
+        defaultValue={defaultValues?.servicesList
+          .map((s) => `${s.name}: ${s.description}`)
+          .join("\n")}
+        rows={8}
+        help="Example: Asset finance: We structure and negotiate financing for vehicles, equipment, and other assets, so you can expand without taking on avoidable legal risk."
       />
       <ImagePicker
         label="Hero image (optional)"

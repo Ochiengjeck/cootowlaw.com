@@ -88,7 +88,7 @@ export async function SiteFooter() {
         alt=""
         fill
         sizes="100vw"
-        className="object-cover object-right-top"
+        className="object-cover object-right-top opacity-80 brightness-150 saturate-150"
       />
       <div
         aria-hidden="true"

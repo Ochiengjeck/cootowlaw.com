@@ -8,7 +8,6 @@ export const navGroups: NavGroup[] = [
     items: [
       { href: "/about", label: "About" },
       { href: "/people", label: "People" },
-      { href: "/careers", label: "Careers" },
     ],
   },
   {

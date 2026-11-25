@@ -60,6 +60,8 @@ export const offices = mysqlTable(
   (t) => [uniqueIndex("offices_slug_idx").on(t.slug)],
 );
 
+export type PracticeAreaService = { name: string; description: string };
+
 export const practiceAreas = mysqlTable(
   "practice_areas",
   {
@@ -68,7 +70,7 @@ export const practiceAreas = mysqlTable(
     name: varchar("name", { length: 255 }).notNull(),
     summary: varchar("summary", { length: 1000 }).notNull(),
     descriptionHtml: text("description_html").notNull(),
-    servicesList: json("services_list").$type<string[]>().notNull(),
+    servicesList: json("services_list").$type<PracticeAreaService[]>().notNull(),
     heroImageId: varchar("hero_image_id", { length: 36 }).references(() => media.id),
     sortOrder: int("sort_order").notNull().default(0),
     ...timestamps(),
@@ -233,6 +235,8 @@ export const jobApplications = mysqlTable("job_applications", {
   repliedAt: datetime("replied_at", { mode: "date" }),
 });
 
+export type CoreValue = { title: string; description: string };
+
 export const siteSettings = mysqlTable("site_settings", {
   id: id(),
   firmName: varchar("firm_name", { length: 255 }).notNull(),
@@ -241,7 +245,7 @@ export const siteSettings = mysqlTable("site_settings", {
   aboutHtml: text("about_html").notNull(),
   missionHtml: text("mission_html").notNull(),
   visionHtml: text("vision_html"),
-  coreValues: json("core_values").$type<string[]>().notNull(),
+  coreValues: json("core_values").$type<CoreValue[]>().notNull(),
   advocAfricaBlurb: text("advoc_africa_blurb"),
   staffingStats: json("staffing_stats").$type<
     Record<string, { associates: number; paralegals: number }>

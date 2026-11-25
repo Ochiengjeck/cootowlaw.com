@@ -8,6 +8,7 @@ import {
   deletePracticeArea,
   updatePracticeArea,
   type PracticeAreaInput,
+  type PracticeAreaService,
 } from "@/lib/data/practice-areas";
 
 export type PracticeAreaFormState = { error?: string } | undefined;
@@ -17,10 +18,14 @@ function parseForm(formData: FormData): PracticeAreaInput | { error: string } {
   const name = String(formData.get("name") ?? "").trim();
   const summary = String(formData.get("summary") ?? "").trim();
   const descriptionHtml = String(formData.get("descriptionHtml") ?? "").trim();
-  const servicesList = String(formData.get("servicesList") ?? "")
-    .split("\n")
-    .map((s) => s.trim())
-    .filter(Boolean);
+  const servicesList: PracticeAreaService[] = [];
+  for (const line of String(formData.get("servicesList") ?? "").split("\n")) {
+    const [name, ...rest] = line.split(":");
+    const description = rest.join(":").trim();
+    if (name?.trim()) {
+      servicesList.push({ name: name.trim(), description });
+    }
+  }
   const heroImageId = String(formData.get("heroImageId") ?? "").trim() || null;
   const sortOrder = Number(formData.get("sortOrder") ?? 0);
 

@@ -33,7 +33,11 @@ async function main() {
   // Note: the old "about-banner.webp" staff group photo is intentionally not wired to
   // anything anymore — the client asked for it to be removed from both the People and
   // About pages in favour of the firm logo / category navigation.
-  await insertMedia("/images/hero/our-firm.webp", "Cootow & Associates Advocates — our firm");
+  // "our-firm.webp" (group partners photo) is kept here archival-only too, for the
+  // same reason — it's no longer referenced by the homepage or practices page, which
+  // now use "/images/hero/purple-gold-legal-skyline.png" instead (client request,
+  // Nov 2026: replace the partners photo with an industry/firm-branded image).
+  await insertMedia("/images/hero/our-firm.webp", "Cootow & Associates Advocates — our firm (archival)");
 
   await db.update(siteSettings).set({ homeHeroImageId: homeHeroId, updatedAt: new Date() });
   console.log("  site_settings hero image wired");
@@ -54,15 +58,19 @@ async function main() {
   }
   console.log(`  office photos wired: ${officeCount}/${Object.keys(officePhotos).length}`);
 
-  // Practice area photos (stock photography, one per practice area)
+  // Practice area photos (stock photography, one per practice area).
+  // Litigation/Arbitration and Corporate/Asset-tracing reuse the two
+  // identity-free, firm-branded images below instead of their original stock
+  // photos — those showed identifiable people and were swapped out for
+  // copyright reasons (client request, Nov 2026).
   const practiceAreaPhotos: Record<string, string> = {
     "conveyancing-real-estate": "/images/practices/conveyancing-real-estate.jpg",
-    litigation: "/images/practices/litigation.jpg",
-    "asset-tracing-recoveries": "/images/practices/asset-tracing-recoveries.jpg",
+    litigation: "/images/hero/justice-statue.jpg",
+    "asset-tracing-recoveries": "/images/hero/purple-gold-legal-skyline.png",
     "banking-finance": "/images/practices/banking-finance.jpg",
-    arbitration: "/images/practices/arbitration.jpg",
+    arbitration: "/images/hero/justice-statue.jpg",
     "intellectual-property-law": "/images/practices/intellectual-property-law.jpg",
-    "corporate-commercial-law": "/images/practices/corporate-commercial-law.jpg",
+    "corporate-commercial-law": "/images/hero/purple-gold-legal-skyline.png",
   };
   let practiceCount = 0;
   for (const [slug, url] of Object.entries(practiceAreaPhotos)) {

@@ -36,9 +36,16 @@ async function parseForm(
   let fileFilename = existingFile?.fileFilename ?? "";
   const file = formData.get("file");
   if (file instanceof File && file.size > 0) {
-    const blob = await put(file.name, file, { access: "public", addRandomSuffix: true });
-    fileUrl = blob.url;
-    fileFilename = file.name;
+    try {
+      const blob = await put(file.name, file, { access: "public", addRandomSuffix: true });
+      fileUrl = blob.url;
+      fileFilename = file.name;
+    } catch {
+      return {
+        error:
+          "Upload failed: file storage isn't configured yet. Set BLOB_READ_WRITE_TOKEN (see .env.local) and try again.",
+      };
+    }
   }
   if (!fileUrl) {
     return { error: "Choose a file to upload." };

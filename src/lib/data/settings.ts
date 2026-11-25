@@ -4,7 +4,9 @@ import { alias } from "drizzle-orm/mysql-core";
 import { cacheTag } from "next/cache";
 import { connection } from "next/server";
 import { db } from "@/lib/db";
-import { siteSettings, media } from "@/lib/db/schema";
+import { siteSettings, media, type CoreValue } from "@/lib/db/schema";
+
+export type { CoreValue };
 
 const homeHeroMedia = alias(media, "home_hero_media");
 const aboutHeroMedia = alias(media, "about_hero_media");
@@ -16,7 +18,7 @@ export type SettingsInput = {
   aboutHtml: string;
   missionHtml: string;
   visionHtml: string | null;
-  coreValues: string[];
+  coreValues: CoreValue[];
   advocAfricaBlurb: string | null;
   staffingStats: Record<string, { associates: number; paralegals: number }> | null;
   socialLinks: Record<string, string>;

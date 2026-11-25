@@ -149,6 +149,9 @@ export default async function HomePage() {
             <div className="mt-12">
               <PartnersCarousel partners={allPartners} />
             </div>
+            <p className="mt-10 text-center font-serif text-lg font-semibold text-purple-700 sm:text-xl">
+              Over 10 Decades of Combined Partner Experience
+            </p>
           </div>
         </section>
       )}
@@ -184,7 +187,7 @@ export default async function HomePage() {
                     className="group relative flex h-full min-h-[22rem] flex-col justify-end overflow-hidden rounded-2xl p-8 text-white transition-transform duration-300 hover:-translate-y-0.5 sm:p-10"
                   >
                     <Image
-                      src="/images/hero/our-firm.webp"
+                      src="/images/hero/purple-gold-legal-skyline.png"
                       alt=""
                       fill
                       sizes="(min-width: 1024px) 66vw, 100vw"
@@ -265,10 +268,7 @@ export default async function HomePage() {
             <div className="animate-marquee flex w-max items-center gap-16 group-hover/logos:[animation-play-state:paused]">
               {[...clients, ...clients].map((c, i) =>
                 c.logo ? (
-                  <div
-                    key={`${c.id}-${i}`}
-                    className="relative h-10 w-28 shrink-0 grayscale transition duration-300 hover:grayscale-0"
-                  >
+                  <div key={`${c.id}-${i}`} className="relative h-10 w-28 shrink-0">
                     <Image
                       src={c.logo.url}
                       alt={c.logo.alt}

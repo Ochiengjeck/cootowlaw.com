@@ -43,7 +43,7 @@ export default async function PracticesPage() {
                     />
                   ) : (
                     <Image
-                      src="/images/hero/our-firm.webp"
+                      src="/images/hero/purple-gold-legal-skyline.png"
                       alt=""
                       fill
                       sizes="(min-width: 1024px) 66vw, 100vw"

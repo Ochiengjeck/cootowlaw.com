@@ -4,14 +4,16 @@ import { asc, eq } from "drizzle-orm";
 import { cacheTag } from "next/cache";
 import { connection } from "next/server";
 import { db } from "@/lib/db";
-import { practiceAreas, media } from "@/lib/db/schema";
+import { practiceAreas, media, type PracticeAreaService } from "@/lib/db/schema";
+
+export type { PracticeAreaService };
 
 export type PracticeAreaInput = {
   slug: string;
   name: string;
   summary: string;
   descriptionHtml: string;
-  servicesList: string[];
+  servicesList: PracticeAreaService[];
   heroImageId: string | null;
   sortOrder: number;
 };

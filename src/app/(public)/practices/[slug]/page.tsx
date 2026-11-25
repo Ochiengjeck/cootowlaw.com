@@ -75,13 +75,19 @@ export default async function PracticeAreaPage({
       {practiceArea.servicesList.length > 0 && (
         <Reveal delay={200}>
           <h2 className="mt-10 font-serif text-xl font-semibold text-charcoal">Our services</h2>
-          <ul className="mt-4 grid grid-cols-1 gap-2 sm:grid-cols-2">
+          <p className="mt-2 text-sm text-slate">
+            How each service area helps you, and why it&apos;s worth a conversation with our team.
+          </p>
+          <ul className="mt-4 grid grid-cols-1 gap-3">
             {practiceArea.servicesList.map((service) => (
               <li
-                key={service}
-                className="rounded-xl border border-border bg-muted px-4 py-3 text-sm text-charcoal"
+                key={service.name}
+                className="rounded-xl border border-border bg-muted px-5 py-4"
               >
-                {service}
+                <p className="text-sm font-semibold text-charcoal">{service.name}</p>
+                {service.description && (
+                  <p className="mt-1 text-sm leading-relaxed text-slate">{service.description}</p>
+                )}
               </li>
             ))}
           </ul>

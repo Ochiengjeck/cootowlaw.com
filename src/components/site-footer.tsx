@@ -83,12 +83,13 @@ export async function SiteFooter() {
 
   return (
     <footer className="relative overflow-hidden bg-charcoal text-white/60">
-      <Image
-        src="/images/footer/world-map-bg.jpg"
-        alt=""
-        fill
-        sizes="100vw"
-        className="object-cover object-right-top opacity-80 brightness-150 saturate-150"
+      <div
+        aria-hidden="true"
+        className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,color-mix(in_srgb,var(--purple-700)_60%,var(--charcoal))_0%,var(--charcoal)_85%)]"
+      />
+      <div
+        aria-hidden="true"
+        className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom,color-mix(in_srgb,var(--purple-700)_35%,var(--charcoal))_0%,transparent_70%)]"
       />
       <div
         aria-hidden="true"

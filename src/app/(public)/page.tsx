@@ -104,21 +104,44 @@ export default async function HomePage() {
 
       {/* Credibility strip */}
       <section className="border-b border-border bg-alabaster">
-        <dl className="mx-auto grid max-w-6xl grid-cols-2 gap-8 px-4 py-10 sm:px-6 sm:grid-cols-4">
-          {[
-            [String(foundedYear), "Founded"],
-            [`${yearsExperience}+`, "Years in practice"],
-            ["2", "Offices in Kenya"],
-            ["100+", "Advoc Africa network firms"],
-          ].map(([value, label]) => (
-            <div key={label}>
-              <dt className="font-serif text-3xl font-semibold text-purple-600 lg:text-4xl">
-                {value}
-              </dt>
-              <dd className="mt-1 text-xs uppercase tracking-widest text-slate">{label}</dd>
+        <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
+          <dl className="grid grid-cols-3 gap-6 text-center sm:gap-8 sm:text-left">
+            {[
+              [String(foundedYear), "Founded"],
+              [`${yearsExperience}+`, "Years in practice"],
+              ["2", "Offices in Kenya"],
+            ].map(([value, label]) => (
+              <div key={label}>
+                <dt className="font-serif text-2xl font-semibold text-purple-600 sm:text-3xl lg:text-4xl">
+                  {value}
+                </dt>
+                <dd className="mt-1 text-[11px] uppercase tracking-widest text-slate sm:text-xs">
+                  {label}
+                </dd>
+              </div>
+            ))}
+          </dl>
+
+          <div className="mt-8 flex flex-col items-center gap-3 border-t border-border pt-8 text-center sm:flex-row sm:justify-center sm:text-left">
+            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border border-border bg-white p-1.5 shadow-sm">
+              <Image
+                src="/images/partners/advoc-logo.png"
+                alt="Advoc Africa"
+                width={513}
+                height={288}
+                className="h-full w-full object-contain"
+              />
             </div>
-          ))}
-        </dl>
+            <div>
+              <p className="font-serif text-sm font-semibold leading-snug text-charcoal">
+                Founding member of Advoc Africa
+              </p>
+              <p className="mt-0.5 text-xs uppercase tracking-widest text-slate">
+                100+ member law firms worldwide
+              </p>
+            </div>
+          </div>
+        </div>
       </section>
 
       {/* Team teaser */}

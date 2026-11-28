@@ -32,6 +32,7 @@ export default async function SettingsPage() {
             aboutHtml: settings.aboutHtml,
             missionHtml: settings.missionHtml,
             visionHtml: settings.visionHtml,
+            historyHtml: settings.historyHtml,
             coreValues: settings.coreValues,
             advocAfricaBlurb: settings.advocAfricaBlurb,
             staffingStats: settings.staffingStats,

@@ -245,6 +245,7 @@ export const siteSettings = mysqlTable("site_settings", {
   aboutHtml: text("about_html").notNull(),
   missionHtml: text("mission_html").notNull(),
   visionHtml: text("vision_html"),
+  historyHtml: text("history_html"),
   coreValues: json("core_values").$type<CoreValue[]>().notNull(),
   advocAfricaBlurb: text("advoc_africa_blurb"),
   staffingStats: json("staffing_stats").$type<

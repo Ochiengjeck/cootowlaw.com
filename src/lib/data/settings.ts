@@ -18,6 +18,7 @@ export type SettingsInput = {
   aboutHtml: string;
   missionHtml: string;
   visionHtml: string | null;
+  historyHtml: string | null;
   coreValues: CoreValue[];
   advocAfricaBlurb: string | null;
   staffingStats: Record<string, { associates: number; paralegals: number }> | null;

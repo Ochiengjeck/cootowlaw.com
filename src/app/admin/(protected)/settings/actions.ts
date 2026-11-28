@@ -15,6 +15,7 @@ function parseForm(formData: FormData, officeSlugs: string[]): SettingsInput | {
   const aboutHtml = String(formData.get("aboutHtml") ?? "").trim();
   const missionHtml = String(formData.get("missionHtml") ?? "").trim();
   const visionHtml = String(formData.get("visionHtml") ?? "").trim() || null;
+  const historyHtml = String(formData.get("historyHtml") ?? "").trim() || null;
   const coreValues: CoreValue[] = [];
   for (const line of String(formData.get("coreValues") ?? "").split("\n")) {
     const [title, ...rest] = line.split(":");
@@ -62,6 +63,7 @@ function parseForm(formData: FormData, officeSlugs: string[]): SettingsInput | {
     aboutHtml,
     missionHtml,
     visionHtml,
+    historyHtml,
     coreValues,
     advocAfricaBlurb,
     staffingStats: Object.keys(staffingStats).length > 0 ? staffingStats : null,

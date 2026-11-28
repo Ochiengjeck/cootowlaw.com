@@ -5,8 +5,8 @@ import { getPracticeAreas } from "@/lib/data/practice-areas";
 import { getAttorneys } from "@/lib/data/attorneys";
 import { getClients } from "@/lib/data/clients";
 import { getCaseBriefs } from "@/lib/data/case-briefs";
-import { getCurrentYear } from "@/lib/current-year";
 import { Avatar } from "@/components/avatar";
+import { HeroEyebrow } from "@/components/hero-eyebrow";
 import { PartnersCarousel } from "@/components/partners-carousel";
 import { ButtonLink } from "@/components/ui/button";
 import { IconBox } from "@/components/ui/icon-box";
@@ -14,20 +14,16 @@ import { Reveal } from "@/components/ui/reveal";
 import { getPracticeIcon } from "@/lib/practice-icons";
 
 export default async function HomePage() {
-  const [settings, practiceAreas, attorneys, clients, caseBriefs, currentYear] =
-    await Promise.all([
-      getSiteSettings(),
-      getPracticeAreas(),
-      getAttorneys(),
-      getClients(),
-      getCaseBriefs(),
-      getCurrentYear(),
-    ]);
+  const [settings, practiceAreas, attorneys, clients, caseBriefs] = await Promise.all([
+    getSiteSettings(),
+    getPracticeAreas(),
+    getAttorneys(),
+    getClients(),
+    getCaseBriefs(),
+  ]);
 
   const allPartners = attorneys.filter((a) => a.tier === "partner");
   const avatarPartners = allPartners.slice(0, 4);
-  const foundedYear = settings?.foundedYear ?? 2006;
-  const yearsExperience = currentYear - foundedYear;
   const [featuredPractice, ...restPractices] = practiceAreas;
 
   return (
@@ -49,10 +45,7 @@ export default async function HomePage() {
 
         <div className="mx-auto flex min-h-[88dvh] max-w-6xl flex-col justify-center px-4 py-20 sm:min-h-dvh sm:px-6">
           <div className="max-w-xl">
-            <div className="animate-hero-in inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-3 py-1 text-xs font-semibold uppercase tracking-widest text-gold-400 backdrop-blur-sm">
-              <span className="h-1.5 w-1.5 rounded-full bg-gold-400" />
-              Trusted Legal Excellence
-            </div>
+            <HeroEyebrow />
             <h1
               className="animate-hero-in mt-6 font-serif text-4xl font-semibold leading-[1.1] text-white sm:text-5xl lg:text-6xl"
               style={{ animationDelay: "80ms" }}
@@ -63,8 +56,9 @@ export default async function HomePage() {
               className="animate-hero-in mt-5 max-w-md text-base leading-relaxed text-white/75"
               style={{ animationDelay: "160ms" }}
             >
-              A one-stop shop for legal services across Eastern Africa since {foundedYear} —
-              committed to protecting your rights and achieving the best possible outcome.
+              A distinguished Kenyan law firm delivering thoughtful, commercially astute and
+              innovative legal solutions, grounded in professional excellence and a deep
+              commitment to our clients&apos; success.
             </p>
             <div
               className="animate-hero-in mt-8 flex flex-wrap items-center gap-4"
@@ -105,22 +99,17 @@ export default async function HomePage() {
       {/* Credibility strip */}
       <section className="border-b border-border bg-alabaster">
         <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
-          <dl className="grid grid-cols-3 gap-6 text-center sm:gap-8 sm:text-left">
-            {[
-              [String(foundedYear), "Founded"],
-              [`${yearsExperience}+`, "Years in practice"],
-              ["2", "Offices in Kenya"],
-            ].map(([value, label]) => (
-              <div key={label}>
-                <dt className="font-serif text-2xl font-semibold text-purple-600 sm:text-3xl lg:text-4xl">
-                  {value}
-                </dt>
-                <dd className="mt-1 text-[11px] uppercase tracking-widest text-slate sm:text-xs">
-                  {label}
-                </dd>
-              </div>
-            ))}
-          </dl>
+          <div className="text-center">
+            <p className="font-serif text-2xl font-semibold text-purple-600 sm:text-3xl lg:text-4xl">
+              26 Years of Excellence
+            </p>
+            <p className="mt-2 text-sm text-slate sm:text-base">
+              A Heritage of Trust. A Vision for the Future.
+            </p>
+            <p className="mt-1 text-[11px] uppercase tracking-widest text-slate/70 sm:text-xs">
+              Cootow &amp; Associates Advocates | 2006–2026
+            </p>
+          </div>
 
           <div className="mt-8 flex flex-col items-center gap-3 border-t border-border pt-8 text-center sm:flex-row sm:justify-center sm:text-left">
             <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border border-border bg-white p-1.5 shadow-sm">

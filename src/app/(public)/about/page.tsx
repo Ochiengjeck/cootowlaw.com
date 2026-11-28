@@ -43,6 +43,13 @@ export default async function AboutPage() {
               className="rich-text text-[17px]"
               dangerouslySetInnerHTML={{ __html: settings?.aboutHtml ?? "" }}
             />
+            <Link
+              href="/history"
+              className="group mt-6 inline-flex items-center text-xs font-semibold uppercase tracking-wider text-purple-600 hover:text-purple-700"
+            >
+              Read our full history
+              <span className="ml-2 transition-transform group-hover:translate-x-1">&rarr;</span>
+            </Link>
           </Reveal>
           <Reveal delay={140} className="lg:col-span-2">
             <div className="flex h-full min-h-[16rem] items-center justify-center rounded-3xl border border-border bg-gradient-to-br from-purple-50 via-white to-gold-50">

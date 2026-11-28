@@ -24,6 +24,7 @@ type Props = {
     aboutHtml: string;
     missionHtml: string;
     visionHtml: string | null;
+    historyHtml: string | null;
     coreValues: CoreValue[];
     advocAfricaBlurb: string | null;
     staffingStats: Record<string, { associates: number; paralegals: number }> | null;
@@ -147,6 +148,11 @@ export function SettingsForm({ action, offices, mediaItems, defaultValues }: Pro
       )}
 
       <SettingsSection icon={<BookOpenIcon className="h-4 w-4" />} title="Other pages">
+        <RichTextField
+          label="Our History page content (HTML allowed, optional)"
+          name="historyHtml"
+          defaultValue={defaultValues.historyHtml ?? ""}
+        />
         <RichTextField
           label="Careers page content (HTML allowed, optional — leave blank to show the 'no open vacancies' message)"
           name="careersHtml"
